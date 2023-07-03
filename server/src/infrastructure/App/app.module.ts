@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { MailModule } from './Mail/mail.module';
+import { MailModule } from '../Mail/mail.module';
 
 @Module({
-  imports: [MailModule]
+  imports: [MailModule],
 })
 export class AppModule {}
