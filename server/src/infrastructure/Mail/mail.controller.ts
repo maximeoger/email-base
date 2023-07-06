@@ -1,12 +1,14 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { MailService } from './mail.service';
+import { Mail } from './mail.interface';
 
-@Controller()
+@Controller('mails')
 export class MailController {
   constructor(private readonly mailService: MailService) {}
 
-  @Get()
-  getHello(): string {
-    return this.mailService.getHello();
+  @Get('')
+  getEmails(@Query() query): Promise<Mail[]> {
+    const { min, max } = query;
+    return this.mailService.getEmails(min, max);
   }
 }

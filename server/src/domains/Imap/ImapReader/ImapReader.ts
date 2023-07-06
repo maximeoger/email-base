@@ -1,18 +1,18 @@
 import Imap, { Box, ImapFetch } from 'imap';
-import quotedPrintable from 'quoted-printable';
-import { ParsedMail } from './interfaces';
+import { simpleParser, ParsedMail } from 'mailparser';
 
+type Results = Map<number, ParsedMail>;
 
 export default class ImapReader {
   connection: Imap;
 
   constructor() {
-    const { MAILBOX_USER, MAILBOX_PWD, IMAP_HOST, IMAP_PORT } = process.env;
+    const { MAILBOX_USER, MAILBOX_APP_PWD, IMAP_HOST } = process.env;
 
     this.connection = new Imap({
-      user: 'newsletterman32@gmail.com',
-      password: 'nernxxdravvkmpyl',
-      host: 'imap.gmail.com',
+      user: MAILBOX_USER,
+      password: MAILBOX_APP_PWD,
+      host: IMAP_HOST,
       port: 993,
       tls: true,
       tlsOptions: {
@@ -39,51 +39,37 @@ export default class ImapReader {
     });
   }
 
-  async getMails(): Promise<any> {
+  async getMails(min: number, max: number): Promise<Results> {
     const connection = this.connection;
 
-    const parsedMails = {};
+    const parsedMails: Results = new Map();
 
-    const fetch: ImapFetch = connection.seq.fetch('1:20', {
-      bodies: ['HEADER.FIELDS (SUBJECT DATE)', 'TEXT'],
-      struct: true,
-      markSeen: false,
+    const fetch: ImapFetch = connection.seq.fetch(`${min}:${max}`, {
+      bodies: [''],
     });
 
     return new Promise((fulfill, reject) => {
       fetch.on('message', (message, seqno) => {
-        message.on('body', async (stream, info) => {
-          let buffer = '';
-          parsedMails[seqno] = { ...parsedMails[seqno], seqno };
 
-          stream.on('data', (chunk) => {
-            buffer += chunk.toString('utf8');
+        message.on('body', async (stream) => {
+          const parsed = await simpleParser(stream);
 
-            if (info.which === 'HEADER.FIELDS (SUBJECT DATE)') {
-              const { subject, date } = Imap.parseHeader(buffer);
-              parsedMails[seqno] = {
-                ...parsedMails[seqno],
-                subject: subject[0],
-                date: date[0],
-              };
-            }
+          if (!parsed) {
+            throw Error('parse error');
+          }
 
-            if (info.which === 'TEXT') {
-              parsedMails[seqno] = {
-                ...parsedMails[seqno],
-                body: quotedPrintable.decode(buffer),
-              };
-            }
-          });
-
-          stream.once('end', () => {
-            // end
-          });
+          parsedMails.set(seqno, parsed);
         });
       });
 
-      fetch.on('end', () => {
-        fulfill(parsedMails);
+      fetch.once('end', () => {
+        /*
+          Workaround to "wait" for the parsing of the last email
+          See more here ==> https://github.com/mscdex/node-imap/issues/774
+        */
+        setTimeout(() => {
+          fulfill(parsedMails);
+        }, 1000);
       });
 
       fetch.on('error', (error) => {
