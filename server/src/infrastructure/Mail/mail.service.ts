@@ -29,7 +29,6 @@ export class MailService {
       });
 
       response.push({
-        html,
         subject,
         date,
         screenshot,
