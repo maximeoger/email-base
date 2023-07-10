@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import puppeteer from 'puppeteer';
 import ImapReader from '../../domains/Imap/ImapReader/ImapReader';
 import { Mail } from './mail.interface';
+import dayjs from "dayjs";
 
 @Injectable()
 export class MailService {
@@ -22,16 +23,17 @@ export class MailService {
       if (!html || !subject || !date) continue;
       const page = await browser.newPage();
       await page.setContent(html);
+
+      await page.setViewport({ width: 450, height: 600 });
+
       const screenshot = await page.screenshot({
-        path: `screenshots/${seqno}.jpg`,
-        fullPage: true,
         encoding: 'base64',
       });
 
       response.push({
         subject,
-        date,
-        screenshot,
+        date: dayjs(date).format('DD MMM YYYY'),
+        screenshot: `data:image/jpg;base64,${screenshot}`,
       });
 
       page.close();

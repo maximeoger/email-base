@@ -1,6 +1,6 @@
 
 export interface Mail {
   readonly screenshot: string;
-  readonly date: Date;
+  readonly date: string;
   readonly subject: string;
 }
