@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import puppeteer from 'puppeteer';
 import ImapReader from '../../domains/Imap/ImapReader/ImapReader';
 import { Mail } from './mail.interface';
-import dayjs from "dayjs";
+import dayjs from 'dayjs';
 
 @Injectable()
 export class MailService {
