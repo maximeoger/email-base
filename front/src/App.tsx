@@ -10,7 +10,7 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:3000/mails?min=1&max=3')
+        const response = await fetch('http://localhost:3000/mails?min=5&max=10')
         const data = await response.json()
         setData(data)
         setLoading(false)
