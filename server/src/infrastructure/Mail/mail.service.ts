@@ -1,45 +1,71 @@
 import { Injectable } from '@nestjs/common';
-import puppeteer from 'puppeteer';
+import puppeteer, {Browser} from 'puppeteer';
+import db from '../../domains/Database/Firestore/Firestore';
+import { Timestamp } from 'firebase-admin/firestore';
 import ImapReader from '../../domains/Imap/ImapReader/ImapReader';
-import { Mail } from './mail.interface';
-import dayjs from "dayjs";
+import {Mail, MailResponse} from './mail.interface';
+import dayjs from 'dayjs';
 
 @Injectable()
 export class MailService {
-  async getEmails(min: number, max: number): Promise<Mail[]> {
+  async getScreenshotsFromEmail(
+    browser: Browser,
+    html: string,
+  ): Promise<string> {
+    const page = await browser.newPage();
+    await page.setContent(html);
+    await page.setViewport({ width: 450, height: 600 });
+    const screenshot = await page.screenshot({ encoding: 'base64' });
+    page.close();
+    return screenshot;
+  }
+
+  async feedDatabase(): Promise<void> {
     const imap = new ImapReader();
-    const browser = await puppeteer.launch({ headless: 'new' });
-    const response: Array<Mail> = [];
     const connection = imap.connect();
+    const browser = await puppeteer.launch({ headless: 'new' });
 
     connection.on('error', (err) => {
       throw err.message;
     });
 
-    await imap.openMailBox();
-    const mails = await imap.getMails(min, max);
+    const box = await imap.openMailBox();
+    const mails = await imap.getMails(box.messages.total);
+    const collection = db.collection('mails');
 
-    for await (const [seqno, { html, subject, date }] of mails) {
-      if (!html || !subject || !date) continue;
-      const page = await browser.newPage();
-      await page.setContent(html);
+    for await (const [seqno, { html, subject, date, from }] of mails) {
+      if (!html || !subject || !date || !from) continue;
 
-      await page.setViewport({ width: 450, height: 600 });
+      const recievedDate = dayjs(date).format('MM-DD-YYYY');
+      const senderName = from.value[0].name;
+      const base64 = await this.getScreenshotsFromEmail(browser, html);
 
-      const screenshot = await page.screenshot({
-        encoding: 'base64',
+      await collection.add({
+        subject,
+        senderName,
+        screenshot: `data:image/jpg;base64,${base64}`,
+        date: Timestamp.fromDate(new Date(recievedDate)),
+        html,
       });
+    }
+  }
+
+  async getEmails(min: number, max: number): Promise<MailResponse[]> {
+    const response: Array<MailResponse> = [];
+    const mailsRef = db.collection('mails').orderBy('date').startAfter(Number(min)).limit(Number(max));
+    const snapshot = await mailsRef.get();
+
+    snapshot.forEach((doc) => {
+      const { screenshot, subject, html, date } = doc.data();
+      const jsDate = date.toDate();
 
       response.push({
         subject,
-        date: dayjs(date).format('DD MMM YYYY'),
-        screenshot: `data:image/jpg;base64,${screenshot}`,
+        html,
+        date: jsDate,
+        screenshot,
       });
-
-      page.close();
-    }
-
-    browser.close();
+    });
 
     return response;
   }

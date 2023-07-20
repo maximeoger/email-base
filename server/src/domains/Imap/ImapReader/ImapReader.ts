@@ -39,18 +39,17 @@ export default class ImapReader {
     });
   }
 
-  async getMails(min: number, max: number): Promise<Results> {
+  async getMails(total: number): Promise<Results> {
     const connection = this.connection;
 
     const parsedMails: Results = new Map();
 
-    const fetch: ImapFetch = connection.seq.fetch(`${min}:${max}`, {
+    const fetch: ImapFetch = connection.seq.fetch(`1:${total}`, {
       bodies: [''],
     });
 
     return new Promise((fulfill, reject) => {
       fetch.on('message', (message, seqno) => {
-
         message.on('body', async (stream) => {
           const parsed = await simpleParser(stream);
 
