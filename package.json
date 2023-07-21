@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "dayjs": "^1.11.9",
+    "pm2": "^5.3.0"
+  },
+  "scripts": {
+    "start:server": "pm2 start server",
+    "start:front": "pm2 start front",
+    "start:all": "pm2 start",
+    "stop:all": "pm2 stop all"
+  }
+}
