@@ -1,6 +1,6 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { MailService } from './mail.service';
-import {MailResponse} from './mail.interface';
+import { MailResponse } from '../../domains/Mail/types/Mail.interface';
 
 @Controller('mails')
 export class MailController {

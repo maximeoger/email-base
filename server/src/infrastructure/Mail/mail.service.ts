@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import puppeteer, {Browser} from 'puppeteer';
-import db from '../../domains/Database/Firestore/Firestore';
-import { Timestamp } from 'firebase-admin/firestore';
-import ImapReader from '../../domains/Imap/ImapReader/ImapReader';
-import {Mail, MailResponse} from './mail.interface';
 import dayjs from 'dayjs';
+import puppeteer, { Browser } from 'puppeteer';
+import ImapReader from '../../domains/Imap/ImapReader/ImapReader';
+import { MailResponse } from '../../domains/Mail/types/Mail.interface';
+import MailRepository from '../../domains/Mail/MailRepository';
+
+import { getDatabase } from '../../domains/Database/Firestore/Firestore';
 
 @Injectable()
 export class MailService {
@@ -31,7 +32,6 @@ export class MailService {
 
     const box = await imap.openMailBox();
     const mails = await imap.getMails(box.messages.total);
-    const collection = db.collection('mails');
 
     for await (const [seqno, { html, subject, date, from }] of mails) {
       if (!html || !subject || !date || !from) continue;
@@ -40,19 +40,25 @@ export class MailService {
       const senderName = from.value[0].name;
       const base64 = await this.getScreenshotsFromEmail(browser, html);
 
-      await collection.add({
+      const document = {
         subject,
         senderName,
         screenshot: `data:image/jpg;base64,${base64}`,
-        date: Timestamp.fromDate(new Date(recievedDate)),
+        date: new Date(recievedDate),
         html,
-      });
+      };
+
+      MailRepository.createMail(document, seqno);
     }
   }
 
   async getEmails(min: number, max: number): Promise<MailResponse[]> {
     const response: Array<MailResponse> = [];
-    const mailsRef = db.collection('mails').orderBy('date').startAfter(Number(min)).limit(Number(max));
+    const mailsRef = getDatabase()
+      .collection('mails')
+      .orderBy('date')
+      .startAfter(Number(min))
+      .limit(Number(max));
     const snapshot = await mailsRef.get();
 
     snapshot.forEach((doc) => {

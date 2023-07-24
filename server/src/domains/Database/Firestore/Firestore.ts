@@ -1,11 +1,21 @@
 import { initializeApp, cert, ServiceAccount } from 'firebase-admin/app';
-import { getFirestore } from 'firebase-admin/firestore';
+import { Firestore, getFirestore } from 'firebase-admin/firestore';
 import serviceAccount from '../../../../serviceAccount.json';
 
-initializeApp({
-  credential: cert(serviceAccount as ServiceAccount),
-});
+let hasInit = false;
 
-const db = getFirestore();
+export function initialiseDatabase(): void {
+  if (!hasInit) {
+    initializeApp({
+      credential: cert(serviceAccount as ServiceAccount),
+    });
+    hasInit = true;
+  }
+}
 
-export default db;
+let _db: Firestore;
+
+export function getDatabase(): Firestore {
+  initialiseDatabase();
+  return _db ?? (_db = getFirestore());
+}
