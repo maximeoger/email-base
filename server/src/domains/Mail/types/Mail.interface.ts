@@ -1,10 +1,11 @@
+
 export interface Mail {
   readonly html: string;
-  readonly date: Date;
+  timestamp?: any;
   readonly subject: string;
+  date?: Date;
 }
 
 export interface MailResponse extends Mail {
   readonly screenshot: string;
 }
-

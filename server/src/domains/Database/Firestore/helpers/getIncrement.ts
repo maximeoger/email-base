@@ -1,5 +1,5 @@
 import * as firebase from 'firebase-admin';
-import { getDatabase } from '../Firestore/Firestore';
+import { getDatabase } from '../Firestore';
 
 const defaultPath = 'Counters';
 

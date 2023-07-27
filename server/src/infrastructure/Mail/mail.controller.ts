@@ -8,7 +8,8 @@ export class MailController {
 
   @Get('')
   getEmails(@Query() query): Promise<MailResponse[]> {
-    const { min, max } = query;
-    return this.mailService.getEmails(min, max);
+    const { from, limit } = query;
+    const date = new Date(from);
+    return this.mailService.getEmails(date, Number(limit));
   }
 }

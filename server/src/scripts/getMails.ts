@@ -1,6 +1,5 @@
 import 'dotenv/config';
 import { MailService } from '../infrastructure/Mail/mail.service';
-import db from '../domains/Database/Firestore/Firestore';
 
 async function getMails(): Promise<void> {
   try {
