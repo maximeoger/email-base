@@ -50,7 +50,7 @@ export class MailService {
     }
   }
 
-  async getEmails(from: Date, limit: number): Promise<MailResponse[]> {
+  async getEmails(from: Date, limit: number): Promise<any> {
     const response: Array<MailResponse> = [];
 
     const mailsRef = MailRepository.getMailAfter(from, limit);
@@ -67,6 +67,17 @@ export class MailService {
       });
     });
 
-    return response;
+    return {
+      mails: response,
+      lastDate: response.reduce((prev, current) => {
+        const prevDate = dayjs(prev.date);
+        const currentDate = dayjs(current.date);
+        if (currentDate > prevDate) {
+          return current;
+        } else {
+          return prev;
+        }
+      }).date,
+    };
   }
 }

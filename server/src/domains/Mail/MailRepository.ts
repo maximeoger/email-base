@@ -10,11 +10,12 @@ type DocumentRef = DocumentReference<DocumentData>;
 
 class MailRepository {
   static createMail(doc: MailResponse): Promise<DocumentRef> {
+    const timeStamp = Timestamp.fromDate(doc.date);
     return getDatabase()
       .collection('Mails')
       .add({
         ...doc,
-        timestamp: Timestamp.fromDate(doc.date),
+        timestamp: timeStamp,
       });
   }
 

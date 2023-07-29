@@ -7,6 +7,6 @@
     "start:server": "pm2 start server",
     "start:front": "pm2 start front",
     "start:all": "pm2 start",
-    "stop:all": "pm2 stop all"
+    "delete:all": "pm2 delete all"
   }
 }

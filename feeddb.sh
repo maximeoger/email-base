@@ -1,0 +1,1 @@
+yarn --cwd server run build && yarn --cwd server run feed:database
