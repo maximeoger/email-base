@@ -1,59 +1,22 @@
-import axios, { AxiosRequestConfig } from 'axios';
-import { useState, useEffect } from 'react'
+import useRequest from "./helpers/useRequest";
+import usePagination from "./helpers/usePagination";
 import './index.css'
-import {resolveBaseUrl} from "vite";
-
-interface RequestState<T> {
-  loading: boolean,
-  data: T,
-  error: boolean,
-  makeApiCall: () => Promise<void>;
-}
-
-function useRequest(url: string, params: RequestParams): RequestState<any> {
-  const [ loading, setLoading ] = useState<boolean>(true);
-  const [ data, setData ] = useState<any>(null);
-  const [ error, setError ] = useState<boolean>(false);
-
-  const makeApiCall = async () => {
-    try {
-      const response = await axios.get(url, { params });
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-      setData(response.data);
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-      setError(false);
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-      setLoading(false);
-    } catch (err) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-      setError(true);
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-      setLoading(false);
-    }
-
-  };
-
-  useEffect(() => {
-    void makeApiCall();
-  }, [])
-
-  return {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    loading,
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    data,
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    error,
-    makeApiCall
-  }
-}
+import {useEffect} from "react";
 
 type ReturnType = Array<string>
-type RequestParams = { from: string, limit: number }
+const LIMIT = 8;
 
 function App() {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const { loading, data, error, makeApiCall } = useRequest<ReturnType>('http://localhost:3000/mails',{from: '2023-07-01', limit: 8});
+  const { page, nextPage } = usePagination(0, 8);
+  const { loading, data, error, makeApiCall } = useRequest<ReturnType>('http://localhost:3000/mails');
+
+  useEffect(() => {
+    if(page !== null) {
+      const doFetch = async () => await makeApiCall({ start: page, limit: LIMIT });
+      void doFetch()
+    }
+  }, [page])
 
   return (
     <>
@@ -67,8 +30,8 @@ function App() {
           {loading && (<p>Loading ...</p>)}
           {error && (<p>Une erreur est survenue :(</p>)}
           {
-            data && data.map(mail => (
-              <div className="w-64 rounded-lg bg-white">
+            data && data.map((mail, key) => (
+              <div className="w-64 rounded-lg bg-white" key={`${key}-${mail.mailNo}`}>
                 <div className="px-4 py-2">
                   <span className="text-xs text-slate-400">{mail.date}</span>
                   <p className="font-semibold text-sm">{mail.subject}</p>
@@ -84,7 +47,7 @@ function App() {
           }
         </div>
         <div>
-          <button className="button">Charger plus</button>
+          <button className="button" onClick={() => nextPage()}>Charger plus</button>
         </div>
       </div>
     </>
