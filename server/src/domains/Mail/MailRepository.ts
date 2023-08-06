@@ -1,5 +1,6 @@
-import { MailResponse } from './types/Mail.interface';
+import { MailToBeInstertedInDatabase } from './types/Mail.interface';
 import { getDatabase } from '../Database/Firestore/Firestore';
+
 import {
   DocumentReference,
   DocumentData,
@@ -9,7 +10,7 @@ import {
 type DocumentRef = DocumentReference<DocumentData>;
 
 class MailRepository {
-  static createMail(doc: MailResponse): Promise<DocumentRef> {
+  static createMail(doc: MailToBeInstertedInDatabase): Promise<DocumentRef> {
     const timeStamp = Timestamp.fromDate(doc.date);
     return getDatabase()
       .collection('Mails')
@@ -19,12 +20,16 @@ class MailRepository {
       });
   }
 
-  static getMailAfter(after: Date, limit: number) {
-    return getDatabase()
-      .collection('Mails')
-      .orderBy('timestamp')
-      .startAfter(after)
-      .limit(limit);
+  static getMailReference() {
+    return getDatabase().collection('Mails');
+  }
+
+  static async getEmailById(id: string) {
+    const document = await getDatabase().collection('Mails').doc(id).get();
+    if (!document) {
+      throw Error('No document found');
+    }
+    return document.data();
   }
 }
 

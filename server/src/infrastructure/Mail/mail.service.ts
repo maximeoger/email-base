@@ -2,7 +2,10 @@ import { Injectable } from '@nestjs/common';
 import dayjs from 'dayjs';
 import puppeteer, { Browser } from 'puppeteer';
 import ImapReader from '../../domains/Imap/ImapReader/ImapReader';
-import { MailResponse } from '../../domains/Mail/types/Mail.interface';
+import {
+  MailResponse,
+  MailSnapshotResponse,
+} from '../../domains/Mail/types/Mail.interface';
 import MailRepository from '../../domains/Mail/MailRepository';
 
 @Injectable()
@@ -50,34 +53,48 @@ export class MailService {
     }
   }
 
-  async getEmails(from: Date, limit: number): Promise<any> {
-    const response: Array<MailResponse> = [];
+  async getEmails(
+    start: number,
+    limit: number,
+  ): Promise<any> {
+    const response: Array<MailSnapshotResponse> = [];
 
-    const mailsRef = MailRepository.getMailAfter(from, limit);
-    const snapshot = await mailsRef.get();
+    const reference = await MailRepository.getMailReference();
+
+    const snapshot = await reference
+      .orderBy('mailNo')
+      .startAfter(start)
+      .limit(limit)
+      .get();
+
+    const countSnapshot = await reference.count().get();
 
     snapshot.forEach((doc) => {
-      const { screenshot, subject, html, timestamp } = doc.data();
+      const { screenshot, subject, timestamp, mailNo } = doc.data();
       const jsDate = timestamp.toDate();
       response.push({
+        id: doc.id,
+        mailNo,
         date: jsDate,
         subject,
-        html,
         screenshot,
       });
     });
 
     return {
-      mails: response,
-      lastDate: response.reduce((prev, current) => {
-        const prevDate = dayjs(prev.date);
-        const currentDate = dayjs(current.date);
-        if (currentDate > prevDate) {
-          return current;
-        } else {
-          return prev;
-        }
-      }).date,
+      total: countSnapshot.data().count,
+      data: response,
+    };
+  }
+
+  async getEmail(id: string): Promise<MailResponse> {
+    const { mailNo, date, subject, html } = await MailRepository.getEmailById(id);
+    return {
+      id,
+      mailNo,
+      date,
+      subject,
+      html,
     };
   }
 }

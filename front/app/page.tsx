@@ -1,12 +1,12 @@
-import useRequest from "./helpers/useRequest";
-import usePagination from "./helpers/usePagination";
-import './index.css'
+import useRequest from "../helpers/useRequest";
+import usePagination from "../helpers/usePagination";
 import {useEffect} from "react";
+import './index.css'
 
 type ReturnType = Array<string>
 const LIMIT = 8;
 
-function App() {
+function Page() {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const { page, nextPage } = usePagination(0, 8);
   const { loading, data, error, makeApiCall } = useRequest<ReturnType>('http://localhost:3000/mails');
@@ -54,4 +54,4 @@ function App() {
   )
 }
 
-export default App
+export default Page
