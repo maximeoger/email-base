@@ -39,12 +39,12 @@ export default class ImapReader {
     });
   }
 
-  async getMails(total: number): Promise<Results> {
+  async getMails(from: number, to: number): Promise<Results> {
     const connection = this.connection;
 
     const parsedMails: Results = new Map();
 
-    const fetch: ImapFetch = connection.seq.fetch(`1:${total}`, {
+    const fetch: ImapFetch = connection.seq.fetch(`${from}:${to}`, {
       bodies: [''],
     });
 

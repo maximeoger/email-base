@@ -8,6 +8,8 @@ import {
 } from '../../domains/Mail/types/Mail.interface';
 import MailRepository from '../../domains/Mail/MailRepository';
 
+const MAX_EMAILS_PARSE = 24;
+
 @Injectable()
 export class MailService {
   async getScreenshotsFromEmail(
@@ -15,8 +17,16 @@ export class MailService {
     html: string,
   ): Promise<string> {
     const page = await browser.newPage();
-    await page.setContent(html);
-    await page.setViewport({ width: 450, height: 600 });
+    const contentViewport = await page.evaluate(() => {
+      const content = document.body;
+      return {
+        width: content ? content.offsetWidth : 0,
+        height: content ? content.offsetHeight : 0,
+      };
+    });
+
+    await page.goto(`data:text/html,${html}`, { waitUntil: 'networkidle0' });
+    await page.setViewport(contentViewport);
     const screenshot = await page.screenshot({ encoding: 'base64' });
     page.close();
     return screenshot;
@@ -31,14 +41,30 @@ export class MailService {
       throw err.message;
     });
 
-    const box = await imap.openMailBox();
-    const mails = await imap.getMails(box.messages.total);
+    const reference = await MailRepository.getMailReference();
+    const countSnapshot = await reference.count().get();
+    const count = countSnapshot.data().count;
 
-    for await (const [seqno, { html, subject, date, from }] of mails) {
+    const box = await imap.openMailBox();
+    const mails = await imap.getMails(
+      count === 0 ? 1 : count,
+      count + MAX_EMAILS_PARSE,
+    );
+
+    console.log('LOG', {
+      size: mails.size,
+      from: count,
+      to: count + MAX_EMAILS_PARSE,
+      uidValidity: box.uidvalidity,
+    });
+
+    for await (const [seqno, { html, subject, date, from, messageId }] of mails) {
       if (!html || !subject || !date || !from) continue;
 
       const recievedDate = dayjs(date).format('MM-DD-YYYY');
       const senderName = from.value[0].name;
+
+      console.log('Getting mail screenshot ...')
       const base64 = await this.getScreenshotsFromEmail(browser, html);
 
       const document = {
@@ -48,15 +74,17 @@ export class MailService {
         screenshot: `data:image/jpg;base64,${base64}`,
         html,
       };
-
-      MailRepository.createMail(document);
+      await MailRepository.createMail(document);
+      console.info(`MailNO: ${seqno} added`, {
+        uid: messageId,
+        subject,
+      });
     }
+
+    process.exit(0);
   }
 
-  async getEmails(
-    start: number,
-    limit: number,
-  ): Promise<any> {
+  async getEmails(start: number, limit: number): Promise<any> {
     const response: Array<MailSnapshotResponse> = [];
 
     const reference = await MailRepository.getMailReference();
