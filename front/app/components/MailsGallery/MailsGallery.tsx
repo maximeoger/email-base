@@ -1,6 +1,6 @@
 import useSWR from "swr";
 import fetcher from "../../helpers/fetcher";
-import {useEffect} from "react";
+import { useEffect } from "react";
 
 interface Props {
   page: number;
@@ -9,7 +9,7 @@ interface Props {
 }
 
 export default function MailsGallery ({ page, limit, setTotalItems }:Props) {
-  const { data, error, isLoading } = useSWR(`http://localhost:3000/mails?start=${page}&limit=${limit}`, fetcher)
+  const { data, error, isLoading } = useSWR(`http://localhost:3000/mails?start=${page*limit}&limit=${limit}`, fetcher)
 
   useEffect(() => {
     if(data) {
@@ -23,7 +23,7 @@ export default function MailsGallery ({ page, limit, setTotalItems }:Props) {
       {error && (<p>Une erreur est survenue :(</p>)}
       {
         data && data.data.map((mail, key) => (
-          <a href={`/${mail.id}`} key={`${key}-${mail.mailNo}`}>
+          <a href={`/${mail.id}`} key={`${key}-${mail.mailNo}`} target="_blank">
             <div className="w-64 h-96 rounded-lg bg-white">
               <div className="px-4 py-2">
                 <span className="text-xs text-slate-400">{mail.date}</span>

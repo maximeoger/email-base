@@ -28,3 +28,5 @@ export const createMail = functions.firestore
       transaction.update(snapshot.ref, {mailNo: nextMailCounter});
     });
   });
+
+

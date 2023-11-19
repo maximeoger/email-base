@@ -3,11 +3,9 @@ module.exports = {
     name: "front",
     script: "yarn run dev",
     cwd: "front",
-    watch: true,
   }, {
     name: "server",
-    script: "yarn run start",
+    script: "yarn run start:dev",
     cwd: "server",
-    watch: true,
   }],
 };

@@ -1,6 +1,4 @@
 'use client'
-import {useEffect} from "react";
-import useRequest from "./helpers/useRequest";
 import MailsGallery from "./components/MailsGallery/MailsGallery";
 import Pagination from "./components/Pagination/Pagination";
 import usePagination from "./helpers/usePagination";
@@ -17,7 +15,7 @@ export default function Page() {
       </div>
 
       <section className="bg-gray-100 text-black p-6">
-        <div className="px-44">
+        <div className="w-[67rem] my-0 mx-auto">
           <h1 className="font-bold text-5xl leading-normal">Le premier moteur de recherche <br/>de newsletters 100% français  💌 🇫🇷</h1>
           <p className="mt-5 font-light">Grâce à notre outil, trouvez l’inspiration en un clin d’oeil !
             Que vous soyez une agence, freelance ou une marque, restez informé des nouvelles tendances de votre marché en matière d’email marketing.
@@ -28,14 +26,25 @@ export default function Page() {
         </div>
       </section>
 
-      <div className="min-h-screen bg-gray-100">
-        <MailsGallery page={page} limit={LIMIT} setTotalItems={setTotalItems}/>
-        <div className="mt-4">
-          <div className="my-0 mx-auto w-fit">
-            <Pagination page={page} setPage={setPage} totalPages={totalPages}/>
+      <section>
+        <div className="min-h-screen bg-gray-100 pb-8 pt-8">
+          <MailsGallery page={page} limit={LIMIT} setTotalItems={setTotalItems}/>
+          <div className="mt-4">
+            <div className="my-0 mx-auto w-fit">
+              <Pagination page={page} setPage={setPage} totalPages={totalPages}/>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
+
+      <footer className="p-4">
+        <nav>
+          <ul>
+            <li>Etre référencé</li>
+            <li>Qui sommes nous ?</li>
+          </ul>
+        </nav>
+      </footer>
     </>
   )
 }

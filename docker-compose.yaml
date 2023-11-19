@@ -1,0 +1,13 @@
+version: '3.9'
+
+services:
+  api:
+    image: nest-cloud-run
+    ports:
+      - "3002:3002"
+    networks:
+      - bridge
+
+networks:
+  bridge:
+    driver: bridge

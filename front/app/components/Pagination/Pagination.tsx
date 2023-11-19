@@ -7,7 +7,7 @@ interface Props {
 }
 
 function Pagination ({ page, setPage, totalPages }: Props) {
-  const pages = Array.from({length: totalPages}, (_, i) => i + 1);
+  const pages = Array.from({length: totalPages+1}, (_, i) => i + 1);
 
   return (
     <div className="w-fit flex">
