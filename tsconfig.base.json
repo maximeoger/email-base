@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "skipDefaultLibCheck": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": false,
+    "noImplicitAny": false,
+    "downlevelIteration": true,
+    "rootDir": "src",
+    "target": "ESNext",
+    "module": "esnext",
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "allowJs": true
+  },
+  "include": ["./src/**/*", "./custom.d.ts"],
+  "exclude": ["node_modules"]
+}

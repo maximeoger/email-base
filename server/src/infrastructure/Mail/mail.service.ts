@@ -17,6 +17,8 @@ export class MailService {
 
     if (error) throw error
 
-    return data;
+    return data.map((mail, i) => ({
+      ...mail
+    }))
   }
 }
