@@ -12,8 +12,8 @@ export interface ImapConfig {
 }
 
 export interface ImapReaderMethods {
-  getResults: () => Map<number, any>;
-  getMails: (from: string, to: string) => Promise<Map<number, any>>;
+  getResults: () => any[];
+  getMails: (from: string, to: string) => Promise<any[]>;
 }
 
 export interface ImapFlowClient {

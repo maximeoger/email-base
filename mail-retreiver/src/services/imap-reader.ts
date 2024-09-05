@@ -1,8 +1,8 @@
-import { ImapReaderMethods, ImapFlowClient } from "../models/imap";
+import { ImapReaderMethods, ImapFlowClient } from "../models/imap-reader";
 
 export default class ImapReader implements ImapReaderMethods {
   private client: ImapFlowClient;
-  private results: Map<number, any>;
+  private results: any[] = []
 
   constructor (connection:ImapFlowClient) {
     this.client = connection;
@@ -28,8 +28,8 @@ export default class ImapReader implements ImapReaderMethods {
     return await this.client.fetch(`${from}:${to}`, query)
   }
 
-  private setResults (key: number, value: any) {
-    this.results.set(key, value)
+  private setResults (value: any) {
+    this.results.push(value)
   }
 
   public getResults () {
@@ -47,10 +47,13 @@ export default class ImapReader implements ImapReaderMethods {
         envelope: true,
         uid: true,
         source: true,
+        size: true,
+        internalDate: true,
+        headers: true
       })
 
       for await (let message of messages) {
-        this.setResults(message.uid, message)
+        this.setResults(message)
       }
 
       await this.logout()
