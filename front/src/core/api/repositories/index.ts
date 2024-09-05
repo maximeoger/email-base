@@ -1,0 +1,1 @@
+export { MailAPIRepository } from "./mail"

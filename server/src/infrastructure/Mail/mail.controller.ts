@@ -6,8 +6,8 @@ import { Mail } from './mail.interface';
 export class MailController {
   constructor(private readonly mailService: MailService) {}
 
-  @Get('')
-  getEmails(@Query() query): Promise<Mail[]> {
+  @Get()
+  getEmails(@Query() query: any): Promise<Mail[]> {
     const { min, max } = query;
     return this.mailService.getEmails(min, max);
   }

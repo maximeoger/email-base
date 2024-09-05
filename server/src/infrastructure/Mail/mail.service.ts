@@ -1,46 +1,24 @@
 import { Injectable } from '@nestjs/common';
-import puppeteer from 'puppeteer';
-import ImapReader from '../../domains/Imap/ImapReader/ImapReader';
 import { Mail } from './mail.interface';
-import dayjs from 'dayjs';
+import { createClient } from '@supabase/supabase-js'
+import { Database } from '../../database.types'
 
 @Injectable()
 export class MailService {
-  async getEmails(min: number, max: number): Promise<Mail[]> {
-    const imap = new ImapReader();
-    const browser = await puppeteer.launch({ headless: 'new' });
-    const response: Array<Mail> = [];
-    const connection = imap.connect();
+  async getEmails(min: number, max: number): Promise<any[]> {
+   
+    const { SUPABASE_PROJECT_URL, SUPABASE_PROJECT_ANON_KEY } = process.env;
 
-    connection.on('error', (err) => {
-      throw err.message;
-    });
+    console.log({ SUPABASE_PROJECT_URL, SUPABASE_PROJECT_ANON_KEY })
 
-    await imap.openMailBox();
-    const mails = await imap.getMails(min, max);
+    const supabase = createClient<Database>(SUPABASE_PROJECT_URL as string, SUPABASE_PROJECT_ANON_KEY as string)
 
-    for await (const [seqno, { html, subject, date }] of mails) {
-      if (!html || !subject || !date) continue;
-      const page = await browser.newPage();
-      await page.setContent(html);
+    const { data, error } = await supabase.from('email').select("*").range(min, max)
 
-      await page.setViewport({ width: 450, height: 600 });
+    if (error) throw error
 
-      const screenshot = await page.screenshot({
-        encoding: 'base64',
-      });
-
-      response.push({
-        subject,
-        date: dayjs(date).format('DD MMM YYYY'),
-        screenshot: `data:image/jpg;base64,${screenshot}`,
-      });
-
-      page.close();
-    }
-
-    browser.close();
-
-    return response;
+    return data.map((mail, i) => ({
+      ...mail
+    }))
   }
 }

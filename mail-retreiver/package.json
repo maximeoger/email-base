@@ -1,0 +1,26 @@
+{
+  "name": "mail-retreiver",
+  "module": "src/index.ts",
+  "scripts": {
+    "dev": "bun src/index.ts",
+    "build": "tsc",
+    "update-types": "npx supabase gen types typescript --project-id loyelmdgeliwzptwljmv > src/database.types.ts",
+    "start": "NODE_OPTIONS='--inspect' node dist/index.js"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/imapflow": "^1.0.19"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.3",
+    "date-fns": "^3.6.0",
+    "dotenv": "^16.4.5",
+    "imap": "^0.8.19",
+    "imapflow": "^1.0.164",
+    "mailparser": "^3.7.1",
+    "puppeteer": "^23.3.0"
+  }
+}
