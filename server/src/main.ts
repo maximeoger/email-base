@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import { NestFactory } from '@nestjs/core';
 import { FastifyAdapter } from '@nestjs/platform-fastify';
 import { AppModule } from './infrastructure/App/app.module';
