@@ -18,7 +18,7 @@ export type Database = {
           id: number
           received_date: string | null
           recipients: string[] | null
-          sender: Json[] | null
+          sender_id: number
           size: number | null
           subject: string | null
           uid: number
@@ -31,7 +31,7 @@ export type Database = {
           id?: number
           received_date?: string | null
           recipients?: string[] | null
-          sender?: Json[] | null
+          sender_id: number
           size?: number | null
           subject?: string | null
           uid: number
@@ -44,12 +44,20 @@ export type Database = {
           id?: number
           received_date?: string | null
           recipients?: string[] | null
-          sender?: Json[] | null
+          sender_id?: number
           size?: number | null
           subject?: string | null
           uid?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "email_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "sender"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       email_screenshot: {
         Row: {
@@ -74,11 +82,35 @@ export type Database = {
           {
             foreignKeyName: "email_screenshot_email_id_fkey"
             columns: ["email_id"]
-            isOneToOne: false
+            isOneToOne: true
             referencedRelation: "email"
             referencedColumns: ["id"]
           },
         ]
+      }
+      sender: {
+        Row: {
+          address: string
+          created_at: string
+          id: number
+          logo: string | null
+          name: string
+        }
+        Insert: {
+          address: string
+          created_at?: string
+          id?: number
+          logo?: string | null
+          name: string
+        }
+        Update: {
+          address?: string
+          created_at?: string
+          id?: number
+          logo?: string | null
+          name?: string
+        }
+        Relationships: []
       }
     }
     Views: {

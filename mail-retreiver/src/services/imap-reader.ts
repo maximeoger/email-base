@@ -39,7 +39,7 @@ export default class ImapReader implements ImapReaderMethods {
   public async getMails (from: string, to: string) {
    
     await this.connect()
-    const lock = await this.getMailBox("INBOX")
+    const lock = await this.getMailBox("ready")
     
     try {
 
