@@ -1,7 +1,12 @@
 import { Pagination as NextUiPagination } from "@nextui-org/react";
 
-export default function Pagination () {
+interface IProps {
+  page: number;
+  onChange: (page: number) => void;
+}
+
+export default function Pagination (props: IProps) {
   return (
-    <NextUiPagination total={100} initialPage={1}/>
+    <NextUiPagination total={100} page={props.page} onChange={props.onChange}/>
   )
 }

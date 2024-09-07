@@ -10,7 +10,8 @@ export default function MailsContainer({ mails }: IProps) {
       {mails.map((mail) => (
         <MailCard 
           key={mail.uid}
-          sender={mail.sender[0].name} 
+          screenshot={mail.screenshot.base_64}
+          sender={mail.sender.name} 
           subject={mail.subject} 
         />
       ))}

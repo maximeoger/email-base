@@ -14,7 +14,7 @@ export default class ScreenshotMaker implements ScreenshotMakerMethods {
 
   private async openNewPage (html: string) {
     const page = await this.browser.newPage()
-    await page.setContent(html)
+    await page.setContent(html, { waitUntil: "domcontentloaded" })
 
     return page
   }
@@ -22,9 +22,9 @@ export default class ScreenshotMaker implements ScreenshotMakerMethods {
   public async takeScreenshot (html: string) {
     const page = await this.openNewPage(html);
 
-    const screenshot = await page.screenshot({
-      encoding: 'base64'
-    })
+    const screenshot = await page.screenshot({ encoding: 'binary' })
+
+    await page.close()
 
     return screenshot
   }

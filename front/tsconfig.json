@@ -8,6 +8,7 @@
       "DOM.Iterable"
     ],
     "module": "ESNext",
+    "baseUrl": ".",
     "skipLibCheck": true,
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -24,10 +25,21 @@
     "allowSyntheticDefaultImports": true,
     "allowJs": true,
     "incremental": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "paths": {
+      /*"@/auth": [
+        "/auth"
+      ]*/
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "include": [
-    "src"
+    "src",
+    ".next/types/**/*.ts"
   ],
   "references": [
     {

@@ -9,14 +9,17 @@
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
+    "@auth/supabase-adapter": "^1.4.2",
     "@nextui-org/pagination": "^2.0.35",
     "@nextui-org/react": "^2.4.6",
     "@nextui-org/spinner": "^2.0.33",
-    "@tanstack/react-query": "^5.54.1",
+    "@supabase/supabase-js": "^2.45.3",
+    "@tanstack/react-query": "^5.55.0",
     "axios": "^1.7.7",
     "date-fns": "^3.6.0",
     "framer-motion": "^11.5.3",
     "next": "^14.2.8",
+    "next-auth": "^5.0.0-beta.20",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
