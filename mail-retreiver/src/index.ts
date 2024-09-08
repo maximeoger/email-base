@@ -109,7 +109,7 @@ async function generateScreenshots () {
 async function main () {
   try {
 
-    //await fetchMails("10", "*")
+    //await fetchMails("1", "10")
     await generateScreenshots()
 
     process.exit(0)

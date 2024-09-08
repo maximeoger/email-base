@@ -2,6 +2,9 @@
 import { useSession } from "next-auth/react"
 import SignIn from "./sign-in"
 import SignOut from "./sign-out"
+import Image from "next/image"
+import logo from "../assets/logo.svg"
+import SignUp from "./sign-up"
 
 export default function Header() {
   const { data: session } = useSession()
@@ -9,9 +12,11 @@ export default function Header() {
   return (
     <div className="mx-auto px-8 py-4 fixed z-[40] bg-white left-0 right-0 flex justify-between items-center">
       <p className="leading-9 uppercase font-bold">
-        <span>email</span>
-        &nbsp;
-        <span className="text-blue-500">base</span>
+        <Image 
+          priority 
+          alt="email base logo" 
+          src={logo}
+        />
       </p>
       <div>
       { session?.user ? (
@@ -19,7 +24,12 @@ export default function Header() {
           <span>Logged in as : {session.user.email}</span>
           <SignOut/>
         </div>
-      ) : <SignIn/> }
+      ) : (
+        <div className="flex gap-4 items-center">
+          <SignIn/>
+          <SignUp/>
+        </div> 
+      )}
       </div>
     </div>
   )

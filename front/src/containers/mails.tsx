@@ -1,20 +1,27 @@
 import MailCard from "../components/mail-card";
-
+import { Masonry } from "react-plock";
 interface IProps {
   mails: any[]
 }
 
 export default function MailsContainer({ mails }: IProps) {
   return (
-    <div className="mt-0 mx-auto w-fit grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-      {mails.map((mail) => (
-        <MailCard 
-          key={mail.uid}
-          screenshot={mail.screenshot.base_64}
-          sender={mail.sender.name} 
-          subject={mail.subject} 
+    <Masonry
+      className="px-24"
+      items={mails}
+      config={{
+        columns: [2, 3, 4, 5],
+        gap: [12, 16, 20, 24],
+        media: [640, 768, 1024, 1240],
+      }}
+      render={(item, idx) => (
+        <MailCard
+          key={idx}
+          screenshot={item.screenshot.base_64}
+          sender={item.sender.name} 
+          subject={item.subject} 
         />
-      ))}
-    </div>
+      )}
+    />
   )
 }

@@ -10,9 +10,9 @@ export default function MailResults () {
   const { mails, loading, error } = useGetMails(`?page=${page}&limit=${10}`)
 
   return (
-    <div className="px-8">
+    <div className="px-8 w-full">
       <DataContainer loading={loading} error={error} >
-        <div className="flex flex-col gap-4 items-center">
+        <div>
           <MailsContainer mails={mails} />
           <Pagination page={page} onChange={(page) => setPage(page)}/>
         </div>
