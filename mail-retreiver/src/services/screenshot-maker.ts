@@ -22,7 +22,17 @@ export default class ScreenshotMaker implements ScreenshotMakerMethods {
   public async takeScreenshot (html: string) {
     const page = await this.openNewPage(html);
 
-    const screenshot = await page.screenshot({ encoding: 'binary' })
+    const height = await page.evaluate(() => {
+      return document.body.scrollHeight;
+    });
+
+    const width = await page.evaluate(() => {
+      return document.body.scrollWidth
+    })
+
+    await page.setViewport({ width, height });
+
+    const screenshot = await page.screenshot({ encoding: 'binary', fullPage: true })
 
     await page.close()
 

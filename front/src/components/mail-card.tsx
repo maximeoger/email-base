@@ -1,4 +1,3 @@
-import {Card, CardHeader, CardBody } from "@nextui-org/card";
 
 interface IProps {
   subject: string;
@@ -8,15 +7,8 @@ interface IProps {
 
 export default function MailCard (props: IProps) {
   return (
-    <Card>
-      <CardHeader className="flex justify-between">
-        <span>{props.sender}</span>
-      </CardHeader>
-    
-      <CardBody>
-        <img src={props.screenshot}/>
-        <span>{props.subject}</span>
-      </CardBody>
-    </Card>
+    <div className={"border-1 rounded-sm hover:border-grey hover:cursor-pointer"}>
+      <img src={props.screenshot}/>
+    </div>
   )
 }
