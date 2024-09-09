@@ -18,13 +18,14 @@ const getPagination = (page: number, limit: number) => {
 
 @Injectable()
 export class MailService {
-  async getEmails(page: string, limit: string): Promise<any[]> {
+  async getEmails(cursor: string ): Promise<any> {
    
     const { SUPABASE_PROJECT_URL, SUPABASE_PROJECT_ANON_KEY } = process.env;
 
     const supabase = createClient<Database>(SUPABASE_PROJECT_URL as string, SUPABASE_PROJECT_ANON_KEY as string)
 
-    const { from, to } = getPagination(Number(page), Number(limit))
+    const from = Number(cursor)
+    const to = from + 20
 
     const { data, error } = await supabase.from('email').select(`
         id,
@@ -42,8 +43,9 @@ export class MailService {
 
     if (error) throw error
 
-    return data.map((mail, i) => ({
-      ...mail
-    }))
+    return {
+      results: data,
+      nextCursor: to
+    }
   }
 }

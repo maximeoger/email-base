@@ -12,12 +12,13 @@ export interface ImapConfig {
 
 export interface ImapReaderMethods {
   getResults: () => any[];
-  getMails: (from: string, to: string) => Promise<any[]>;
+  getMails: () => Promise<any[]>;
 }
 
 export interface ImapFlowClient {
   connect: () => Promise<void>;
   logout: () => Promise<void>;
   getMailboxLock: (mailbox: string) => Promise<any>;
-  fetch: (sequence: string, query: Record<string, any>) => AsyncIterable<any>;
+  fetch: (range: string, query: Record<string, any>) => AsyncIterable<any>;
+  messageMove: (range: string, destination: string) => Record<string, any>;
 }

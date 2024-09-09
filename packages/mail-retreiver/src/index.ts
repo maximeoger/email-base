@@ -24,13 +24,14 @@ async function fetchMails (from: string, to: string) {
     }
   })
 
-  const imapReader = ImapReader.init(client)
+  const fetchRange = `${from}:${to}`
 
-  await imapReader.getMails(from, to)
+  const imapReader = ImapReader.init(client, fetchRange)
+
+  await imapReader.getMails()
 
   const results = imapReader.getResults()
   
-
     for await (let mail of results) {
       
       let parsed = await simpleParser(mail.source)
@@ -109,9 +110,10 @@ async function generateScreenshots () {
 async function main () {
   try {
 
-    //await fetchMails("1", "10")
+    await fetchMails("1", "100")
     await generateScreenshots()
-
+    
+    console.log("Done.")
     process.exit(0)
 
   } catch (error: unknown) {

@@ -1,5 +1,5 @@
 export interface IMailAPIRepository {
-  getMails(query: string): Promise<any>
+  getMails(cursor: number): Promise<any>
 }
 
 export const MailAPIRepositoryUID = Symbol("MailAPIRepository")
