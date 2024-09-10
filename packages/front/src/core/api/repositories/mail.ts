@@ -5,9 +5,9 @@ export class MailAPIRepository extends API {
     super(null)
   }
 
-  public async getMails(query: string): Promise<any[]> {
+  public async getMails(cursor: number): Promise<any[]> {
     try {
-      const response = await this.get<any>("/mails", query)
+      const response = await this.get<any>("/mails", `?cursor=${cursor}`)
       return response.data
     } catch(error) {
       throw new Error(error)

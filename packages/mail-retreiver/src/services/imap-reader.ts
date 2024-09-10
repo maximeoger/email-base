@@ -2,14 +2,16 @@ import { ImapReaderMethods, ImapFlowClient } from "../models/imap-reader";
 
 export default class ImapReader implements ImapReaderMethods {
   private client: ImapFlowClient;
-  private results: any[] = []
+  private results: any[] = [];
+  private range: string;
 
-  constructor (connection:ImapFlowClient) {
+  constructor (connection:ImapFlowClient, range: string) {
     this.client = connection;
+    this.range = range;
   }
 
-  static init (connection: ImapFlowClient) {
-    return new ImapReader(connection)
+  static init (connection: ImapFlowClient, range: string) {
+    return new ImapReader(connection, range)
   }
 
   private async connect () {
@@ -24,26 +26,30 @@ export default class ImapReader implements ImapReaderMethods {
     return await this.client.getMailboxLock(mailbox)
   }
 
-  private async fetchMessages (from: string, to: string, query: Record<string, any>) {
-    return await this.client.fetch(`${from}:${to}`, query)
+  private async fetchMessages (query: Record<string, any>) {
+    return await this.client.fetch(this.range, query)
   }
 
   private setResults (value: any) {
     this.results.push(value)
   }
 
+  private async moveResults () {
+    return await this.client.messageMove(this.range, "fetched")
+  }
+
   public getResults () {
     return this.results
   }
 
-  public async getMails (from: string, to: string) {
+  public async getMails () {
    
     await this.connect()
     const lock = await this.getMailBox("ready")
     
     try {
 
-      let messages = await this.fetchMessages(from, to, { 
+      let messages = await this.fetchMessages({ 
         envelope: true,
         uid: true,
         source: true,
@@ -55,6 +61,8 @@ export default class ImapReader implements ImapReaderMethods {
       for await (let message of messages) {
         this.setResults(message)
       }
+
+      await this.moveResults();
 
       await this.logout()
 

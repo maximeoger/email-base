@@ -8,7 +8,7 @@ export class MailController {
 
   @Get()
   getEmails(@Query() query: any): Promise<Mail[]> {
-    const { page, limit } = query;
-    return this.mailService.getEmails(page, limit);
+    const { cursor } = query;
+    return this.mailService.getEmails(cursor);
   }
 }
