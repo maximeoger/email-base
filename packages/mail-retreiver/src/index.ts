@@ -2,7 +2,7 @@ import { simpleParser } from 'mailparser';
 import { ImapFlow } from "imapflow";
 import ImapReader from './services/imap-reader';
 import { createClient } from '@supabase/supabase-js'
-import { Database } from './database.types'
+import { Database } from 'common/types'
 import { format } from "date-fns";
 import 'dotenv/config'
 import ScreenshotMaker from './services/screenshot-maker';

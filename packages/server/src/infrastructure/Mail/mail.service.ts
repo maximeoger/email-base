@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { createClient } from '@supabase/supabase-js'
-import { Database } from '../../database.types'
+import { Database } from 'common/types'
 
 const getPagination = (page: number, limit: number) => {
   const itemPerPages = limit;

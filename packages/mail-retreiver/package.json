@@ -4,10 +4,10 @@
   "scripts": {
     "dev": "bun src/index.ts",
     "build": "tsc",
-    "update-types": "npx supabase gen types typescript --project-id loyelmdgeliwzptwljmv > src/database.types.ts",
     "start": "NODE_OPTIONS='--inspect' node dist/index.js"
   },
   "devDependencies": {
+    "common": "file:../common",
     "@types/bun": "latest",
     "@types/imapflow": "^1.0.19"
   },
