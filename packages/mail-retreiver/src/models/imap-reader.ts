@@ -1,4 +1,3 @@
-import type Imap from 'imap';
 
 export interface ImapConfig {
   user: string;

@@ -14,7 +14,6 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "update-types": "npx supabase gen types typescript --project-id loyelmdgeliwzptwljmv > src/database.types.ts",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
@@ -38,6 +37,7 @@
     "rxjs": "^7.2.0"
   },
   "devDependencies": {
+    "common": "file:../common",
     "@nestjs/cli": "^9.0.0",
     "@nestjs/config": "^3.2.3",
     "@nestjs/schematics": "^9.0.0",
