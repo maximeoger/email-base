@@ -10,11 +10,11 @@ export default function Footer() {
         alt="email base logo" 
         src={logo}
       />
-      <div className="flex gap-16">
-        <Link className="hover:underline" href="/">Terms</Link>
-        <Link className="hover:underline" href="/">Privacy</Link>
-        <Link className="hover:underline" href="/">Legal</Link>
-        <Link className="hover:underline" href="/">Contact</Link>
+      <div className="flex gap-16 mb-16">
+        <Link className="hover:underline" href="/terms">Terms</Link>
+        <Link className="hover:underline" href="/privacy">Privacy</Link>
+        <Link className="hover:underline" href="/legal">Legal</Link>
+        <Link className="hover:underline" href="/contact">Contact</Link>
       </div>
     </div>
   )
