@@ -1,14 +1,15 @@
 "use client"
 import { Button } from "@nextui-org/react";
-import { signIn } from "next-auth/react";
+import Link from "next/link";
  
 export default function SignIn() {
   return (
-    <Button 
-      variant="light"
-      size="sm" 
-      onClick={() => signIn("google")} 
-      type="submit">Sign In
-    </Button>
+    <Link href="/login">
+      <Button 
+        variant="light"
+        size="sm" 
+        type="submit">Sign In
+      </Button>
+    </Link>
   )
 } 

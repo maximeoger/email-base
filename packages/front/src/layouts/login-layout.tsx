@@ -1,9 +1,9 @@
 import { PropsWithChildren } from "react";
-import Header from "../components/header";
-import Footer from "../components/footer";
 import RootLayout from "src/app/layout";
+import Header from "src/components/header";
+import Footer from "src/components/footer";
 
-export default function PageLayout ({ children }: PropsWithChildren) {
+export default function LoginLayout({ children }: PropsWithChildren) {
   return (
     <RootLayout>
       <Header/>
@@ -13,4 +13,4 @@ export default function PageLayout ({ children }: PropsWithChildren) {
       <Footer/>
     </RootLayout>
   )
-} 
+}
