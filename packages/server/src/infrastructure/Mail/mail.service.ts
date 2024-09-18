@@ -1,20 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { createClient } from '@supabase/supabase-js'
 import { Database } from 'common/types'
-
-const getPagination = (page: number, limit: number) => {
-  const itemPerPages = limit;
-  
-  let from = page * itemPerPages;
-
-  const to = from + itemPerPages;
-
-  if (page > 0) {
-    from += 1
-  }
-
-  return { from, to }
-}
+import MailRepository from './mail.repository';
 
 @Injectable()
 export class MailService {
@@ -22,26 +9,14 @@ export class MailService {
    
     const { SUPABASE_PROJECT_URL, SUPABASE_PROJECT_ANON_KEY } = process.env;
 
-    const supabase = createClient<Database>(SUPABASE_PROJECT_URL as string, SUPABASE_PROJECT_ANON_KEY as string)
-
     const from = Number(cursor)
     const to = from + 20
 
-    const { data, error } = await supabase.from('email').select(`
-        id,
-        subject,
-        uid,
-        received_date,
-        screenshot: screenshot_id (
-          base_64
-        ),
-        sender: sender_id (
-          name,
-          address
-        )
-    `).range(from, to)
+    const supabase = createClient<Database>(SUPABASE_PROJECT_URL as string, SUPABASE_PROJECT_ANON_KEY as string)
 
-    if (error) throw error
+    const mailRepository = MailRepository.init(supabase)
+
+    const data = await mailRepository.getWithinRange(from, to)
 
     return {
       results: data,
