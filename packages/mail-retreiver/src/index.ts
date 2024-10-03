@@ -29,7 +29,6 @@ async function fetchMails (from: string, to: string) {
 
   const results = imapReader.getResults()
     
-  
     for await (let mail of results) {
       
       let parsed = await simpleParser(mail.source)
@@ -81,13 +80,14 @@ async function generateScreenshots () {
 
     await updateEmail({ screenshot_id: data![0].id }, id)
 
+    console.log('Successfully added screnshot for email ', id)
   }
 }
 
 async function main () {
   try {
 
-    //await fetchMails("1", "100")
+    await fetchMails("100", "150")
     await generateScreenshots()
     
     console.log("Done.")

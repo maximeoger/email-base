@@ -1,5 +1,6 @@
 import { Database } from 'shared/types'
 import { createClient } from '@supabase/supabase-js'
+import 'dotenv/config'
 
 const { SUPABASE_PROJECT_URL, SUPABASE_PROJECT_ANON_KEY } = process.env;
 
