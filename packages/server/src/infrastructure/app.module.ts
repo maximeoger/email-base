@@ -1,10 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { MailModule } from '../Mail/mail.module';
+import { MailModule } from './mail/mail.module';
+import { CollectionModule } from './collection/collection.module';
 
 @Module({
   imports: [
     MailModule,
+    CollectionModule,
     ConfigModule.forRoot()
   ],
 })

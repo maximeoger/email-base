@@ -19,5 +19,5 @@
     "baseUrl": ".",
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist"]
+  "exclude": ["../../nodes_modules", "node_modules", "dist"]
 }

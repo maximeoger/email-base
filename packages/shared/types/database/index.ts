@@ -9,6 +9,71 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      collection: {
+        Row: {
+          created_at: string
+          id: number
+          name: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          name: number
+          user_id?: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          name?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "collection_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      collection_email: {
+        Row: {
+          collection_id: number
+          created_at: string
+          email_id: number
+          id: number
+        }
+        Insert: {
+          collection_id: number
+          created_at?: string
+          email_id: number
+          id?: number
+        }
+        Update: {
+          collection_id?: number
+          created_at?: string
+          email_id?: number
+          id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "collection_email_collection_id_fkey"
+            columns: ["collection_id"]
+            isOneToOne: false
+            referencedRelation: "collection"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "collection_email_email_id_fkey"
+            columns: ["email_id"]
+            isOneToOne: false
+            referencedRelation: "email"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       email: {
         Row: {
           body: string | null

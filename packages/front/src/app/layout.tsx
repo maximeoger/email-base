@@ -1,5 +1,6 @@
 import React from "react"
 import { SessionProvider } from "next-auth/react";
+import PageLayout from "src/layouts/page-layout";
 import "../index.css";
 
 export const metadata = {
@@ -16,7 +17,9 @@ export default function RootLayout({
     <SessionProvider>
       <html lang="en">
         <body className="min-h-screen flex flex-col">
-          {children}
+          <PageLayout>
+            {children}
+          </PageLayout>
         </body>
       </html>
     </SessionProvider>

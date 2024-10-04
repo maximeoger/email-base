@@ -14,7 +14,7 @@ export function useGetMailsInfinite() {
   })
 
   const { 
-    data, 
+    data,
     error,
     fetchNextPage,
     hasNextPage,

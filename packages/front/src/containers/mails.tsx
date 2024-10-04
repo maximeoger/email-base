@@ -18,9 +18,7 @@ function MailsContainer( { mails }: IProps, ref: ForwardedRef<HTMLDivElement> ) 
         <MailCard
           ref={ref}
           key={idx}
-          screenshot={item.screenshot.base_64}
-          sender={item.sender.name} 
-          subject={item.subject} 
+          screenshot={item.email_screenshot_email_screenshot_idToemail_screenshot.base_64}
         />
       )}
     />

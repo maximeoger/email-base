@@ -6,7 +6,7 @@ export default function SignUp() {
   return (
     <Link href="/login">
       <Button 
-        className="bg-main text-white"
+        className="bg-black text-white"
         size="sm" 
         type="submit">Sign Up
       </Button>

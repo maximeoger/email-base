@@ -1,5 +1,6 @@
+/*
 import BaseRepository from '../../core/repository/base-repository';
-import { Tables, TablesInsert, TablesUpdate } from 'common/types';
+import { Tables, TablesInsert, TablesUpdate } from '../../../../shared/types';
 
 type EmailRow = Tables<"email">;
 type EmailInsert = TablesInsert<"email">;
@@ -37,3 +38,4 @@ export default class MailRepository extends BaseRepository<EmailRow, EmailInsert
   }
   
 }
+  */

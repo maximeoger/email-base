@@ -7,8 +7,7 @@ export class MailController {
   constructor(private readonly mailService: MailService) {}
 
   @Get()
-  getEmails(@Query() query: any): Promise<Mail[]> {
-    const { cursor } = query;
-    return this.mailService.getEmails(cursor);
+  getEmails(@Query() query : any): Promise<Mail[]> {
+    return this.mailService.getEmails(query);
   }
 }
