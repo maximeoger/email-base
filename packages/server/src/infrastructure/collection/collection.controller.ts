@@ -1,18 +1,39 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Logger, Post, Req, UseGuards, UseInterceptors } from '@nestjs/common';
 import { CollectionService } from './collection.service';
 import CreateCollectionDto from 'src/dto/collection/create.dto';
+import AuthGuard from '../auth/auth.guard';
+import { Request } from 'express';
+import AuthInterceptor from '../auth/auth.interceptor';
 
 @Controller('collection')
+@UseGuards(AuthGuard)
+@UseInterceptors(AuthInterceptor)
 export class CollectionController {
-  constructor (private readonly collectionService: CollectionService){}
+
+  private readonly logger = new Logger(CollectionController.name)
+
+  constructor (
+    private readonly collectionService: CollectionService,
+  ){}
 
   @Get()
-  getCollections(): Promise<any[]> {
-    return this.collectionService.getCollections({})
+  async getCollections(
+    @Req() request: Request
+  ): Promise<any[]> {
+    return await this.collectionService.getCollections({
+      where: {
+        // @ts-ignore
+        user_id: request.session.users.id
+      }
+    })
   }
 
   @Post()
-  createCollection(@Body() collection: CreateCollectionDto): Promise<any> {
-    return this.collectionService.createCollection(collection)
+  async createCollection(
+    @Body() collection: CreateCollectionDto, 
+    @Req() request: Request
+  ): Promise<any> {
+    //@ts-ignore
+    return await this.collectionService.createCollection(collection, request.session)
   }
 }
