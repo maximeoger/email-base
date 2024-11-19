@@ -2,8 +2,7 @@ import { Injectable, Logger } from "@nestjs/common";
 import { PrismaService } from "src/core/prisma/prisma.service";
 import { Prisma } from '@prisma/client';
 import convertBigIntToString from "src/helpers/convertBigIntToString";
-import AuthService from "../auth/auth.service";
-import util from "node:util"
+
 
 @Injectable()
 export class CollectionService {
@@ -35,5 +34,13 @@ export class CollectionService {
     } })
 
     return convertBigIntToString(createdCollections)
+  }
+
+  async deleteCollection(
+    params: {
+      where: Prisma.collectionWhereUniqueInput
+    }
+  ): Promise<void> {
+    await this.prisma.collection.delete(params)
   }
 }

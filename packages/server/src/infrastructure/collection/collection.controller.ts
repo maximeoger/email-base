@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Logger, Post, Req, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Logger, Delete, Post, Req, UseGuards, UseInterceptors, Patch, Param, Query, HttpStatus, HttpCode } from '@nestjs/common';
 import { CollectionService } from './collection.service';
 import CreateCollectionDto from 'src/dto/collection/create.dto';
 import AuthGuard from '../auth/auth.guard';
@@ -17,9 +17,7 @@ export class CollectionController {
   ){}
 
   @Get()
-  async getCollections(
-    @Req() request: Request
-  ): Promise<any[]> {
+  async getCollections(@Req() request: Request): Promise<any[]> {
     return await this.collectionService.getCollections({
       where: {
         // @ts-ignore
@@ -29,11 +27,23 @@ export class CollectionController {
   }
 
   @Post()
-  async createCollection(
-    @Body() collection: CreateCollectionDto, 
-    @Req() request: Request
-  ): Promise<any> {
+  async createCollection(@Body() collection: CreateCollectionDto, @Req() request: Request): Promise<any> {
     //@ts-ignore
     return await this.collectionService.createCollection(collection, request.session)
+  }
+
+  @Delete()
+  @HttpCode(204)
+  async deleteCollection(@Query("id") id: string): Promise<void> {
+    return await this.collectionService.deleteCollection({ 
+      where: {
+        id: Number(id)
+      } 
+    })
+  }
+
+  @Patch()
+  async updateCollection(@Body() collection: CreateCollectionDto, @Req() request: Request): Promise<any> {
+    return Promise.resolve()
   }
 }
