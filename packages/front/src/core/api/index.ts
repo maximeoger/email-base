@@ -3,7 +3,8 @@ import { API_TIMEOUT_MS, APIInstance } from "../../models/api";
 
 const baseApi = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
-  timeout: API_TIMEOUT_MS
+  timeout: API_TIMEOUT_MS,
+  withCredentials: true
 })
 
 export class API {
@@ -25,7 +26,7 @@ export class API {
     return this.instance.put(endpoint, body)
   }
 
-  public delete<T>(endpoint:string):Promise<T>{
-    return this.instance.delete(endpoint);  
+  public delete<T>(endpoint:string, params: string = ""):Promise<T>{
+    return this.instance.delete(`${endpoint}?${params}`);  
   }
 }

@@ -2,7 +2,8 @@ import { queryOptions, useQuery } from "@tanstack/react-query";
 import { useInjection } from "../../../core/service";
 import { IMailAPIRepository, MailAPIRepositoryUID } from "../../../models/api/mails";
 
-export function useGetMails (cursor: number) {
+export function useGetMails(cursor: number) {
+  
   const router = useInjection<IMailAPIRepository>(MailAPIRepositoryUID);
 
   const queryOpts = queryOptions({

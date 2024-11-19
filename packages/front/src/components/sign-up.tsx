@@ -6,10 +6,10 @@ export default function SignUp() {
   return (
     <Link href="/login">
       <Button 
-        className="bg-black text-white"
+        className="bg-grey-800 text-white"
         size="sm" 
         type="submit">Sign Up
       </Button>
     </Link>
   )
-} 
+}
