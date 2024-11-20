@@ -43,4 +43,17 @@ export class CollectionService {
   ): Promise<void> {
     await this.prisma.collection.delete(params)
   }
+
+  async updateCollection(
+    data: Prisma.collectionUpdateInput,
+    params: {
+      where: Prisma.collectionWhereUniqueInput
+    }
+  ): Promise<any> {
+    const updatedCollection = await this.prisma.collection.update({
+      where: params.where,
+      data
+    })
+    return convertBigIntToString(updatedCollection)
+  }
 }

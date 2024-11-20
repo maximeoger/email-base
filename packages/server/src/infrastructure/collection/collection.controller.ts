@@ -4,6 +4,7 @@ import CreateCollectionDto from 'src/dto/collection/create.dto';
 import AuthGuard from '../auth/auth.guard';
 import { Request } from 'express';
 import AuthInterceptor from '../auth/auth.interceptor';
+import UpdateCollectionDto from 'src/dto/collection/update.dto';
 
 @Controller('collection')
 @UseGuards(AuthGuard)
@@ -34,7 +35,9 @@ export class CollectionController {
 
   @Delete()
   @HttpCode(204)
-  async deleteCollection(@Query("id") id: string): Promise<void> {
+  async deleteCollection(
+    @Query("id") id: string
+  ): Promise<void> {
     return await this.collectionService.deleteCollection({ 
       where: {
         id: Number(id)
@@ -43,7 +46,12 @@ export class CollectionController {
   }
 
   @Patch()
-  async updateCollection(@Body() collection: CreateCollectionDto, @Req() request: Request): Promise<any> {
-    return Promise.resolve()
+  @HttpCode(200)
+  async updateCollection(@Query("id") id: string, @Body() collectionUpdate: UpdateCollectionDto): Promise<any> {
+    return await this.collectionService.updateCollection(collectionUpdate, {
+      where: {
+        id: Number(id)
+      }
+    })
   }
 }
