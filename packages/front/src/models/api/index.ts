@@ -2,4 +2,4 @@ import { AxiosInstance } from "axios";
 
 export type APIInstance = AxiosInstance;
 
-export const API_TIMEOUT_MS = 4000
+export const API_TIMEOUT_MS = 40000

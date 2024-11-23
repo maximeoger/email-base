@@ -1,4 +1,5 @@
 import { simpleParser } from 'mailparser';
+import { argv } from "node:process"
 import { ImapFlow } from "imapflow";
 import ImapReader from './services/imap-reader';
 import { format } from "date-fns";
@@ -56,14 +57,18 @@ async function fetchMails (from: string, to: string) {
       })
 
     }
-
-    console.log(`${results.length} mails inserted.`)
 }
+
 
 async function generateScreenshots () {
   const browser = await puppeteer.launch()
   const screenShotmaker = ScreenshotMaker.init(browser)
 
+  /**
+   * Fournir une plage d'IDs correspondant aux emails qui ont été insérés
+   * et generer les screenshots en fonction de cette plage
+   * afin d'éviter de boucler à travers tous les emails de la base
+   */
   const data = await getEmailsHTMLBody()
     
   for await ( let { id, body_html } of data) {
@@ -72,22 +77,37 @@ async function generateScreenshots () {
 
     const webpBuffer = await sharp(screenshot).webp({ quality: 80 }).toBuffer()
 
-    await upsertEmailScreenshot({
+    const [ dbScreenshot ] = await upsertEmailScreenshot({
       created_at,
       base_64: `data:image/webp;base64,${webpBuffer.toString("base64")}`,
       email_id: id
     })
 
-    await updateEmail({ screenshot_id: data![0].id }, id)
+    await updateEmail({ screenshot_id: dbScreenshot.id }, id)
 
-    console.log('Successfully added screnshot for email ', id)
+    console.log('Successfully added screnshot for email', id)
   }
 }
 
 async function main () {
   try {
 
-    await fetchMails("100", "150")
+    function isNumeric(value) {
+      return /^-?\d+$/.test(value);
+    }  
+    
+    const [ from, to ] = argv.splice(2)
+
+    const args = [
+      isNumeric(from),
+      isNumeric(to)
+    ]
+
+    if (args.includes(false)) {
+      throw Error('Please provide valid arguments.')
+    }
+
+    await fetchMails(from, to)
     await generateScreenshots()
     
     console.log("Done.")

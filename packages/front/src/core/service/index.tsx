@@ -15,14 +15,16 @@ const ServicesContext = createContext<IServiceContext>({
   container: null
 })
 
-export const ServicesProvider = ({container, children}: IServicesProvider) => (
-  <ServicesContext.Provider value={{container}}>{children}</ServicesContext.Provider>
-)
+export const ServicesProvider = ({container, children}: IServicesProvider) => {
+  return (
+    <ServicesContext.Provider value={{container}}>{children}</ServicesContext.Provider>
+  )
+}
 
 const getServiceID = (service:symbol):string => (typeof service === "symbol" ? service.description : String(service))
 
 export function useInjection<T>(service: symbol): T{
-  const {container} = useContext(ServicesContext)
+  const { container } = useContext(ServicesContext)
   const serviceId = getServiceID(service)
   if(!container){
       throw new Error(`The container should not be null (id: ${serviceId}`)

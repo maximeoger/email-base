@@ -10,28 +10,31 @@ abstract class BaseRepository<T, I, U> implements IWrite<T, I, U>, IRead<T> {
     this.client = db
   }
 
-  create(item: I): Promise<T> {
-    throw new Error("Method not implemented.");
+  async create(item: I): Promise<T> {
+    const table = this.table
+    const { data, error } = await this.client.from(table).insert(item);
+    
+    if (error) throw new Error(`Failed to create collection`)
+    
+      return data
   }
 
-  update(id: number, item: U): Promise<T> {
+  async update(id: number, item: U): Promise<T> {
       throw new Error("Method not implemented.");
   }
 
-  delete(id: number): Promise<boolean> {
+  async delete(id: number): Promise<boolean> {
       throw new Error("Method not implemented.");
   }
 
   async getAll(): Promise<T[]> {
     const table = this.table
     const { data, error } = await this.client.from(table).select('*');
-    if (error) {
-      throw new Error(`Failed to fetch data: ${error.message}`);
-    }
+    if (error) throw new Error(`Failed to fetch data: ${error.message}`);
     return data;
   }
   
-  getById(id: string): Promise<T> {
+  async getById(id: string): Promise<T> {
       throw new Error("Method not implemented.");
   }
 }

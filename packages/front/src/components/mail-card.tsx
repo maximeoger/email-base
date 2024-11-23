@@ -1,8 +1,6 @@
 import { ForwardedRef, forwardRef } from "react";
 
 interface IProps {
-  subject: string;
-  sender: string;
   screenshot: string;
 }
 

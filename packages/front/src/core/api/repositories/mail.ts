@@ -9,8 +9,8 @@ export class MailAPIRepository extends API {
     try {
       const response = await this.get<any>("/mails", `?cursor=${cursor}`)
       return response.data
-    } catch(error) {
-      throw new Error(error)
+    } catch(error: unknown) {
+      throw error
     }
   }
 }
