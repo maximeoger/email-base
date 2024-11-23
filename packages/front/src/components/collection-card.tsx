@@ -2,6 +2,8 @@ import { Card, CardFooter } from "@nextui-org/react";
 import DropdownButton from "./buttons/dropdown-button";
 import { Trash2 } from "lucide-react";
 import { useDeleteCollection } from "src/api/collection/usecases/useDeleteCollection";
+import { useModal } from "src/hooks/useModal";
+import ConfirmModal from "./modals/confirm-modal";
 
 interface IProps {
   id: string;
@@ -12,16 +14,29 @@ interface IProps {
 export default function CollectionCard (props: IProps) {
   const { name, numberOfEmails } = props;
   const { onDeleteCollection } = useDeleteCollection()
+  const { openModal, closeModal } = useModal()
 
   const cardOptions = [
     {
-      onClick: () => onDeleteCollection(props.id),
+      onClick: () => openConfirmModal(),
       name: "Delete collection",
       color: "danger",
       className: "text-danger",
       startContent: <Trash2/>
     }
   ]
+
+
+  const openConfirmModal = () => openModal(
+    <ConfirmModal
+      title="Delete collection"
+      message={`Are you sure you want to delete collection ${props.name} ?`}
+      cancelText="No get back"
+      actionText="yes delete it"
+      onCancel={() => closeModal()}
+      onConfirm={() => onDeleteCollection(props.id)}
+    />
+  )
 
   return (
     <Card shadow="none" className="min-w-[350px] border border-1 border-grey-300">

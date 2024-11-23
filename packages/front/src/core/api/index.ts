@@ -14,7 +14,7 @@ export class API {
     this.instance = instance || baseApi;
   }
 
-  public post<T>(endpoint:string, body: Record<string, unknown>):Promise<T>{
+  public post<Body, Output>(endpoint:string, body: Body):Promise<Output>{
     return this.instance.post(endpoint, body)
   }
 

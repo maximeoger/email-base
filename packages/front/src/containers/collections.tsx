@@ -6,10 +6,14 @@ interface IProps {
 
 export default function CollectionsContainer({ data }: IProps) {
   return (
-    <div className="flex flex-wrap gap-4 mt-28">
+    <div className="flex flex-wrap gap-4 mt-12">
       {data.map((collection: any) => (
-        <CollectionCard name={collection.name} numberOfEmails={4} id={collection.id}/>
+        <CollectionCard 
+          name={collection.name} 
+          numberOfEmails={4} id={collection.id}
+        />
       ))}
+      
     </div>
   )
 }

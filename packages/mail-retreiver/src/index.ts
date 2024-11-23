@@ -57,8 +57,6 @@ async function fetchMails (from: string, to: string) {
       })
 
     }
-
-    console.log(`${results.length} mails inserted.`)
 }
 
 

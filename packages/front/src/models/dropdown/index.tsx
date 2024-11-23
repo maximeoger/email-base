@@ -2,7 +2,7 @@ import { LucideProps } from "lucide-react";
 import { ForwardRefExoticComponent, RefAttributes } from "react";
 
 export interface DropdownOption {
-  onClick: () => any;
+  onClick: (params: any) => any;
   startContent: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>;
   name: string;
   className: string;
