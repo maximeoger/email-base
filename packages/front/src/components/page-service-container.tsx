@@ -1,6 +1,6 @@
 "use client"
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { PropsWithChildren } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ServicesProvider } from "src/core/service";
 import { getServiceContainer } from "src/core/service/container";
 

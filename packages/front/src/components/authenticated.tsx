@@ -1,8 +1,8 @@
 "use client"
 import { Button } from "@nextui-org/react";
 import Link from "next/link";
-import SignOut from "./sign-out";
 import { useSession } from "next-auth/react";
+import LoggedIn from "./logged-in";
 
 export default function Authenticated () {
   const {data: session} = useSession();
@@ -11,9 +11,10 @@ export default function Authenticated () {
     <div>
       { session?.user ? (
         <div className="flex gap-4 items-center">
-          <Link href="/collections">my collections</Link>
-          <span>Logged in as : {session.user.email}</span>
-          <SignOut/>
+          <LoggedIn 
+            userName={session.user.name as unknown as string}
+            userImageSrc={session.user.image as unknown as string}
+          />
         </div>
       ) : (
         <div className="flex gap-4 items-center">
@@ -21,9 +22,10 @@ export default function Authenticated () {
             <Button 
               size="md"
               className="bg-grey-800 text-grey-100"
-            >Log in</Button>
+            >
+              Log in
+            </Button>
           </Link>
-          
         </div> 
       )}
     </div>

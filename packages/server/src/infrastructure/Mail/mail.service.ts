@@ -37,4 +37,21 @@ export class MailService {
       ...( count > skip + take ? { nextCursor: skip + take } : {} )
     }
   }
+
+  async getMailDetails(
+    params: { 
+      where: {
+        id: number
+      }
+    }
+  ): Promise<any> {
+    const result = await this.prisma.email.findUnique({
+      where: params.where,
+      include: {
+        sender: true
+      }
+    })
+
+    return convertBigIntToString(result)
+  }
 }

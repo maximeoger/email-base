@@ -1,9 +1,9 @@
 import { Card, CardFooter } from "@nextui-org/react";
-import DropdownButton from "./buttons/dropdown-button";
-import { Trash2 } from "lucide-react";
+import { Ellipsis, Trash2 } from "lucide-react";
 import { useDeleteCollection } from "src/api/collection/usecases/useDeleteCollection";
 import { useModal } from "src/hooks/useModal";
 import ConfirmModal from "./modals/confirm-modal";
+import DropdownWrapper from "./dropdown-wrapper";
 
 interface IProps {
   id: string;
@@ -20,12 +20,11 @@ export default function CollectionCard (props: IProps) {
     {
       onClick: () => openConfirmModal(),
       name: "Delete collection",
-      color: "danger",
+      color: "default",
       className: "text-danger",
       startContent: <Trash2/>
     }
   ]
-
 
   const openConfirmModal = () => openModal(
     <ConfirmModal
@@ -35,7 +34,8 @@ export default function CollectionCard (props: IProps) {
       actionText="yes delete it"
       onCancel={() => closeModal()}
       onConfirm={() => onDeleteCollection(props.id)}
-    />
+    />,
+    { size: "xl" }
   )
 
   return (
@@ -53,7 +53,13 @@ export default function CollectionCard (props: IProps) {
           <span className="capitalize font-regular">{numberOfEmails} emails</span>
         </div>
         <div className="px-4">
-          <DropdownButton options={cardOptions}/>
+          <DropdownWrapper 
+            placement="bottom-end" 
+            //@ts-ignore
+            options={cardOptions}
+          >
+            <Ellipsis className="cursor-pointer"/>
+          </DropdownWrapper>
         </div>
       </CardFooter>
     </Card>

@@ -1,8 +1,10 @@
+"use client"
 import MailResults from "src/components/mail-results"
 import { Button, Link } from "@nextui-org/react"
 import PageServiceContainer from "src/components/page-service-container"
+import ModalManager from "src/components/modal-manager"
 
-export default async function Home() {
+export default function Home() {
   return (
     <PageServiceContainer>
       <div className="w-full">
@@ -21,6 +23,7 @@ export default async function Home() {
           <MailResults/>
         </section>
       </div>
+      <ModalManager/>
     </PageServiceContainer>
   )
 }

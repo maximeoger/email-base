@@ -2,7 +2,7 @@ start:
 	npx pm2 start pm2.config.js
 
 start.server:
-	npx pm2 start pm2.config.js --attach server
+	npx pm2 start pm2.config.js --only server --attach
 
 stop:
 	npx pm2 stop frontend
