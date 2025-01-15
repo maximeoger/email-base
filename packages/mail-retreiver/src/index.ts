@@ -1,5 +1,4 @@
 import { simpleParser } from 'mailparser';
-import { argv } from "node:process"
 import { ImapFlow } from "imapflow";
 import ImapReader from './services/imap-reader';
 import { format } from "date-fns";
@@ -8,10 +7,11 @@ import puppeteer from 'puppeteer';
 import sharp from "sharp";
 import { getEmailsHTMLBody, getSenders, updateEmail, upsertEmail, upsertEmailScreenshot, upsertSender } from './utils/queries';
 import 'dotenv/config'
+import yargs from 'yargs';
 
 const { IMAP_USER, IMAP_APP_PWD, IMAP_HOST } = process.env;
 
-async function fetchMails (from: string, to: string) {
+async function fetchMails (from: number, to: number) {
   const client = new ImapFlow({
     host: IMAP_HOST as string,
     port: 993,
@@ -92,20 +92,11 @@ async function generateScreenshots () {
 async function main () {
   try {
 
-    function isNumeric(value) {
-      return /^-?\d+$/.test(value);
-    }  
-    
-    const [ from, to ] = argv.splice(2)
-
-    const args = [
-      isNumeric(from),
-      isNumeric(to)
-    ]
-
-    if (args.includes(false)) {
-      throw Error('Please provide valid arguments.')
-    }
+    const { dryRun, from, to } = yargs(process.argv.slice(2)).options({
+      dryRun: { type: 'boolean', default: true },
+      from: { type: 'number', default: 0 },
+      to: { type: 'number', default: 3 }
+    }).parseSync()
 
     await fetchMails(from, to)
     await generateScreenshots()
