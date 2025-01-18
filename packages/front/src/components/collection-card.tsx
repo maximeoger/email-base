@@ -4,6 +4,7 @@ import { useDeleteCollection } from "src/api/collection/usecases/useDeleteCollec
 import { useModal } from "src/hooks/useModal";
 import ConfirmModal from "./modals/confirm-modal";
 import DropdownWrapper from "./dropdown-wrapper";
+import FlexContainer from "../containers/flex-container"; // Import FlexContainer
 
 interface IProps {
   id: string;
@@ -39,19 +40,19 @@ export default function CollectionCard (props: IProps) {
   )
 
   return (
-    <Card shadow="none" className="min-w-[350px] border border-1 border-grey-300">
-      <div className="bg-grey-200 h-[150px] flex justify-around">
-        <div className="flex gap-4 items-end px-14">
+    <Card shadow="none" className="min-w-[350px] border border-1 border-grey-300 rounded-md">
+      <FlexContainer className="bg-grey-200 h-[150px] justify-around">
+        <FlexContainer className="gap-4 items-bottom px-14">
           <div className="h-[80px] w-[90px] bg-grey-400"></div>
           <div className="h-[130px] w-[90px] bg-grey-400"></div>
           <div className="h-[50px] w-[90px] bg-grey-400"></div>
-        </div>
-      </div>
+        </FlexContainer>
+      </FlexContainer>
       <CardFooter className="border-top-1 border-grey-300 flex justify-between">
-        <div className="flex flex-col gap-2">
+        <FlexContainer className="flex-col gap-2">
           <p className="capitalize font-medium">{name}</p>
           <span className="capitalize font-regular">{numberOfEmails} emails</span>
-        </div>
+        </FlexContainer>
         <div className="px-4">
           <DropdownWrapper 
             placement="bottom-end" 

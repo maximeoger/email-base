@@ -26,13 +26,12 @@ export default function ModalManager () {
       <NextUIModal 
         isOpen={isOpen}
         size={modalState.size}
+        radius="sm"
         scrollBehavior="inside"
         onOpenChange={() => setModalState(null)} 
-        classNames={{
-          body: "py-0"
-        }}
+        
       >
-        <ModalContent >
+        <ModalContent data-name="modal-content">
           {modalState.component}
         </ModalContent>
       </NextUIModal>,

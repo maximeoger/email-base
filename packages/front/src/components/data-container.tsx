@@ -11,7 +11,7 @@ interface IProps {
 
 export default function DataContainer({ loading, error, children, noData, isFetchingNextPage }: IProps) {
   return (
-    <div className="flex flex-col items-center gap-16">
+    <div>
       <div>
         {loading ? (
           <Spinner />

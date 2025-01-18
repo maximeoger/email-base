@@ -11,3 +11,8 @@ export interface Mail {
   body_html: string;
   sender: Sender;
 }
+
+export interface AddMailToCollection {
+  mailId: number;
+  collectionId: number;
+}

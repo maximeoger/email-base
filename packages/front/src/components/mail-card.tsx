@@ -19,7 +19,7 @@ interface IProps {
       actionText="add to collection"
       cancelText="close"
     />, 
-    { size: "3xl" }
+    { size: "4xl" }
   )
 
   return (

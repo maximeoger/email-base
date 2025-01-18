@@ -1,1 +1,0 @@
-export { useGetMails } from "./usecases/useGetMails";

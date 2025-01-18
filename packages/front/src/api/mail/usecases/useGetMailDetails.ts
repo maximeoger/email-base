@@ -9,14 +9,13 @@ export function useGetMailDetails(id: string) {
   const queryOpts = queryOptions({
     queryKey: ["mail-details", id],
     queryFn: () => router.getMailDetails(id),
-    //enabled: !!cursor
   })
 
   const { data, error, isLoading } = useQuery(queryOpts)
   
   return {
     mail: data || undefined, 
-    loading: isLoading,
-    error: error ? error["message"] : ""
+    loadingGetMailDetails: isLoading,
+    errorGetMailDetails: error ? error["message"] : ""
   }
 }
