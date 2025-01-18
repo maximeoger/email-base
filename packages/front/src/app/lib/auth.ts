@@ -1,6 +1,6 @@
 import NextAuth from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
-import { SupabaseAdapter } from "@auth/supabase-adapter"
+import JWT from "jsonwebtoken";
 
 const authOptions = {
   providers: [
@@ -9,11 +9,19 @@ const authOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
   ],
+  callbacks: {
+    async session({ session, token }: any) {
+      session.user.jwt = JWT.sign(
+        { data: token }, 
+        process.env.CUSTOM_JWT_SECRET as unknown as string
+      );
+      return session;
+    },
+  },
   secret: process.env.NEXTAUTH_SECRET,
-  adapter: SupabaseAdapter({
-    url: process.env.SUPABASE_URL as string,
-    secret: process.env.SUPABASE_SERVICE_ROLE_KEY as string
-  }),
+  Session: {
+    strategy: "jwt"
+  },
   debug: process.env.NODE_ENV === "development"
 }
 

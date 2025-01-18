@@ -16,7 +16,8 @@ export default function Collections() {
       actionText="Create collectioon"
       onCancel={closeModal}
       onConfirm={() => alert("create")}
-    />
+    />,
+    { size: "xl" }
   )
 
   return (

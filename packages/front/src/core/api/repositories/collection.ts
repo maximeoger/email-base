@@ -1,10 +1,12 @@
 import { CollectionFormValues } from "src/models/collection";
 import { API } from "..";
+import { APIInstance } from "src/models/api";
 
 
 export class CollectionAPIRepository extends API {
-  public constructor () {
-    super(null)
+  
+  public constructor (instance: APIInstance) {
+    super(instance);
   }
 
   public async getCollections() {

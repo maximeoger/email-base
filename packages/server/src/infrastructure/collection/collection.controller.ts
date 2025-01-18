@@ -22,7 +22,7 @@ export class CollectionController {
     return await this.collectionService.getCollections({
       where: {
         // @ts-ignore
-        user_id: request.session.users.id
+        user_id: request.user.id
       }
     })
   }
@@ -30,7 +30,7 @@ export class CollectionController {
   @Post()
   async createCollection(@Body() collection: CreateCollectionDto, @Req() request: Request): Promise<any> {
     //@ts-ignore
-    return await this.collectionService.createCollection(collection, request.session)
+    return await this.collectionService.createCollection(collection, request.user)
   }
 
   @Delete()

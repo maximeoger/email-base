@@ -26,11 +26,11 @@ export class CollectionService {
     return collections.map(convertBigIntToString)
   }
 
-  async createCollection(data: Prisma.collectionCreateInput, session: any): Promise<any> {
+  async createCollection(data: Prisma.collectionCreateInput, user: any): Promise<any> {
     // @ts-ignore
     const createdCollections = await this.prisma.collection.create({ data: {
       ...data,
-      user_id: session.users.id
+      user_id: user.id
     } })
 
     return convertBigIntToString(createdCollections)

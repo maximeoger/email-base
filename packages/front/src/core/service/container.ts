@@ -3,11 +3,14 @@ import { IMailAPIRepository, MailAPIRepositoryUID } from "../../models/api/mails
 import { CollectionAPIRepositoryUID, ICollectionAPIRepository } from "src/models/api/collections";
 
 import { ServiceContainer } from "../../models/service";
+import { APIInstance } from "src/models/api";
 
-export function getServiceContainer (): ServiceContainer {
+export function getServiceContainer (instance: APIInstance): ServiceContainer {
   const container = new ServiceContainer()
-  const mailRepository = new MailAPIRepository();
-  const collectionRepository = new CollectionAPIRepository();
+  
+
+  const mailRepository = new MailAPIRepository(instance);
+  const collectionRepository = new CollectionAPIRepository(instance);
 
   container.bind<IMailAPIRepository>(MailAPIRepositoryUID, mailRepository);
   container.bind<ICollectionAPIRepository>(CollectionAPIRepositoryUID, collectionRepository)

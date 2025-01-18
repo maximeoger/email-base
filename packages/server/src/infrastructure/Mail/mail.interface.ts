@@ -1,6 +1,15 @@
 
 export interface Mail {
-  readonly screenshot: string;
-  readonly date: string;
-  readonly subject: string;
+  id: number;
+  uid: number;
+  subject: string;
+  recipient: string;
+  date: string;
+  received_date: string;
+  size: number;
+  body_html: string;
 }
+
+export type MailsResponse = {
+  subject: string;
+}[]

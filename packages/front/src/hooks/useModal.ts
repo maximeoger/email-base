@@ -1,10 +1,11 @@
 import { ReactElement } from 'react';
+import { ModalParams } from 'src/models/modal';
 
 export const useModal = () => {
   
-  const openModal = (modal: ReactElement | null) => {
+  const openModal = (modal: ReactElement | null, params?: ModalParams) => {
     if(window && window.setModalInManager) {
-      window.setModalInManager(modal)
+      window.setModalInManager(modal, params)
     }
   }
 

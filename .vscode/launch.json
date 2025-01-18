@@ -1,6 +1,7 @@
 {
   "version": "0.2.0",
   "configurations": [
+
     {
       "name": "Next.js: debug server-side",
       "type": "node-terminal",
@@ -27,9 +28,9 @@
       }
     },
     {
+      "name": "Debug Nest Framework",
       "type": "node",
       "request": "launch",
-      "name": "Debug Nest Framework",
       "runtimeExecutable": "bun",
       "runtimeArgs": [
         "run",
@@ -43,6 +44,20 @@
       "stopOnEntry": false,
       "console": "integratedTerminal",
       "cwd": "${workspaceFolder}/packages/server"
+    },
+    /*
+    {
+      "name": "Debug Mail Retriever",
+      "type": "bun",
+      "request": "launch",
+      "runtime": "bun",
+      "runtimeArgs": [
+        "run",
+        "debug"
+      ],
+      "cwd": "${workspaceFolder}/packages/mail-retreiver",
+      "program": "${workspaceFolder}/packages/mail-retreiver/src/index.ts",
     }
+      */
   ]
 }

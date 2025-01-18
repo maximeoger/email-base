@@ -14,10 +14,9 @@ module.exports = {
       cwd: './packages/server',
       max_memory_restart: "1G",
       instances: 1,
-      script: 'nest',
-      args: 'start --watch',
-      exec_mode: "cluster",
-      interpreter: "bun",
+      script: 'npm',
+      args: 'start',
+      exec_mode: "fork_mode",
     }
   ],
 };

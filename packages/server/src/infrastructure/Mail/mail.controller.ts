@@ -1,13 +1,34 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Post, Param, Query, Body, HttpCode, Req, UseGuards, UseInterceptors } from '@nestjs/common';
 import { MailService } from './mail.service';
-import { Mail } from './mail.interface';
+import { Mail, MailsResponse } from './mail.interface';
+import { AddMailToCollectionQueryDto } from 'src/dto/mail/add-mail-to-collection.dto';
+import AuthGuard from '../auth/auth.guard';
+import AuthInterceptor from '../auth/auth.interceptor';
+import { connect } from 'http2';
 
 @Controller('mails')
 export class MailController {
   constructor(private readonly mailService: MailService) {}
 
   @Get()
-  getEmails(@Query() query : any): Promise<Mail[]> {
+  getEmails(@Query() query: any): Promise<MailsResponse> {
     return this.mailService.getEmails(query);
   }
+  
+  @Get(":id")
+  getMailDetails(@Param("id") id: string): Promise<Mail> {
+    return this.mailService.getMailDetails({
+      where: {
+        id: Number(id)
+      }
+    });
+  }
+
+  @Post("add-mail-to-collection")
+  @HttpCode(201)
+  @UseGuards(AuthGuard)
+  addMailToCollection(@Body() body: AddMailToCollectionQueryDto) {
+    return this.mailService.addMailToCollection(body)
+  }
 }
+
