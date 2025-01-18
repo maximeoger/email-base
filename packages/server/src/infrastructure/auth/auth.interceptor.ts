@@ -14,11 +14,11 @@ export default class AuthInterceptor implements NestInterceptor {
 
     const request = context.switchToHttp().getRequest()
 
-    const sessionToken : string = request.raw.cookies['authjs.session-token']
+    const { sub } = request.session
 
-    const session = await this.authService.getSession(sessionToken)
+    const user = await this.authService.getUser(sub)
 
-    request.session = session
+    request.user = user
 
     return next.handle()
   }

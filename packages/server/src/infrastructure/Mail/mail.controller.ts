@@ -1,6 +1,10 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import { Controller, Get, Post, Param, Query, Body, HttpCode, Req, UseGuards, UseInterceptors } from '@nestjs/common';
 import { MailService } from './mail.service';
 import { Mail, MailsResponse } from './mail.interface';
+import { AddMailToCollectionQueryDto } from 'src/dto/mail/add-mail-to-collection.dto';
+import AuthGuard from '../auth/auth.guard';
+import AuthInterceptor from '../auth/auth.interceptor';
+import { connect } from 'http2';
 
 @Controller('mails')
 export class MailController {
@@ -19,4 +23,12 @@ export class MailController {
       }
     });
   }
+
+  @Post("add-mail-to-collection")
+  @HttpCode(201)
+  @UseGuards(AuthGuard)
+  addMailToCollection(@Body() body: AddMailToCollectionQueryDto) {
+    return this.mailService.addMailToCollection(body)
+  }
 }
+

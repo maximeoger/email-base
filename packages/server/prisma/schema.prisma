@@ -1,81 +1,31 @@
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["multiSchema"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
-  schemas   = ["next_auth", "public"]
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
-model accounts {
-  id                 String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?
-  access_token       String?
-  expires_at         BigInt?
-  token_type         String?
-  scope              String?
-  id_token           String?
-  session_state      String?
-  oauth_token_secret String?
-  oauth_token        String?
-  userId             String? @db.Uuid
-  users              users?  @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-
-  @@unique([provider, providerAccountId], map: "provider_unique")
-  @@schema("next_auth")
-}
-
-model sessions {
-  id           String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  expires      DateTime @db.Timestamptz(6)
-  sessionToken String   @unique(map: "sessiontoken_unique")
-  userId       String?  @db.Uuid
-  users        users?   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-
-  @@schema("next_auth")
-}
-
-model users {
-  id            String       @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  name          String?
-  email         String?      @unique(map: "email_unique")
-  emailVerified DateTime?    @db.Timestamptz(6)
-  image         String?
-  accounts      accounts[]
-  sessions      sessions[]
-  collection    collection[]
-
-  @@schema("next_auth")
-}
-
-model verification_tokens {
-  identifier String?
-  token      String   @id
-  expires    DateTime @db.Timestamptz(6)
-
-  @@unique([token, identifier], map: "token_identifier_unique")
-  @@schema("next_auth")
-}
-
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model collection {
   id               BigInt             @id @default(autoincrement())
   created_at       DateTime           @default(now()) @db.Timestamptz(6)
   name             String
-  user_id          String             @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  users            users              @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  description      String?
+  user_id          BigInt?   
+  user             user?              @relation(fields: [user_id], references: [id], onDelete: Cascade)             
   collection_email collection_email[]
-
-  @@schema("public")
 }
 
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model user {
+  id               BigInt             @id @default(autoincrement())
+  created_at       DateTime           @default(now()) @db.Timestamptz(6)
+  sub              String             @unique
+  name             String
+  email            String             @unique
+  collections      collection[]            
+}
+
 model collection_email {
   id            BigInt     @id @default(autoincrement())
   created_at    DateTime   @default(now()) @db.Timestamptz(6)
@@ -83,11 +33,8 @@ model collection_email {
   email_id      BigInt
   collection    collection @relation(fields: [collection_id], references: [id], onDelete: Cascade)
   email         email      @relation(fields: [email_id], references: [id], onDelete: Cascade)
-
-  @@schema("public")
 }
 
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model email {
   id                                                     BigInt             @id(map: "Email_pkey") @unique @default(autoincrement())
   uid                                                    BigInt             @unique
@@ -105,12 +52,8 @@ model email {
   email_screenshot_email_screenshot_idToemail_screenshot email_screenshot?  @relation("email_screenshot", fields: [screenshot_id], references: [id], onDelete: Cascade)
   sender                                                 sender             @relation(fields: [sender_id], references: [id], onDelete: Cascade)
   email_screenshot_email_screenshot_email_idToemail      email_screenshot?  @relation("email_screenshot_id")
-
-  @@schema("public")
 }
 
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model email_screenshot {
   id                                          BigInt   @id @default(autoincrement())
   created_at                                  DateTime @default(now()) @db.Timestamptz(6)
@@ -118,12 +61,8 @@ model email_screenshot {
   email_id                                    BigInt   @unique
   email_email_screenshot_idToemail_screenshot email[]  @relation("email_screenshot")
   email_email_screenshot_email_idToemail      email    @relation("email_screenshot_id", fields: [email_id], references: [id], onDelete: Cascade)
-
-  @@schema("public")
 }
 
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model sender {
   id         BigInt   @id @default(autoincrement())
   created_at DateTime @default(now()) @db.Timestamptz(6)
@@ -131,6 +70,4 @@ model sender {
   address    String   @unique @db.VarChar
   logo       String?
   email      email[]
-
-  @@schema("public")
 }
