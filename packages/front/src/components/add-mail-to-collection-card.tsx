@@ -19,7 +19,7 @@ export default function AddMailToCollectionCard ({data, mailId} : IProps) {
   }).then(() => setAdded(true))
 
   return (
-    <div className="border border-grey-400 p-2 pl-4 rounded-md cursor-pointer flex items-center justify-between">
+    <div className="border border-grey-300 p-2 pl-4 rounded-md cursor-pointer flex items-center justify-between">
       <span>{data.name}</span>
       <Button 
         onClick={handleClickAddToCollection}
