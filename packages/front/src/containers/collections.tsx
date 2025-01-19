@@ -1,7 +1,8 @@
+import { CollectionDto } from "shared/types/collection";
 import CollectionCard from "src/components/collection-card";
 
 interface IProps {
-  data: any;
+  data: CollectionDto[];
 }
 
 export default function CollectionsContainer({ data }: IProps) {
@@ -10,10 +11,9 @@ export default function CollectionsContainer({ data }: IProps) {
       {data.map((collection: any) => (
         <CollectionCard 
           name={collection.name} 
-          numberOfEmails={4} id={collection.id}
+          numberOfEmails={collection.numberOfEmails} id={collection.id}
         />
       ))}
-      
     </div>
   )
 }

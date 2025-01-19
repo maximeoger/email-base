@@ -1,9 +1,9 @@
 import { queryOptions, useQuery } from "@tanstack/react-query";
-import * as services from "../../../core/service";
+import { useInjection } from "../../../core/service";
 import { CollectionAPIRepositoryUID, ICollectionAPIRepository } from "../../../models/api/collections";
 
 export function useGetCollections() {
-  const router = services.useInjection<ICollectionAPIRepository>(CollectionAPIRepositoryUID);
+  const router = useInjection<ICollectionAPIRepository>(CollectionAPIRepositoryUID);
 
   const queryOpts = queryOptions({
     queryKey: ["collection"],

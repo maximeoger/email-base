@@ -27,6 +27,8 @@ export default function CollectionCard (props: IProps) {
     }
   ]
 
+  const handleConfirm = () => onDeleteCollection(props.id).then(() => closeModal())
+
   const openConfirmModal = () => openModal(
     <ConfirmModal
       title="Delete collection"
@@ -34,7 +36,7 @@ export default function CollectionCard (props: IProps) {
       cancelText="No get back"
       actionText="yes delete it"
       onCancel={() => closeModal()}
-      onConfirm={() => onDeleteCollection(props.id)}
+      onConfirm={handleConfirm}
     />,
     { size: "xl" }
   )
