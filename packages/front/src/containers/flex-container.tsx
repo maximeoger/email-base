@@ -2,7 +2,7 @@ import { PropsWithChildren } from "react";
 import classNames from "classnames";
 
 interface IProps extends PropsWithChildren {
-  className: string;
+  className?: string;
 }
 
 export default function FlexContainer({ className, children }: IProps) {
