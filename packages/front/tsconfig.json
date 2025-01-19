@@ -16,6 +16,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
+    "strictPropertyInitialization": false,
     "jsx": "preserve",
     /* Linting */
     "strict": true,

@@ -1,34 +1,37 @@
-import { Body, Controller, Get, Logger, Delete, Post, Req, UseGuards, UseInterceptors, Patch, Param, Query, HttpStatus, HttpCode } from '@nestjs/common';
+import { Body, Controller, Get, Delete, Post, Req, UseGuards, UseInterceptors, Patch, Query, HttpCode } from '@nestjs/common';
 import { CollectionService } from './collection.service';
-import CreateCollectionDto from 'src/dto/collection/create.dto';
+import { CreateCollectionDto, CollectionDto, UpdateCollectionDto } from 'shared/types/collection';
 import AuthGuard from '../auth/auth.guard';
 import { Request } from 'express';
 import AuthInterceptor from '../auth/auth.interceptor';
-import UpdateCollectionDto from 'src/dto/collection/update.dto';
 
 @Controller('collection')
 @UseGuards(AuthGuard)
 @UseInterceptors(AuthInterceptor)
 export class CollectionController {
 
-  private readonly logger = new Logger(CollectionController.name)
-
   constructor (
     private readonly collectionService: CollectionService,
   ){}
 
   @Get()
-  async getCollections(@Req() request: Request): Promise<any[]> {
-    return await this.collectionService.getCollections({
-      where: {
-        // @ts-ignore
-        user_id: request.user.id
-      }
+  async getCollections(@Req() request: Request): Promise<CollectionDto[]> {
+    const collections = await this.collectionService.getCollections(request.user.id)
+  
+    return collections.map((collection: any) => {
+      const dto = new CollectionDto()
+      dto.id = collection.id;
+      dto.createdAt = collection.created_at || "";
+      dto.updatedAt = collection.updated_at || "";
+      dto.description = collection.description;
+      dto.name = collection.name;
+      dto.numberOfEmails = collection._count.collection_email;
+      return dto
     })
   }
 
   @Post()
-  async createCollection(@Body() collection: CreateCollectionDto, @Req() request: Request): Promise<any> {
+  async createCollection(@Body() collection: CreateCollectionDto, @Req() request: Request): Promise<CollectionDto> {
     // @ts-ignore
     return await this.collectionService.createCollection(collection, request.user)
   }

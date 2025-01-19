@@ -4,10 +4,10 @@ import DataContainer from "./data-container";
 import CollectionsContainer from "src/containers/collections";
 
 export default function CollectionResults() {
-  const { collections, loading, error } = useGetCollections()
+  const { collections, loadingGetCollections, errorGetCollections } = useGetCollections()
 
   return (
-    <DataContainer loading={loading} error={error}>
+    <DataContainer loading={loadingGetCollections} error={errorGetCollections}>
       <CollectionsContainer data={collections}/>
     </DataContainer>
   )

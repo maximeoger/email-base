@@ -2,7 +2,8 @@ import { Injectable, Logger } from "@nestjs/common";
 import { PrismaService } from "src/core/prisma/prisma.service";
 import { Prisma } from '@prisma/client';
 import convertBigIntToString from "src/helpers/convertBigIntToString";
-
+import { format } from "date-fns";
+import { Request } from "express";
 
 @Injectable()
 export class CollectionService {
@@ -13,25 +14,31 @@ export class CollectionService {
     private prisma: PrismaService,
   ) {}
 
-  async getCollections(
-    params: {
-      skip?: number;
-      take?: number;
-      cursor?: Prisma.collectionWhereUniqueInput;
-      where?: Prisma.collectionWhereInput;
-    }
-  ): Promise<any> {
-    const collections = await this.prisma.collection.findMany(params)
+  async getCollections(userId: number) {
+    const collections = await this.prisma.collection.findMany({
+      where: {
+        user_id: userId
+      },
+      include: {
+        _count: {
+          select: { 
+            collection_email: true 
+          }
+        }
+      }
+    })
 
     return collections.map(convertBigIntToString)
   }
 
-  async createCollection(data: Prisma.collectionCreateInput, user: any): Promise<any> {
-    // @ts-ignore
-    const createdCollections = await this.prisma.collection.create({ data: {
-      ...data,
-      user_id: user.id
-    } })
+  async createCollection(data: Prisma.collectionCreateInput, user: Request['user']) {
+    const createdCollections = await this.prisma.collection.create({
+      // @ts-ignore
+      data: {
+        ...data,
+        user_id: user.id
+      }
+    })
 
     return convertBigIntToString(createdCollections)
   }

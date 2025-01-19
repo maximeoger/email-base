@@ -7,6 +7,7 @@ import { CollectionFormValues } from "src/models/collection";
 import TextInput from "../inputs/text-input"
 import TextArea from "../inputs/textarea"
 import { useCreateCollection } from "src/api/collection/usecases/useCreateCollection";
+import { useModal } from "src/hooks/useModal";
 
 interface IProps extends BaseModalProps {
   defaultValues?: CollectionFormValues;
@@ -17,11 +18,10 @@ interface IProps extends BaseModalProps {
 export default function CollectionModal ({defaultValues, ...props}: IProps) {
 
   const { onCreateCollection, isCreatingCollection } = useCreateCollection()
+  const { closeModal } = useModal()
 
   const { Field, handleSubmit } = useForm({
-    onSubmit: async ({ value }) => {
-      await onCreateCollection(value);
-    },
+    onSubmit: async ({ value }) => onCreateCollection(value).then(() => closeModal()),
     validatorAdapter: zodValidator(),
     validators: {
       onChange: collectionFormSchema,
@@ -59,7 +59,11 @@ export default function CollectionModal ({defaultValues, ...props}: IProps) {
         <Button color="danger" variant="light" onPress={props.onCancel}>
           {props.cancelText}
         </Button>
-        <Button color="primary" onPress={() => handleSubmit()} disabled={isCreatingCollection}>
+        <Button 
+          color="primary" 
+          onPress={() => handleSubmit()} 
+          disabled={isCreatingCollection}
+        >
           {props.actionText}
         </Button>
       </ModalFooter>
