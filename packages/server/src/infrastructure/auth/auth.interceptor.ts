@@ -14,9 +14,9 @@ export default class AuthInterceptor implements NestInterceptor {
 
     const request = context.switchToHttp().getRequest()
 
-    const { sub } = request.session
+    const { email } = request.session
 
-    const user = await this.authService.getUser(sub)
+    const user = await this.authService.getUser(email)
 
     request.user = user
 

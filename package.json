@@ -4,7 +4,7 @@
   "workspaces": [
     "packages/*"
   ],
-  "dependencies": { "server-only": "^0.0.1" },
+  "dependencies": { "@types/jest": "^29.5.14", "server-only": "^0.0.1" },
   "devDependencies": {
     "lerna": "^8.1.8"
   }
