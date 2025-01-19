@@ -29,7 +29,7 @@ export class CollectionController {
 
   @Post()
   async createCollection(@Body() collection: CreateCollectionDto, @Req() request: Request): Promise<any> {
-    //@ts-ignore
+    // @ts-ignore
     return await this.collectionService.createCollection(collection, request.user)
   }
 

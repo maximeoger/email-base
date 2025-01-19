@@ -1,28 +1,19 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { PrismaService } from "src/core/prisma/prisma.service";
 import jwt from "jsonwebtoken";
+import { DecodedAuthenticationToken } from "shared/types/auth";
 
 interface DecodedToken {
-  data: {
-    name: string;
-    email: string;
-    picture: string;
-    sub: string;
-    iat: number;
-    exp: number;
-    jti: string;
-  },
+  data: DecodedAuthenticationToken;
   iat: string;
 }
 
 @Injectable()
 class AuthService {
 
-  private readonly logger = new Logger(AuthService.name)
-
   constructor(private prisma: PrismaService) {}
 
-  async verifyToken (token: string) : Promise<DecodedToken["data"] | boolean> {
+  async verifyToken (token: string) : Promise<DecodedToken["data"] | false> {
     try {
       const { data } = jwt.verify(token, process.env.CUSTOM_JWT_SECRET) as jwt.JwtPayload & DecodedToken;
 
@@ -39,10 +30,10 @@ class AuthService {
     }
   }
 
-  async getUser (sub: string) : Promise<any> {
+  async getUser (email: string) : Promise<any> {
     return await this.prisma.user.findUnique({
       where: {
-        sub
+        email
       },
       select: {
         id: true,
