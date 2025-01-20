@@ -1,3 +1,3 @@
 export interface ScreenshotMakerMethods {
-  takeScreenshot: (html: string) => Promise<Uint8Array>
-} 
+  takeScreenshot: (html: string) => Promise<Uint8Array>;
+}

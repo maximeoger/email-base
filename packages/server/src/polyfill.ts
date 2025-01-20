@@ -1,4 +1,4 @@
 // @ts-ignore
-BigInt.prototype['toJSON'] = function () { 
-  return this.toString()
-}
+BigInt.prototype['toJSON'] = function () {
+  return this.toString();
+};

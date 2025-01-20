@@ -5,8 +5,8 @@ interface IProps {
   onChange: (page: number) => void;
 }
 
-export default function Pagination (props: IProps) {
+export default function Pagination(props: IProps) {
   return (
-    <NextUiPagination total={100} page={props.page} onChange={props.onChange}/>
-  )
+    <NextUiPagination total={100} page={props.page} onChange={props.onChange} />
+  );
 }

@@ -4,110 +4,110 @@ export type Json =
   | boolean
   | null
   | { [key: string]: Json | undefined }
-  | Json[]
+  | Json[];
 
 export type Database = {
   public: {
     Tables: {
       email: {
         Row: {
-          body: string | null
-          body_html: string | null
-          created_at: string | null
-          date: string | null
-          id: number
-          mail_screenshot_id: number
-          received_date: string | null
-          recipients: string[] | null
-          sender: Json[] | null
-          size: number | null
-          subject: string | null
-          uid: number
-        }
+          body: string | null;
+          body_html: string | null;
+          created_at: string | null;
+          date: string | null;
+          id: number;
+          mail_screenshot_id: number;
+          received_date: string | null;
+          recipients: string[] | null;
+          sender: Json[] | null;
+          size: number | null;
+          subject: string | null;
+          uid: number;
+        };
         Insert: {
-          body?: string | null
-          body_html?: string | null
-          created_at?: string | null
-          date?: string | null
-          id?: number
-          mail_screenshot_id: number
-          received_date?: string | null
-          recipients?: string[] | null
-          sender?: Json[] | null
-          size?: number | null
-          subject?: string | null
-          uid: number
-        }
+          body?: string | null;
+          body_html?: string | null;
+          created_at?: string | null;
+          date?: string | null;
+          id?: number;
+          mail_screenshot_id: number;
+          received_date?: string | null;
+          recipients?: string[] | null;
+          sender?: Json[] | null;
+          size?: number | null;
+          subject?: string | null;
+          uid: number;
+        };
         Update: {
-          body?: string | null
-          body_html?: string | null
-          created_at?: string | null
-          date?: string | null
-          id?: number
-          mail_screenshot_id?: number
-          received_date?: string | null
-          recipients?: string[] | null
-          sender?: Json[] | null
-          size?: number | null
-          subject?: string | null
-          uid?: number
-        }
+          body?: string | null;
+          body_html?: string | null;
+          created_at?: string | null;
+          date?: string | null;
+          id?: number;
+          mail_screenshot_id?: number;
+          received_date?: string | null;
+          recipients?: string[] | null;
+          sender?: Json[] | null;
+          size?: number | null;
+          subject?: string | null;
+          uid?: number;
+        };
         Relationships: [
           {
-            foreignKeyName: "email_mail_screenshot_id_fkey"
-            columns: ["mail_screenshot_id"]
-            isOneToOne: true
-            referencedRelation: "email_screenshot"
-            referencedColumns: ["id"]
+            foreignKeyName: "email_mail_screenshot_id_fkey";
+            columns: ["mail_screenshot_id"];
+            isOneToOne: true;
+            referencedRelation: "email_screenshot";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       email_screenshot: {
         Row: {
-          base_64: string
-          created_at: string
-          email_id: number
-          id: number
-        }
+          base_64: string;
+          created_at: string;
+          email_id: number;
+          id: number;
+        };
         Insert: {
-          base_64: string
-          created_at?: string
-          email_id: number
-          id?: number
-        }
+          base_64: string;
+          created_at?: string;
+          email_id: number;
+          id?: number;
+        };
         Update: {
-          base_64?: string
-          created_at?: string
-          email_id?: number
-          id?: number
-        }
+          base_64?: string;
+          created_at?: string;
+          email_id?: number;
+          id?: number;
+        };
         Relationships: [
           {
-            foreignKeyName: "email_screenshot_email_id_fkey"
-            columns: ["email_id"]
-            isOneToOne: false
-            referencedRelation: "email"
-            referencedColumns: ["id"]
+            foreignKeyName: "email_screenshot_email_id_fkey";
+            columns: ["email_id"];
+            isOneToOne: false;
+            referencedRelation: "email";
+            referencedColumns: ["id"];
           },
-        ]
-      }
-    }
+        ];
+      };
+    };
     Views: {
-      [_ in never]: never
-    }
+      [_ in never]: never;
+    };
     Functions: {
-      [_ in never]: never
-    }
+      [_ in never]: never;
+    };
     Enums: {
-      [_ in never]: never
-    }
+      [_ in never]: never;
+    };
     CompositeTypes: {
-      [_ in never]: never
-    }
-  }
-}
+      [_ in never]: never;
+    };
+  };
+};
 
-type PublicSchema = Database[Extract<keyof Database, "public">]
+type PublicSchema = Database[Extract<keyof Database, "public">];
 
 export type Tables<
   PublicTableNameOrOptions extends
@@ -120,7 +120,7 @@ export type Tables<
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
       Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
-      Row: infer R
+      Row: infer R;
     }
     ? R
     : never
@@ -128,11 +128,11 @@ export type Tables<
         PublicSchema["Views"])
     ? (PublicSchema["Tables"] &
         PublicSchema["Views"])[PublicTableNameOrOptions] extends {
-        Row: infer R
+        Row: infer R;
       }
       ? R
       : never
-    : never
+    : never;
 
 export type TablesInsert<
   PublicTableNameOrOptions extends
@@ -143,17 +143,17 @@ export type TablesInsert<
     : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Insert: infer I
+      Insert: infer I;
     }
     ? I
     : never
   : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
     ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
-        Insert: infer I
+        Insert: infer I;
       }
       ? I
       : never
-    : never
+    : never;
 
 export type TablesUpdate<
   PublicTableNameOrOptions extends
@@ -164,17 +164,17 @@ export type TablesUpdate<
     : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Update: infer U
+      Update: infer U;
     }
     ? U
     : never
   : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
     ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
-        Update: infer U
+        Update: infer U;
       }
       ? U
       : never
-    : never
+    : never;
 
 export type Enums<
   PublicEnumNameOrOptions extends
@@ -187,4 +187,4 @@ export type Enums<
   ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
     ? PublicSchema["Enums"][PublicEnumNameOrOptions]
-    : never
+    : never;

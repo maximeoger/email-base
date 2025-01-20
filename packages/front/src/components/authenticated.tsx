@@ -1,17 +1,16 @@
-"use client"
+"use client";
 import { useSession } from "next-auth/react";
 import LoggedIn from "./logged-in";
 import LogInButton from "./log-in-button";
 import FlexContainer from "../containers/flex-container";
 
-
-export default function Authenticated () {
-  const {data: session} = useSession();
+export default function Authenticated() {
+  const { data: session } = useSession();
   return (
     <div>
-      { session?.user ? (
+      {session?.user ? (
         <FlexContainer className="gap-4">
-          <LoggedIn 
+          <LoggedIn
             userName={session.user.name as unknown as string}
             userImageSrc={session.user.image as unknown as string}
           />
@@ -19,8 +18,8 @@ export default function Authenticated () {
       ) : (
         <FlexContainer className="gap-4">
           <LogInButton>Log In</LogInButton>
-        </FlexContainer> 
+        </FlexContainer>
       )}
     </div>
-  )
+  );
 }

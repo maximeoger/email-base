@@ -3,7 +3,7 @@ import useFieldMetaDestructuring from "src/hooks/useFieldMetaDestructuring";
 
 export default function TextArea(props: any) {
   const { state, label, handleBlur } = props;
-  const { errorMessages } = useFieldMetaDestructuring(state)
+  const { errorMessages } = useFieldMetaDestructuring(state);
 
   return (
     <Textarea
@@ -18,4 +18,3 @@ export default function TextArea(props: any) {
     />
   );
 }
-

@@ -1,5 +1,3 @@
-
-
 ## Setup local postgresql database
 
 ```sql
@@ -14,11 +12,13 @@ GRANT ALL ON DATABASE emailbase to prisma;
 ```
 
 Then use emailbase database
+
 ```shell
 \c emailbase;
 ```
 
 Then give access on schema public to prisma role
+
 ```sql
 GRANT ALL ON SCHEMA public to prisma;
 ```

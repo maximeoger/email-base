@@ -6,5 +6,7 @@ interface IProps extends PropsWithChildren {
 }
 
 export default function FlexContainer({ className, children }: IProps) {
-  return <div className={classNames(`flex items-center`, className)}>{children}</div>;
+  return (
+    <div className={classNames(`flex items-center`, className)}>{children}</div>
+  );
 }

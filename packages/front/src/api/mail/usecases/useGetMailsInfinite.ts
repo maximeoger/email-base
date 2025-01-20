@@ -1,6 +1,9 @@
 import { infiniteQueryOptions, useInfiniteQuery } from "@tanstack/react-query";
 import { useInjection } from "../../../core/service";
-import { IMailAPIRepository, MailAPIRepositoryUID } from "../../../models/api/mails";
+import {
+  IMailAPIRepository,
+  MailAPIRepositoryUID,
+} from "../../../models/api/mails";
 import { useMemo } from "react";
 
 export function useGetMailsInfinite() {
@@ -10,10 +13,10 @@ export function useGetMailsInfinite() {
     queryKey: ["mails"],
     queryFn: ({ pageParam }) => router.getMails(pageParam),
     initialPageParam: 0,
-    getNextPageParam: (lastPage) => lastPage.nextCursor
-  })
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
+  });
 
-  const { 
+  const {
     data,
     error,
     fetchNextPage,
@@ -21,7 +24,7 @@ export function useGetMailsInfinite() {
     isFetching,
     isLoading,
     isFetchingNextPage,
-  } = useInfiniteQuery(queryOpts)
+  } = useInfiniteQuery(queryOpts);
 
   const mails = useMemo(() => {
     return data?.pages.reduce((acc, { results }) => {
@@ -36,6 +39,6 @@ export function useGetMailsInfinite() {
     isFetching,
     isFetchingNextPage,
     isLoading,
-    error: error ? error["message"] : ""
-  }
+    error: error ? error["message"] : "",
+  };
 }

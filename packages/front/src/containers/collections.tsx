@@ -9,8 +9,8 @@ export default function CollectionsContainer({ data }: IProps) {
   return (
     <div className="flex flex-wrap gap-4 mt-12">
       {data.map((collection: CollectionDto) => (
-        <CollectionCard data={collection} key={collection.id}/>
+        <CollectionCard data={collection} key={collection.id} />
       ))}
     </div>
-  )
+  );
 }

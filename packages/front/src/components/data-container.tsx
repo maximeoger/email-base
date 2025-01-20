@@ -9,7 +9,13 @@ interface IProps {
   noData?: boolean;
 }
 
-export default function DataContainer({ loading, error, children, noData, isFetchingNextPage }: IProps) {
+export default function DataContainer({
+  loading,
+  error,
+  children,
+  noData,
+  isFetchingNextPage,
+}: IProps) {
   return (
     <div>
       <div>
@@ -20,11 +26,10 @@ export default function DataContainer({ loading, error, children, noData, isFetc
         ) : noData ? (
           <span>no data</span>
         ) : (
-          children)}
+          children
+        )}
       </div>
-      <div>
-        { !loading && isFetchingNextPage && (<Spinner/>) }
-      </div>     
+      <div>{!loading && isFetchingNextPage && <Spinner />}</div>
     </div>
-  )
+  );
 }

@@ -1,7 +1,6 @@
 {
   "version": "0.2.0",
   "configurations": [
-
     {
       "name": "Next.js: debug server-side",
       "type": "node-terminal",
@@ -32,19 +31,14 @@
       "type": "node",
       "request": "launch",
       "runtimeExecutable": "bun",
-      "runtimeArgs": [
-        "run",
-        "start:debug",
-        "--",
-        "--inspect-brk"
-      ],
+      "runtimeArgs": ["run", "start:debug", "--", "--inspect-brk"],
       "autoAttachChildProcesses": true,
       "restart": true,
       "sourceMaps": true,
       "stopOnEntry": false,
       "console": "integratedTerminal",
       "cwd": "${workspaceFolder}/packages/server"
-    },
+    }
     /*
     {
       "name": "Debug Mail Retriever",

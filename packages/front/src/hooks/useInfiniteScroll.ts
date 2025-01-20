@@ -7,9 +7,14 @@ interface IProps {
   hasNextPage: boolean;
 }
 
-export default function useInfiniteScroll({ fetchNextPage, isFetching, isLoading, hasNextPage }: IProps) {
+export default function useInfiniteScroll({
+  fetchNextPage,
+  isFetching,
+  isLoading,
+  hasNextPage,
+}: IProps) {
   const observer = useRef<IntersectionObserver>();
-  
+
   const lastElementRef = useCallback(
     (node: HTMLDivElement) => {
       if (isLoading) return;
@@ -24,10 +29,10 @@ export default function useInfiniteScroll({ fetchNextPage, isFetching, isLoading
 
       if (node) observer.current.observe(node);
     },
-    [fetchNextPage, hasNextPage, isFetching, isLoading]
+    [fetchNextPage, hasNextPage, isFetching, isLoading],
   );
 
   return {
-    lastElementRef
-  }
+    lastElementRef,
+  };
 }
