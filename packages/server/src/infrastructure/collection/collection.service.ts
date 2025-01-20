@@ -7,9 +7,7 @@ import { Request } from "express";
 
 @Injectable()
 export class CollectionService {
-
-  private readonly logger = new Logger(CollectionService.name)
-
+  
   constructor(
     private prisma: PrismaService,
   ) {}
@@ -20,15 +18,18 @@ export class CollectionService {
         user_id: userId
       },
       include: {
-        _count: {
-          select: { 
-            collection_email: true 
+        collection_email: {
+          select: {
+            email_id: true
           }
         }
       }
     })
 
-    return collections.map(convertBigIntToString)
+    return collections.map(collection => ({
+      ...convertBigIntToString(collection),
+      emailIds: collection.collection_email.map(email => convertBigIntToString(email))
+    }))
   }
 
   async createCollection(data: Prisma.collectionCreateInput, user: Request['user']) {
