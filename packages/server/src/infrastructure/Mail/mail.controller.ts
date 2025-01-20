@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Param, Query, Body, HttpCode, Req, UseGuards, UseInterceptors } from '@nestjs/common';
 import { MailService } from './mail.service';
 import { Mail, MailsResponse } from './mail.interface';
-import { AddMailToCollectionDto } from 'shared/types/mail';
+//import { AddMailToCollectionDto } from 'shared/types/mail';
 import AuthGuard from '../auth/auth.guard';
 
 @Controller('mails')
@@ -25,7 +25,7 @@ export class MailController {
   @Post("add-mail-to-collection")
   @HttpCode(201)
   @UseGuards(AuthGuard)
-  addMailToCollection(@Body() body: AddMailToCollectionDto) {
+  addMailToCollection(@Body() body: any) {
     return this.mailService.addMailToCollection(body)
   }
 }

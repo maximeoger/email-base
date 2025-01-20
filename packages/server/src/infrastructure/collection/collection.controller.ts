@@ -24,7 +24,8 @@ export class CollectionController {
       dto.updatedAt = collection.updated_at || "";
       dto.description = collection.description;
       dto.name = collection.name;
-      dto.emailIds = collection.emailIds.map((emailId: { email_id: string }) => Number(emailId.email_id))
+      dto.emailIds = collection.emailIds
+      dto.screenshots = collection.screenshots
       return dto
     })
   }

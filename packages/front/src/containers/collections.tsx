@@ -9,11 +9,7 @@ export default function CollectionsContainer({ data }: IProps) {
   return (
     <div className="flex flex-wrap gap-4 mt-12">
       {data.map((collection: CollectionDto) => (
-        <CollectionCard 
-          name={collection.name} 
-          numberOfEmails={collection.emailIds.length}
-          id={collection.id}
-        />
+        <CollectionCard data={collection} key={collection.id}/>
       ))}
     </div>
   )
