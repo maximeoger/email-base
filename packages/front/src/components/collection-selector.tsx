@@ -11,7 +11,10 @@ export default function CollectionSelector (props: IProps) {
   const { collections, loadingGetCollections, errorGetCollections } = useGetCollections()
   return (
     <DataContainer loading={loadingGetCollections} error={errorGetCollections}>
-      <CollectionsSelectorContainer data={collections} mailId={mailId}/>
+      <CollectionsSelectorContainer 
+        data={collections} 
+        mailId={mailId}
+      />
     </DataContainer>
   )
 }

@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from 'src/core/prisma/prisma.service';
 import { Prisma } from '@prisma/client';
 import convertBigIntToString from "../../helpers/convertBigIntToString";
-import { AddMailToCollectionQueryDto } from 'src/dto/mail/add-mail-to-collection.dto';
+import { AddMailToCollectionDto } from 'shared/types/mail';
 
 
 @Injectable()
@@ -53,11 +53,21 @@ export class MailService {
     return convertBigIntToString(result)
   }
 
-  async addMailToCollection(body: AddMailToCollectionQueryDto) {
+  async addMailToCollection(body: AddMailToCollectionDto) {
+    const { collectionId, mailId } = body;
+
     const createdRelationship = await this.prisma.collection_email.create({
       data: {
-        collection: { connect: { id: Number(body.collectionId) } }, 
-        email: { connect: { id: Number(body.mailId) } },
+        collection: { 
+          connect: { 
+            id: collectionId 
+          } 
+        }, 
+        email: { 
+          connect: { 
+            id: mailId 
+          } 
+        },
       }
     })
     return convertBigIntToString(createdRelationship)

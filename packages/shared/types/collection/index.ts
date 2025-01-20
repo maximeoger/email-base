@@ -9,7 +9,7 @@ export class CollectionDto {
   description: string | null;
   createdAt: string;
   updatedAt: string;
-  numberOfEmails: number;
+  emailIds: Array<number>;
 }
 
 export class UpdateCollectionDto {

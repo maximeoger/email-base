@@ -17,15 +17,14 @@ export class CollectionController {
   @Get()
   async getCollections(@Req() request: Request): Promise<CollectionDto[]> {
     const collections = await this.collectionService.getCollections(request.user.id)
-  
     return collections.map((collection: any) => {
       const dto = new CollectionDto()
-      dto.id = collection.id;
+      dto.id = Number(collection.id)
       dto.createdAt = collection.created_at || "";
       dto.updatedAt = collection.updated_at || "";
       dto.description = collection.description;
       dto.name = collection.name;
-      dto.numberOfEmails = collection._count.collection_email;
+      dto.emailIds = collection.emailIds.map((emailId: { email_id: string }) => Number(emailId.email_id))
       return dto
     })
   }

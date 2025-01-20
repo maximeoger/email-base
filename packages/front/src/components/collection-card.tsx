@@ -7,7 +7,7 @@ import DropdownWrapper from "./dropdown-wrapper";
 import FlexContainer from "../containers/flex-container"; // Import FlexContainer
 
 interface IProps {
-  id: string;
+  id: number;
   name: string;
   numberOfEmails: number;
 }
@@ -27,7 +27,7 @@ export default function CollectionCard (props: IProps) {
     }
   ]
 
-  const handleConfirm = () => onDeleteCollection(props.id).then(() => closeModal())
+  const handleConfirm = () => onDeleteCollection(`${props.id}`).then(() => closeModal())
 
   const openConfirmModal = () => openModal(
     <ConfirmModal
