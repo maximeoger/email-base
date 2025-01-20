@@ -16,16 +16,6 @@ export default function CollectionCard({ data }: IProps) {
   const { onDeleteCollection } = useDeleteCollection();
   const { openModal, closeModal } = useModal();
 
-  const cardOptions = [
-    {
-      onClick: () => openConfirmModal(),
-      name: "Delete collection",
-      color: "default",
-      className: "text-danger",
-      startContent: <Trash2 />,
-    },
-  ];
-
   const handleConfirm = () =>
     onDeleteCollection(`${data.id}`).then(() => closeModal());
 
@@ -41,6 +31,16 @@ export default function CollectionCard({ data }: IProps) {
       />,
       { size: "xl" },
     );
+
+  const cardOptions = [
+    {
+      onClick: () => openConfirmModal(),
+      name: "Delete collection",
+      color: "default",
+      className: "text-danger",
+      startContent: <Trash2 />,
+    },
+  ];
 
   return (
     <Card
