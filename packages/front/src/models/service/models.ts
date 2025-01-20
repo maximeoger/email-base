@@ -5,4 +5,3 @@ export interface IServiceContainer {
   get: <T>(identifier: symbol) => T;
   merge: (container: ServiceContainer) => void;
 }
-

@@ -7,8 +7,8 @@ export interface ImapConfig {
   port: number;
   tls: boolean;
   tlsOptions: {
-    rejectUnauthorized: boolean
-  }
+    rejectUnauthorized: boolean;
+  };
 }
 
 export interface ImapReaderMethods {

@@ -1,9 +1,9 @@
-import type {IServiceContainer} from "./models";
+import type { IServiceContainer } from "./models";
 
 export class ServiceContainer implements IServiceContainer {
   services: Map<symbol, unknown>;
-  
-  constructor () {
+
+  constructor() {
     this.services = new Map();
   }
 
@@ -12,16 +12,16 @@ export class ServiceContainer implements IServiceContainer {
   }
 
   public get<T>(identifier: symbol): T {
-   const service = this.services.get(identifier) as T | undefined
-    if(service){
-      return service
+    const service = this.services.get(identifier) as T | undefined;
+    if (service) {
+      return service;
     }
-     throw Error()
+    throw Error();
   }
 
-  public merge (container: ServiceContainer) {
-    container.services.forEach((value, key)=> {
-        this.bind(key, value)
-    })
+  public merge(container: ServiceContainer) {
+    container.services.forEach((value, key) => {
+      this.bind(key, value);
+    });
   }
 }

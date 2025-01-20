@@ -1,6 +1,16 @@
 import { ReactElement } from "react";
 
-export type ModalSize = "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl" | "5xl" | "full";
+export type ModalSize =
+  | "xs"
+  | "sm"
+  | "md"
+  | "lg"
+  | "xl"
+  | "2xl"
+  | "3xl"
+  | "4xl"
+  | "5xl"
+  | "full";
 
 export interface BaseModalProps {
   title: string;
@@ -13,5 +23,5 @@ export interface ModalState extends ModalParams {
 }
 
 export interface ModalParams {
-  size?: ModalSize | "md"
+  size?: ModalSize | "md";
 }

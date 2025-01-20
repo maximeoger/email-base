@@ -4,8 +4,12 @@
   "workspaces": [
     "packages/*"
   ],
-  "dependencies": { "@types/jest": "^29.5.14", "server-only": "^0.0.1" },
+  "dependencies": {
+    "@types/jest": "^29.5.14",
+    "server-only": "^0.0.1"
+  },
   "devDependencies": {
-    "lerna": "^8.1.8"
+    "lerna": "^8.1.8",
+    "prettier": "3.4.2"
   }
 }

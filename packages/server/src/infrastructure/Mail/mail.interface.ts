@@ -1,4 +1,3 @@
-
 export interface Mail {
   id: number;
   uid: number;
@@ -12,4 +11,4 @@ export interface Mail {
 
 export type MailsResponse = {
   subject: string;
-}[]
+}[];

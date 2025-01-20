@@ -8,15 +8,16 @@ interface IProps extends BaseModalProps {
   onCancel: () => void;
 }
 
-export default function MailInspectorModal (props: IProps) {
-  const { mail, loadingGetMailDetails, errorGetMailDetails } = useGetMailDetails(props.mailId)
+export default function MailInspectorModal(props: IProps) {
+  const { mail, loadingGetMailDetails, errorGetMailDetails } =
+    useGetMailDetails(props.mailId);
 
   const isLoading = loadingGetMailDetails;
-  const isError = errorGetMailDetails ;
+  const isError = errorGetMailDetails;
 
   return (
     <DataContainer loading={isLoading} error={isError}>
-      <MailInspectorContainer mailDetails={mail!}/>
+      <MailInspectorContainer mailDetails={mail!} />
     </DataContainer>
-  )
+  );
 }

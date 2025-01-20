@@ -1,2 +1,2 @@
-export { MailAPIRepository } from "./mail"
-export { CollectionAPIRepository } from "./collection"
+export { MailAPIRepository } from "./mail";
+export { CollectionAPIRepository } from "./collection";

@@ -4,10 +4,6 @@ import { MailModule } from './mail/mail.module';
 import { CollectionModule } from './collection/collection.module';
 
 @Module({
-  imports: [
-    MailModule,
-    CollectionModule,
-    ConfigModule.forRoot()
-  ],
+  imports: [MailModule, CollectionModule, ConfigModule.forRoot()],
 })
 export class AppModule {}

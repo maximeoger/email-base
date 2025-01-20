@@ -6,4 +6,4 @@ export interface IMailAPIRepository {
   addMailToCollection(body: AddMailToCollection): Promise<void>;
 }
 
-export const MailAPIRepositoryUID = Symbol("MailAPIRepository")
+export const MailAPIRepositoryUID = Symbol("MailAPIRepository");

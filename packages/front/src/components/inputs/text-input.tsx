@@ -3,7 +3,7 @@ import useFieldMetaDestructuring from "src/hooks/useFieldMetaDestructuring";
 
 export default function TextInput(props: any) {
   const { state, label, handleBlur } = props;
-  const { errorMessages } = useFieldMetaDestructuring(state)
+  const { errorMessages } = useFieldMetaDestructuring(state);
 
   return (
     <div className="h-[88px]">
@@ -21,4 +21,3 @@ export default function TextInput(props: any) {
     </div>
   );
 }
-

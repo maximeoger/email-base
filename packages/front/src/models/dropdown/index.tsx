@@ -5,5 +5,12 @@ export interface DropdownOption {
   startContent: ReactNode;
   name: string;
   className: string;
-  color:  "default" | "primary" | "secondary" | "success" | "warning" | "danger" | undefined;
+  color:
+    | "default"
+    | "primary"
+    | "secondary"
+    | "success"
+    | "warning"
+    | "danger"
+    | undefined;
 }

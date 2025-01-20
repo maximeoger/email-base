@@ -1,5 +1,5 @@
-import NextAuth from "next-auth"
-import GoogleProvider from "next-auth/providers/google"
+import NextAuth from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
 import JWT from "jsonwebtoken";
 
 const authOptions = {
@@ -12,17 +12,17 @@ const authOptions = {
   callbacks: {
     async session({ session, token }: any) {
       session.user.jwt = JWT.sign(
-        { data: token }, 
-        process.env.CUSTOM_JWT_SECRET as unknown as string
+        { data: token },
+        process.env.CUSTOM_JWT_SECRET as unknown as string,
       );
       return session;
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
   Session: {
-    strategy: "jwt"
+    strategy: "jwt",
   },
-  debug: process.env.NODE_ENV === "development"
-}
+  debug: process.env.NODE_ENV === "development",
+};
 
-export const { auth, handlers } = NextAuth(authOptions)
+export const { auth, handlers } = NextAuth(authOptions);

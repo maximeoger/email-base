@@ -1,4 +1,4 @@
-import { Button, ModalBody, ModalFooter, ModalHeader } from "@nextui-org/react"
+import { Button, ModalBody, ModalFooter, ModalHeader } from "@nextui-org/react";
 import { BaseModalProps } from "src/models/modal";
 
 interface IProps extends BaseModalProps {
@@ -7,13 +7,11 @@ interface IProps extends BaseModalProps {
   onCancel: () => void;
 }
 
-export default function ConfirmModal (props: IProps) {
+export default function ConfirmModal(props: IProps) {
   return (
     <>
       <ModalHeader className="flex flex-col gap-1">{props.title}</ModalHeader>
-      <ModalBody>
-        {props.message}
-      </ModalBody>
+      <ModalBody>{props.message}</ModalBody>
       <ModalFooter>
         <Button color="danger" variant="light" onPress={props.onCancel}>
           {props.cancelText}
@@ -23,5 +21,5 @@ export default function ConfirmModal (props: IProps) {
         </Button>
       </ModalFooter>
     </>
-  )
+  );
 }

@@ -8,29 +8,32 @@ interface IProps {
   id: string;
 }
 
- function MailCard (props: IProps, ref: ForwardedRef<HTMLDivElement>) {
+function MailCard(props: IProps, ref: ForwardedRef<HTMLDivElement>) {
   const { openModal, closeModal } = useModal();
 
-  const openMailInspector = () => openModal(
-    <MailInspectorModal
-      title={props.subject}
-      mailId={props.id}
-      onCancel={closeModal}
-      actionText="add to collection"
-      cancelText="close"
-    />, 
-    { size: "4xl" }
-  )
+  const openMailInspector = () =>
+    openModal(
+      <MailInspectorModal
+        title={props.subject}
+        mailId={props.id}
+        onCancel={closeModal}
+        actionText="add to collection"
+        cancelText="close"
+      />,
+      { size: "4xl" },
+    );
 
   return (
-    <div 
+    <div
       ref={ref}
-      onClick={openMailInspector} 
-      className={"border-1 rounded-sm hover:border-grey hover:cursor-pointer hover:border-black"}
+      onClick={openMailInspector}
+      className={
+        "border-1 rounded-sm hover:border-grey hover:cursor-pointer hover:border-black"
+      }
     >
-      <img src={props.screenshot}/>
+      <img src={props.screenshot} />
     </div>
-  )
+  );
 }
 
-export default forwardRef(MailCard)
+export default forwardRef(MailCard);

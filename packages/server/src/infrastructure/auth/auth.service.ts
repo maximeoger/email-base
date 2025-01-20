@@ -1,7 +1,7 @@
-import { Injectable, Logger } from "@nestjs/common";
-import { PrismaService } from "src/core/prisma/prisma.service";
-import jwt from "jsonwebtoken";
-import { DecodedAuthenticationToken } from "shared/types/auth";
+import { Injectable, Logger } from '@nestjs/common';
+import { PrismaService } from 'src/core/prisma/prisma.service';
+import jwt from 'jsonwebtoken';
+import { DecodedAuthenticationToken } from 'shared/types/auth';
 
 interface DecodedToken {
   data: DecodedAuthenticationToken;
@@ -10,39 +10,39 @@ interface DecodedToken {
 
 @Injectable()
 class AuthService {
+  constructor(private prisma: PrismaService) {}
 
-  constructor(private prisma: PrismaService) {}
-
-  async verifyToken (token: string) : Promise<DecodedToken["data"] | false> {
+  async verifyToken(token: string): Promise<DecodedToken['data'] | false> {
     try {
-      const { data } = jwt.verify(token, process.env.CUSTOM_JWT_SECRET) as jwt.JwtPayload & DecodedToken;
+      const { data } = jwt.verify(
+        token,
+        process.env.CUSTOM_JWT_SECRET,
+      ) as jwt.JwtPayload & DecodedToken;
 
       const currentTimestamp = Math.floor(Date.now() / 1000);
 
       if (data.exp < currentTimestamp) {
-        return false
+        return false;
       }
 
-      return data
-
+      return data;
     } catch (err: unknown) {
-      return false
+      return false;
     }
   }
 
-  async getUser (email: string) : Promise<any> {
+  async getUser(email: string): Promise<any> {
     return await this.prisma.user.findUnique({
       where: {
-        email
+        email,
       },
       select: {
         id: true,
         name: true,
-        email: true
-      }
-    })
+        email: true,
+      },
+    });
   }
-  
 }
 
 export default AuthService;

@@ -8,7 +8,7 @@ function convertBigIntToString(obj: Record<string, any>): Record<string, any> {
   }
 
   const newObj: Record<string, any> = {};
-  
+
   for (const [key, value] of Object.entries(obj)) {
     if (typeof value === 'bigint') {
       newObj[key] = value.toString();

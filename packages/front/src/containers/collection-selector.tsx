@@ -10,11 +10,8 @@ export default function CollectionsSelectorContainer({ data, mailId }: IProps) {
   return (
     <div className="flex flex-col gap-2">
       {data.map((collection: CollectionDto) => (
-        <AddMailToCollectionCard 
-          data={collection} 
-          mailId={mailId}
-        />
+        <AddMailToCollectionCard data={collection} mailId={mailId} />
       ))}
     </div>
-  )
+  );
 }

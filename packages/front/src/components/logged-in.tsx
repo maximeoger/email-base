@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { GalleryVertical, LogOut } from "lucide-react";
 import Image from "next/image";
 import { DropdownOption } from "src/models/dropdown";
@@ -11,35 +11,35 @@ interface IProps {
   userName: string;
 }
 
-export default function LoggedIn (props: IProps) {
-  const router = useRouter()
+export default function LoggedIn(props: IProps) {
+  const router = useRouter();
 
-  const options : Array<DropdownOption> = [
+  const options: Array<DropdownOption> = [
     {
       name: "Collections",
-      onClick: () => router.push('/collections'),
-      startContent: <GalleryVertical/>,
+      onClick: () => router.push("/collections"),
+      startContent: <GalleryVertical />,
       className: "",
-      color: "default"
-    }, 
+      color: "default",
+    },
     {
       name: "Log out",
       onClick: () => signOut(),
-      startContent: <LogOut/>,
+      startContent: <LogOut />,
       className: "",
-      color: "default"
-    }
-  ]
+      color: "default",
+    },
+  ];
 
   return (
     <DropdownWrapper options={options} placement="bottom-start">
-      <Image 
-        className="rounded-full cursor-pointer" 
-        src={props.userImageSrc} 
-        width={24} 
-        height={24} 
+      <Image
+        className="rounded-full cursor-pointer"
+        src={props.userImageSrc}
+        width={24}
+        height={24}
         alt="user avatar"
       />
     </DropdownWrapper>
-  )
+  );
 }

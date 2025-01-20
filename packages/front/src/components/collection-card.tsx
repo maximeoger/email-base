@@ -4,17 +4,17 @@ import { useDeleteCollection } from "src/api/collection/usecases/useDeleteCollec
 import { useModal } from "src/hooks/useModal";
 import ConfirmModal from "./modals/confirm-modal";
 import DropdownWrapper from "./dropdown-wrapper";
-import FlexContainer from "../containers/flex-container"; // Import FlexContainer
+import FlexContainer from "../containers/flex-container";
 import { CollectionDto } from "shared/types/collection";
 
 interface IProps {
-  data: CollectionDto
+  data: CollectionDto;
 }
 
-export default function CollectionCard ({data}: IProps) {
+export default function CollectionCard({ data }: IProps) {
   const { name, emailIds, screenshots } = data;
-  const { onDeleteCollection } = useDeleteCollection()
-  const { openModal, closeModal } = useModal()
+  const { onDeleteCollection } = useDeleteCollection();
+  const { openModal, closeModal } = useModal();
 
   const cardOptions = [
     {
@@ -22,48 +22,59 @@ export default function CollectionCard ({data}: IProps) {
       name: "Delete collection",
       color: "default",
       className: "text-danger",
-      startContent: <Trash2/>
-    }
-  ]
+      startContent: <Trash2 />,
+    },
+  ];
 
-  const handleConfirm = () => onDeleteCollection(`${data.id}`).then(() => closeModal())
+  const handleConfirm = () =>
+    onDeleteCollection(`${data.id}`).then(() => closeModal());
 
-  const openConfirmModal = () => openModal(
-    <ConfirmModal
-      title="Delete collection"
-      message={`Are you sure you want to delete collection ${name} ?`}
-      cancelText="No get back"
-      actionText="yes delete it"
-      onCancel={() => closeModal()}
-      onConfirm={handleConfirm}
-    />,
-    { size: "xl" }
-  )
+  const openConfirmModal = () =>
+    openModal(
+      <ConfirmModal
+        title="Delete collection"
+        message={`Are you sure you want to delete collection ${name} ?`}
+        cancelText="No get back"
+        actionText="yes delete it"
+        onCancel={() => closeModal()}
+        onConfirm={handleConfirm}
+      />,
+      { size: "xl" },
+    );
 
   return (
-    <Card shadow="none" className="min-w-[350px] border border-1 border-grey-300 rounded-md">
+    <Card
+      shadow="none"
+      className="min-w-[350px] border border-1 border-grey-300 rounded-md"
+    >
       <div className="flex flex-col bg-grey-200 h-[150px] justify-end">
         <FlexContainer className="gap-4 items-end px-8">
           {screenshots.map((screenshot, index) => (
-            <img className="h-[110px] w-[100px] bg-grey-400" key={index} src={screenshot}/>
+            <img
+              className="h-[110px] w-[100px] bg-grey-400"
+              key={index}
+              src={screenshot}
+            />
           ))}
         </FlexContainer>
       </div>
       <CardFooter className="border-top-1 border-grey-300 flex justify-between">
         <FlexContainer className="flex-col gap-2">
           <p className="capitalize font-medium">{name}</p>
-          <span className="capitalize font-regular">{emailIds.length} emails</span>
+          <span className="capitalize font-regular">
+            {emailIds.length} emails
+          </span>
         </FlexContainer>
         <div className="px-4">
-          <DropdownWrapper 
-            placement="bottom-end" 
+          <DropdownWrapper
+            placement="bottom-end"
             //@ts-ignore
             options={cardOptions}
           >
-            <Ellipsis className="cursor-pointer"/>
+            <Ellipsis className="cursor-pointer" />
           </DropdownWrapper>
         </div>
       </CardFooter>
     </Card>
-  )  
+  );
 }

@@ -4,22 +4,22 @@ import { ScreenshotMakerMethods } from "../models/screenshot-maker";
 export default class ScreenshotMaker implements ScreenshotMakerMethods {
   private browser: Browser;
 
-  constructor (browser: Browser) {
+  constructor(browser: Browser) {
     this.browser = browser;
   }
 
-  static init (browser: Browser) {
-    return new ScreenshotMaker(browser)
+  static init(browser: Browser) {
+    return new ScreenshotMaker(browser);
   }
 
-  private async openNewPage (html: string) {
-    const page = await this.browser.newPage()
-    await page.setContent(html, { waitUntil: "domcontentloaded" })
+  private async openNewPage(html: string) {
+    const page = await this.browser.newPage();
+    await page.setContent(html, { waitUntil: "domcontentloaded" });
 
-    return page
+    return page;
   }
 
-  public async takeScreenshot (html: string) {
+  public async takeScreenshot(html: string) {
     const page = await this.openNewPage(html);
 
     const height = await page.evaluate(() => {
@@ -27,15 +27,18 @@ export default class ScreenshotMaker implements ScreenshotMakerMethods {
     });
 
     const width = await page.evaluate(() => {
-      return document.body.scrollWidth
-    })
+      return document.body.scrollWidth;
+    });
 
     await page.setViewport({ width, height });
 
-    const screenshot = await page.screenshot({ encoding: 'binary', fullPage: true })
+    const screenshot = await page.screenshot({
+      encoding: "binary",
+      fullPage: true,
+    });
 
-    await page.close()
+    await page.close();
 
-    return screenshot
+    return screenshot;
   }
 }
