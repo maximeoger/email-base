@@ -2,8 +2,7 @@ import { Injectable, Logger } from "@nestjs/common";
 import { PrismaService } from "src/core/prisma/prisma.service";
 import { Prisma } from '@prisma/client';
 import convertBigIntToString from "src/helpers/convertBigIntToString";
-import { format } from "date-fns";
-import { Request } from "express";
+import e, { Request } from "express";
 
 @Injectable()
 export class CollectionService {
@@ -19,17 +18,40 @@ export class CollectionService {
       },
       include: {
         collection_email: {
-          select: {
-            email_id: true
+          include: {
+            email: {
+              include: {
+                email_screenshot_email_screenshot_email_idToemail: true
+              }
+            }
           }
-        }
+        },
       }
     })
 
-    return collections.map(collection => ({
-      ...convertBigIntToString(collection),
-      emailIds: collection.collection_email.map(email => convertBigIntToString(email))
-    }))
+    return collections.map(collection => {
+      const emailIds = collection.collection_email.map((ce) => Number(ce.email_id));
+
+      const screenshots = collection.collection_email
+        .map((ce) => {
+          const email = ce.email;
+          const screenshot = email.email_screenshot_email_screenshot_email_idToemail?.base_64;
+          return { email, screenshot }
+        })
+        .sort(
+          (a,b) => 
+            new Date(a.email.created_at).getTime() -
+            new Date(b.email.created_at).getTime()
+        )
+        .slice(0,3)
+        .map((entry) => entry.screenshot)
+
+      return {
+        ...collection,
+        emailIds,
+        screenshots
+      }
+    })
   }
 
   async createCollection(data: Prisma.collectionCreateInput, user: Request['user']) {

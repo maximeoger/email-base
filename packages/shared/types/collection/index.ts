@@ -10,6 +10,7 @@ export class CollectionDto {
   createdAt: string;
   updatedAt: string;
   emailIds: Array<number>;
+  screenshots: Array<string>;
 }
 
 export class UpdateCollectionDto {

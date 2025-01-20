@@ -1,7 +1,8 @@
+import "./polyfill";
 import { NestFactory } from '@nestjs/core';
 import { FastifyAdapter } from '@nestjs/platform-fastify';
 import { AppModule } from './infrastructure/app.module';
-import cookieParser from 'cookie-parser';
+//import cookieParser from 'cookie-parser';
 import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
@@ -16,7 +17,7 @@ async function bootstrap() {
     credentials: true,
   });
 
-  app.use(cookieParser());
+  //app.use(cookieParser());
 
   app.useGlobalPipes(new ValidationPipe())
 
