@@ -10,31 +10,39 @@ import { ModalParams, ModalState } from "src/models/modal";
 
 export default function ModalManager() {
   const [modalState, setModalState] = useState<ModalState | null>(null);
-  const { isOpen, onOpen } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  if ([typeof window, typeof document].includes("undefined")) return null;
 
   window.setModalInManager = (
     modal: ReactElement | null,
     params?: ModalParams,
-  ) => setModalState({ component: modal, ...(params || {}) });
+  ) => {
+    if (modal) {
+      setModalState({ component: modal, ...(params || {}) });
+    } else {
+      setModalState(null);
+    }
+  };
 
   useEffect(() => {
     if (modalState) {
       onOpen();
+    } else {
+      onClose();
     }
   }, [modalState]);
-
-  if (!modalState) return null;
 
   return createPortal(
     <NextUIModal
       isOpen={isOpen}
-      size={modalState.size}
+      size={modalState?.size}
       radius="sm"
       scrollBehavior="inside"
       onOpenChange={() => setModalState(null)}
     >
       <ModalContent data-name="modal-content">
-        {modalState.component}
+        {modalState?.component}
       </ModalContent>
     </NextUIModal>,
     document.body,
