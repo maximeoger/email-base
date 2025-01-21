@@ -7,21 +7,18 @@ import { CollectionFormValues } from "src/models/collection";
 import TextInput from "../inputs/text-input";
 import TextArea from "../inputs/textarea";
 import { useCreateCollection } from "src/api/collection/usecases/useCreateCollection";
-import { useModal } from "src/hooks/useModal";
 
 interface IProps extends BaseModalProps {
   defaultValues?: CollectionFormValues;
   onCancel: () => void;
-  onConfirm: () => void;
+  onConfirm: (value: CollectionFormValues) => void;
 }
 
 export default function CollectionModal({ defaultValues, ...props }: IProps) {
-  const { onCreateCollection, isCreatingCollection } = useCreateCollection();
-  const { closeModal } = useModal();
+  const { isCreatingCollection } = useCreateCollection();
 
   const { Field, handleSubmit } = useForm({
-    onSubmit: async ({ value }) =>
-      onCreateCollection(value).then(() => closeModal()),
+    onSubmit: async ({ value }) => props.onConfirm(value),
     validatorAdapter: zodValidator(),
     validators: {
       onChange: collectionFormSchema,

@@ -26,6 +26,10 @@ export class API {
     return this.instance.put(endpoint, body);
   }
 
+  public patch<U, T>(endpoint: string, body: U): Promise<T> {
+    return this.instance.patch(endpoint, body);
+  }
+
   public delete<T>(endpoint: string, params: string = ""): Promise<T> {
     return this.instance.delete(`${endpoint}?${params}`);
   }

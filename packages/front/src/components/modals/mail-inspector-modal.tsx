@@ -9,8 +9,7 @@ interface IProps extends BaseModalProps {
 }
 
 export default function MailInspectorModal(props: IProps) {
-  const { mail, loadingGetMailDetails, errorGetMailDetails } =
-    useGetMailDetails(props.mailId);
+  const { mail, loadingGetMailDetails, errorGetMailDetails } = useGetMailDetails(props.mailId);
 
   const isLoading = loadingGetMailDetails;
   const isError = errorGetMailDetails;
