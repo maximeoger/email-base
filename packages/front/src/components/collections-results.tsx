@@ -3,13 +3,19 @@ import { useGetCollections } from "src/api/collection/usecases/useGetCollections
 import DataContainer from "./data-container";
 import CollectionsContainer from "src/containers/collections";
 
-export default function CollectionResults() {
-  const { collections, loadingGetCollections, errorGetCollections } =
-    useGetCollections();
+interface IProps {
+  onCreateCollectionClick: () => void;
+}
+
+export default function CollectionResults(props: IProps) {
+  const { collections, loadingGetCollections, errorGetCollections } = useGetCollections();
 
   return (
     <DataContainer loading={loadingGetCollections} error={errorGetCollections}>
-      <CollectionsContainer data={collections} />
+      <CollectionsContainer 
+        data={collections} 
+        onCreateCollectionClick={props.onCreateCollectionClick}
+      />
     </DataContainer>
   );
 }

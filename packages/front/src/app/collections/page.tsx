@@ -24,9 +24,11 @@ export default function Collections() {
   return (
     <PageServiceContainer>
       <section className="px-20 mt-20">
-        <Button onClick={onOpen}>Create collection</Button>
+        <Button className="bg-grey-800 text-grey-100" onClick={onOpen}>Create collection</Button>
         <div className="flex gap-4 flex-wrap">
-          <CollectionResults />
+          <CollectionResults 
+            onCreateCollectionClick={onOpen}
+          />
         </div>
       </section>
       <ModalManager />

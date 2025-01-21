@@ -45,7 +45,8 @@ export default function CollectionCard({ data }: IProps) {
   return (
     <Card
       shadow="none"
-      className="min-w-[350px] border border-1 border-grey-300 rounded-md"
+      isHoverable={true}
+      className="min-w-[350px] border border-1 border-grey-300 rounded-md cursor-pointer"
     >
       <div className="flex flex-col bg-grey-200 h-[150px] justify-end">
         <FlexContainer className="gap-4 items-end px-8">
