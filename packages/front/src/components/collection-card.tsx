@@ -1,37 +1,23 @@
 import { Card, CardFooter } from "@nextui-org/react";
-import { Ellipsis, Trash2 } from "lucide-react";
-import { useDeleteCollection } from "src/api/collection/usecases/useDeleteCollection";
-import { useModal } from "src/hooks/useModal";
-import ConfirmModal from "./modals/confirm-modal";
+import { Edit, Ellipsis, Trash2 } from "lucide-react";
 import DropdownWrapper from "./dropdown-wrapper";
 import FlexContainer from "../containers/flex-container";
 import { CollectionDto } from "shared/types/collection";
+import { useCollectionModals } from "../hooks/useCollectionModals";
 
 interface IProps {
   data: CollectionDto;
 }
 
 export default function CollectionCard({ data }: IProps) {
+  const { 
+    openConfirmModal,
+    openEditCollectionModal
+  } = useCollectionModals({ data });
+
   const { name, emailIds, screenshots } = data;
-  const { onDeleteCollection } = useDeleteCollection();
-  const { openModal, closeModal } = useModal();
 
-  const handleConfirm = () =>
-    onDeleteCollection(`${data.id}`).then(() => closeModal());
-
-  const openConfirmModal = () =>
-    openModal(
-      <ConfirmModal
-        title="Delete collection"
-        message={`Are you sure you want to delete collection ${name} ?`}
-        cancelText="No get back"
-        actionText="yes delete it"
-        onCancel={() => closeModal()}
-        onConfirm={handleConfirm}
-      />,
-      { size: "xl" },
-    );
-
+  
   const cardOptions = [
     {
       onClick: () => openConfirmModal(),
@@ -40,6 +26,12 @@ export default function CollectionCard({ data }: IProps) {
       className: "text-danger",
       startContent: <Trash2 />,
     },
+    {
+      onClick: () => openEditCollectionModal(),
+      name: "Edit collection",
+      color: "default",
+      startContent: <Edit/>
+    }
   ];
 
   return (

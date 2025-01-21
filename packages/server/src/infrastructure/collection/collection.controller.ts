@@ -10,6 +10,7 @@ import {
   Patch,
   Query,
   HttpCode,
+  Param,
 } from '@nestjs/common';
 import { CollectionService } from './collection.service';
 import {
@@ -67,12 +68,12 @@ export class CollectionController {
     });
   }
 
-  @Patch()
+  @Patch(":id")
   @HttpCode(200)
   async updateCollection(
-    @Query('id') id: string,
+    @Param('id') id: number,
     @Body() collectionUpdate: UpdateCollectionDto,
-  ): Promise<any> {
+  ): Promise<CollectionDto> {
     return await this.collectionService.updateCollection(collectionUpdate, {
       where: {
         id: Number(id),

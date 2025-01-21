@@ -1,6 +1,7 @@
 import { CollectionFormValues } from "src/models/collection";
 import { API } from "..";
 import { APIInstance } from "src/models/api";
+import { CollectionDto, UpdateCollectionDto } from "shared/types/collection";
 
 export class CollectionAPIRepository extends API {
   public constructor(instance: APIInstance) {
@@ -31,6 +32,14 @@ export class CollectionAPIRepository extends API {
         `/collection`,
         collectionCreate,
       );
+    } catch (error: unknown) {
+      throw error;
+    }
+  }
+
+  public async updateCollection(body: UpdateCollectionDto, id: number) {
+    try {
+      await this.patch<UpdateCollectionDto, CollectionDto>(`/collection/${id}`, body);
     } catch (error: unknown) {
       throw error;
     }
