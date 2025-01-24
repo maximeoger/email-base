@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import LogInButton from "src/components/log-in-button";
 import CollectionSelector from "src/components/collection-selector";
 import FlexContainer from "./flex-container";
+import { useTranslations } from "next-intl";
 
 interface IProps {
   mailDetails: Mail;
@@ -12,6 +13,7 @@ interface IProps {
 function MailInspectorContainer({ mailDetails }: IProps) {
   const { data: session } = useSession();
   const { subject, sender, body_html, id } = mailDetails;
+  const t = useTranslations("components.mail_inspector");
 
   return (
     <div className="flex h-[80vh]">
@@ -23,7 +25,7 @@ function MailInspectorContainer({ mailDetails }: IProps) {
         <ModalHeader className="flex flex-col p-4 text-md border-b">
           <span className="text-ellipsis  text-wrap">{subject}</span>
           <div className="flex gap-4 font-medium">
-            <span>From: </span>
+            <span>{t("from")}</span>
             <Link href="/" className="color-mint-500 text-underline">
               {sender.name}
             </Link>
@@ -33,7 +35,7 @@ function MailInspectorContainer({ mailDetails }: IProps) {
           {session?.user ? (
             <div className="p-4 flex flex-col">
               <span className="text-sm font-semibold">
-                Add this email to a collection
+                {t('add_to_collection_button')}
               </span>
               <div className="mt-4">
                 <CollectionSelector mailId={id} />
@@ -43,16 +45,14 @@ function MailInspectorContainer({ mailDetails }: IProps) {
             <FlexContainer className="flex-col p-4 gap-4">
               <FlexContainer className="flex-col gap-2">
                 <span className="text-md font-semibold">
-                  You are not Logged In.
+                {t('not_logged_in.title')}
                 </span>
                 <span className="text-sm font-medium text-center font-grey-300">
-                  By Loging Into your account, <br />
-                  you can save this email and manage <br />
-                  your collections !
+                  {t('not_logged_in.text')}
                 </span>
               </FlexContainer>
               <div className="mt-4">
-                <LogInButton>Log In</LogInButton>
+                <LogInButton/>
               </div>
             </FlexContainer>
           )}
