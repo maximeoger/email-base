@@ -1,0 +1,93 @@
+{
+  "pages": {
+    "index": {
+      "metadata": {
+        "title": "Emailbase | Trouvez l'inspiration",
+        "description": "Parcourez un large éventail d'emails marketing pour votre inspiration"
+      },
+      "jumbotron": {
+        "text": "Explorez plus de {count} modèles d'emails originaux de toutes marques",
+        "button": "C'est parti"
+      }
+    },
+    "login": {
+      "sign_in": "Connectez-vous",
+      "to_your_account": "à votre compte"
+    },
+    "collections": {
+      "create_collection_button": "Créer une collection"
+    }
+  },
+  "components": {
+    "header": {
+      "authenticated_dropdown": {
+        "collections": "Mes collections",
+        "log_out": "Déconnexion"
+      }
+    },
+    "sign_in_button": "Me connecter avec Google",
+    "login_button": "Connexion",
+    "mail_inspector": {
+      "from": "De :",
+      "add_to_collection-button": "Ajouter cet email à une collection",
+      "not_logged_in": {
+        "title": "Vous n'êtes pas connecté.",
+        "text": "En vous connectant à votre compte, vous pourrez sauvegarder cet email et gérer vos collections !"
+      }
+    },
+    "collection_card": {
+      "options_dropdown": {
+        "delete": "Supprimer la collection",
+        "edit": "Modifier la collection"
+      }
+    },
+    "create_collection_card": {
+      "title": "Créer une nouvelle collection",
+      "text": "Et y ajouter des emails pour l'inspiration",
+      "button": "Créer une collection"
+    },
+    "footer": {
+      "terms": "Conditions",
+      "privacy": "Confidentialité",
+      "legal": "Mentions légales",
+      "contact": "Contact"
+    }
+  },
+  "modals": {
+    "create_collection_modal": {
+      "title": "Créer une collection",
+      "cancel": "Annuler",
+      "confirm": "Créer"
+    },
+    "update_collection_modal": {
+      "title": "Modifier la collection",
+      "cancel": "Annuler",
+      "confirm": "Valider"
+    },
+    "delete_collection_modal": {
+      "title": "Supprimer une collection",
+      "message": "Êtes-vous sûr de vouloir supprimer la collection {name} ?",
+      "cancel": "Annuler",
+      "confirm": "Supprimer"
+    }
+  },
+  "forms": {
+    "collection": {
+      "fields": {
+        "name": {
+          "label": "Nom",
+          "placeholder": "Entrez un nom pour votre collection"
+        },
+        "description": {
+          "label": "Description",
+          "placeholder": "À quoi sert cette collection ?"
+        }
+      },
+      "errors": {
+        "name_required": "Veuillez choisir un nom de collection valide",
+        "name_max_length": "La longueur du nom doit être de {count} caractères maximum",
+        "description_max_length": "La description doit être de {count} caractères maximum"
+      }
+    }
+  }
+}

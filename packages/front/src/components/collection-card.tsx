@@ -4,31 +4,32 @@ import DropdownWrapper from "./dropdown-wrapper";
 import FlexContainer from "../containers/flex-container";
 import { CollectionDto } from "shared/types/collection";
 import { useCollectionModals } from "../hooks/useCollectionModals";
+import { useTranslations } from "next-intl";
 
 interface IProps {
   data: CollectionDto;
 }
 
 export default function CollectionCard({ data }: IProps) {
+  const t = useTranslations('components.collection_card');
   const { 
     openConfirmModal,
     openEditCollectionModal
   } = useCollectionModals({ data });
 
   const { name, emailIds, screenshots } = data;
-
   
   const cardOptions = [
     {
-      onClick: () => openConfirmModal(),
-      name: "Delete collection",
+      onClick: () => openConfirmModal(data.name),
+      name: t("options_dropdown.delete"),
       color: "default",
       className: "text-danger",
       startContent: <Trash2 />,
     },
     {
       onClick: () => openEditCollectionModal(),
-      name: "Edit collection",
+      name: t("options_dropdown.edit"),
       color: "default",
       startContent: <Edit/>
     }

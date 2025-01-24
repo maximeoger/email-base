@@ -5,12 +5,14 @@ import CollectionModal from "src/components/modals/collection-modal";
 import { CollectionDto, CreateCollectionDto, UpdateCollectionDto } from "shared/types/collection";
 import { useUpdateCollection } from "src/api/collection/usecases/useUpdateCollection";
 import { useCreateCollection } from "src/api/collection/usecases/useCreateCollection";
+import { useTranslations } from "next-intl";
 
 interface IProps {
   data: CollectionDto
 }
 
 export const useCollectionModals = (props?: Partial<IProps>) => {
+  const t = useTranslations("modals");
   const { onDeleteCollection } = useDeleteCollection();
   const { onUpdateCollection } = useUpdateCollection();
   const { onCreateCollection } = useCreateCollection();
@@ -36,22 +38,22 @@ export const useCollectionModals = (props?: Partial<IProps>) => {
   const openCreateCollectionModal = () =>
     openModal(
       <CollectionModal
-        title="Create collection"
-        cancelText="Go Back"
-        actionText="Create collectioon"
+        title={t('create_collection_modal.title')}
+        cancelText={t('create_collection_modal.cancel')}
+        actionText={t('create_collection_modal.confirm')}
         onCancel={closeModal}
         onConfirm={handleConfirmCreate}
       />,
       { size: "xl" },
     );
 
-  const openConfirmModal = () =>
+  const openConfirmModal = (name: string) =>
     openModal(
       <ConfirmModal
-        title="Delete collection"
-        message={`Are you sure you want to delete collection ${name} ?`}
-        cancelText="No get back"
-        actionText="yes delete it"
+        title={t('delete_collection_modal.title')}
+        message={t('delete_collection_modal.message', { name })}
+        cancelText={t('delete_collection_modal.cancel')}
+        actionText={t('delete_collection_modal.confirm')}
         onCancel={handleClose}
         onConfirm={handleConfirmDelete}
       />,
@@ -61,9 +63,9 @@ export const useCollectionModals = (props?: Partial<IProps>) => {
   const openEditCollectionModal = () => 
     openModal(
       <CollectionModal
-        title="Edit collection"
-        actionText="Update collection"
-        cancelText="Cancel"
+        title={t('update_collection_modal.title')}
+        actionText={t('update_collection_modal.confirm')}
+        cancelText={t('create_collection_modal.cancel')}
         defaultValues={{
           name: data?.name || "",
           description: data?.description || ""

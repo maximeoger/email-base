@@ -17,7 +17,7 @@ export default function Authenticated() {
         </FlexContainer>
       ) : (
         <FlexContainer className="gap-4">
-          <LogInButton>Log In</LogInButton>
+          <LogInButton/>
         </FlexContainer>
       )}
     </div>

@@ -6,6 +6,8 @@
   ],
   "dependencies": {
     "@types/jest": "^29.5.14",
+    "i18next": "^24.2.1",
+    "react-i18next": "^15.4.0",
     "server-only": "^0.0.1"
   },
   "devDependencies": {
