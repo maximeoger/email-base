@@ -7,7 +7,6 @@ module.exports = {
       args: "dev",
       exec_mode: "fork_mode",
       max_memory_restart: "1G",
-      interpreter: "bun",
     },
     {
       name: "server",
