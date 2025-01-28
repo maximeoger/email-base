@@ -25,8 +25,6 @@ export default class AuthInterceptor implements NestInterceptor {
 
     const user = await this.authService.getUser(email) ?? await this.authService.createUser(name, email, sub);
 
-    this.logger.debug(user)
-
     request.user = user;
 
     return next.handle();
