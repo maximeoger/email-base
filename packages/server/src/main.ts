@@ -2,7 +2,6 @@ import './polyfill';
 import { NestFactory } from '@nestjs/core';
 import { FastifyAdapter } from '@nestjs/platform-fastify';
 import { AppModule } from './infrastructure/app.module';
-//import cookieParser from 'cookie-parser';
 import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
@@ -12,12 +11,10 @@ async function bootstrap() {
   );
 
   app.enableCors({
-    origin: 'http://localhost:3000',
+    origin: process.env.CORS_ALLOW_ORIGIN_URL,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
-
-  //app.use(cookieParser());
 
   app.useGlobalPipes(new ValidationPipe());
 
