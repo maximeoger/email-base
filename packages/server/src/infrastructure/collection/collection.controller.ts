@@ -22,7 +22,7 @@ import AuthGuard from '../auth/auth.guard';
 import { Request } from 'express';
 import AuthInterceptor from '../auth/auth.interceptor';
 
-@Controller('collection')
+@Controller('api/collection')
 @UseGuards(AuthGuard)
 @UseInterceptors(AuthInterceptor)
 export class CollectionController {
