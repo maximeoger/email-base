@@ -27,6 +27,7 @@ export const ServicesProvider = ({
 };
 
 const getServiceID = (service: symbol): string =>
+  //@ts-ignore
   typeof service === "symbol" ? service.description : String(service);
 
 export function useInjection<T>(service: symbol): T {

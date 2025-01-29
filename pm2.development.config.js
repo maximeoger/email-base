@@ -1,10 +1,10 @@
 module.exports = {
   apps: [
     {
-      name: "frontend",
+      name: "front",
       cwd: "./packages/front",
-      script: "next",
-      args: "dev",
+      script: "node",
+      args: "../../node_modules/next/dist/bin/next dev",
       exec_mode: "fork_mode",
       max_memory_restart: "1G",
     },
@@ -13,8 +13,8 @@ module.exports = {
       cwd: "./packages/server",
       max_memory_restart: "1G",
       instances: 1,
-      script: "npm",
-      args: "start",
+      script: "node",
+      args: "../../node_modules/@nestjs/cli/bin/nest.js start --watch",
       exec_mode: "fork_mode",
     },
   ],
