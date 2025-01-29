@@ -10,7 +10,7 @@ const baseApi = axios.create({
 export class API {
   instance: APIInstance;
 
-  constructor(instance: APIInstance | null) {
+  constructor(instance?: APIInstance) {
     this.instance = instance || baseApi;
   }
 

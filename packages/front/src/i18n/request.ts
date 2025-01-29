@@ -1,7 +1,7 @@
 import {getRequestConfig} from 'next-intl/server';
 
 export default getRequestConfig(async () => {
-  let locale = 'fr';
+  const locale = 'fr';
 
   return {
     locale,
