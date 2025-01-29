@@ -10,7 +10,7 @@ export class CollectionAPIRepository extends API {
 
   public async getCollections() {
     try {
-      const response = await this.get<any>("/collection");
+      const response = await this.get<any>("/api/collection");
       return response.data;
     } catch (error: unknown) {
       throw error;
@@ -20,7 +20,7 @@ export class CollectionAPIRepository extends API {
   public async deleteCollection(id: string) {
     try {
       const queryParams = new URLSearchParams({ id });
-      await this.delete<any>(`/collection`, queryParams.toString());
+      await this.delete<any>(`/api/collection`, queryParams.toString());
     } catch (error: unknown) {
       throw error;
     }
@@ -29,7 +29,7 @@ export class CollectionAPIRepository extends API {
   public async createCollection(collectionCreate: CollectionFormValues) {
     try {
       await this.post<CollectionFormValues, void>(
-        `/collection`,
+        `/api/collection`,
         collectionCreate,
       );
     } catch (error: unknown) {
@@ -39,7 +39,7 @@ export class CollectionAPIRepository extends API {
 
   public async updateCollection(body: UpdateCollectionDto, id: number) {
     try {
-      await this.patch<UpdateCollectionDto, CollectionDto>(`/collection/${id}`, body);
+      await this.patch<UpdateCollectionDto, CollectionDto>(`/api/collection/${id}`, body);
     } catch (error: unknown) {
       throw error;
     }

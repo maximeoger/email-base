@@ -15,7 +15,7 @@ import { Mail, MailsResponse } from './mail.interface';
 //import { AddMailToCollectionDto } from 'shared/types/mail';
 import AuthGuard from '../auth/auth.guard';
 
-@Controller('mails')
+@Controller('api/mails')
 export class MailController {
   constructor(private readonly mailService: MailService) {}
 
