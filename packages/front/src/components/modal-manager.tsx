@@ -12,6 +12,14 @@ export default function ModalManager() {
   const [modalState, setModalState] = useState<ModalState | null>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  useEffect(() => {
+    if (modalState) {
+      onOpen();
+    } else {
+      onClose();
+    }
+  }, [modalState, onOpen, onClose]);
+
   if ([typeof window, typeof document].includes("undefined")) return null;
 
   window.setModalInManager = (
@@ -24,14 +32,6 @@ export default function ModalManager() {
       setModalState(null);
     }
   };
-
-  useEffect(() => {
-    if (modalState) {
-      onOpen();
-    } else {
-      onClose();
-    }
-  }, [modalState]);
 
   return createPortal(
     <NextUIModal

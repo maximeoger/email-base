@@ -4,7 +4,7 @@ import { APIInstance } from "src/models/api";
 import { CollectionDto, UpdateCollectionDto } from "shared/types/collection";
 
 export class CollectionAPIRepository extends API {
-  public constructor(instance: APIInstance) {
+  public constructor(instance?: APIInstance | undefined) {
     super(instance);
   }
 

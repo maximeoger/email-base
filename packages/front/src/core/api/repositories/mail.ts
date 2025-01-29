@@ -3,7 +3,7 @@ import { API } from "..";
 import { APIInstance } from "src/models/api";
 
 export class MailAPIRepository extends API {
-  public constructor(instance: APIInstance) {
+  public constructor(instance?: APIInstance | undefined) {
     super(instance);
   }
 
