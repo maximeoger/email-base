@@ -22,6 +22,10 @@ export default function ModalManager() {
 
   if ([typeof window, typeof document].includes("undefined")) return null;
 
+  window.env = {
+    NEXT_PUBLIC_API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL as string,
+  }
+
   window.setModalInManager = (
     modal: ReactElement | null,
     params?: ModalParams,
