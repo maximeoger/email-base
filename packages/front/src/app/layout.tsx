@@ -6,6 +6,14 @@ import Header from "src/components/header";
 import Footer from "src/components/footer";
 import "../index.css";
 
+export const metadata = {
+  title: 'Les meilleurs templates d\'emails marketing',
+  description: 'Aggregateur d\'emails marketing français',
+  icons: {
+    icon: '/favicon.ico',
+  },
+};
+
 export default async function RootLayout({ children }: PropsWithChildren) {
 
   const locale = await getLocale();
