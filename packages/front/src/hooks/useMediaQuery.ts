@@ -24,4 +24,4 @@ export default function useMediaQuery (width: number) {
   }, []);
 
   return targetReached;
-};
+}
