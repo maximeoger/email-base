@@ -10,7 +10,7 @@ export default function CollectionPage () {
 
   return (
     <>
-      <section className="px-20 mt-20">
+      <section className="p-4 md:px-20 md:mt-20">
         <Button 
           className="bg-grey-800 text-grey-100" 
           onClick={openCreateCollectionModal}

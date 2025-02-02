@@ -4,6 +4,7 @@ import { useAddMailToCollection } from "src/api/mail/usecases/useAddMailToCollec
 import FlexContainer from "../containers/flex-container";
 import { CollectionDto } from "shared/types/collection";
 import classNames from "classnames";
+import { useTranslations } from "next-intl";
 
 interface IProps {
   data: CollectionDto;
@@ -14,6 +15,8 @@ export default function AddMailToCollectionCard({ data, mailId }: IProps) {
   const { onAddMailToCollection, isAddingMailToCollection } =
     useAddMailToCollection();
 
+  const t = useTranslations("components.add-mail-to-collection-card");
+   
   const handleClickAddToCollection = () =>
     onAddMailToCollection({
       mailId,
@@ -36,10 +39,10 @@ export default function AddMailToCollectionCard({ data, mailId }: IProps) {
       >
         {added ? (
           <FlexContainer className="gap-2">
-            <Check size={14} /> Added
+            <Check size={14} /> {t("added")}
           </FlexContainer>
         ) : (
-          <span>Add to collection</span>
+          <span>{t("add")}</span>
         )}
       </Button>
     </div>
