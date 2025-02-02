@@ -29,12 +29,16 @@
     "login_button": "Connexion",
     "mail_inspector": {
       "from": "De :",
-      "add_to_collection-button": "Ajouter cet email à une collection",
+      "add_to_collection_button": "Ajouter cet email à une collection",
       "not_logged_in": {
         "title": "Vous n'êtes pas connecté.",
         "text": "En vous connectant à votre compte, vous pourrez sauvegarder cet email et gérer vos collections !"
       }
     },
+    "add-mail-to-collection-card": {
+      "add": "Ajouter",
+      "added": "Ajouté"
+    }, 
     "collection_card": {
       "options_dropdown": {
         "delete": "Supprimer la collection",

@@ -1,10 +1,11 @@
-import { Card, CardFooter } from "@nextui-org/react";
+import { CardFooter } from "@nextui-org/react";
 import { Edit, Ellipsis, Trash2 } from "lucide-react";
 import DropdownWrapper from "./dropdown-wrapper";
 import FlexContainer from "../containers/flex-container";
 import { CollectionDto } from "shared/types/collection";
 import { useCollectionModals } from "../hooks/useCollectionModals";
 import { useTranslations } from "next-intl";
+import CollectionCardContainer from "./collection-card-container";
 
 interface IProps {
   data: CollectionDto;
@@ -36,13 +37,9 @@ export default function CollectionCard({ data }: IProps) {
   ];
 
   return (
-    <Card
-      shadow="none"
-      isHoverable={true}
-      className="min-w-[350px] border border-1 border-grey-300 rounded-md cursor-pointer"
-    >
-      <div className="flex flex-col bg-grey-200 h-[150px] justify-end">
-        <FlexContainer className="gap-4 items-end px-8">
+    <CollectionCardContainer>
+      <div className="flex flex-col bg-grey-200 w-full h-[150px] justify-end">
+        <FlexContainer className="gap-2 items-end justify-center px-4">
           {screenshots.map((screenshot, index) => (
             <img
               className="h-[110px] w-[100px] bg-grey-400"
@@ -69,6 +66,6 @@ export default function CollectionCard({ data }: IProps) {
           </DropdownWrapper>
         </div>
       </CardFooter>
-    </Card>
+    </CollectionCardContainer>
   );
 }
