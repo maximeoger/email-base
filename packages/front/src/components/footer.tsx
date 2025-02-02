@@ -6,9 +6,10 @@ import { useTranslations } from "next-intl";
 export default function Footer() {
   const t = useTranslations("components.footer");
   return (
-    <div className="px-8 py-4 bg-white flex flex-col gap-8 items-center py-16">
+    <div className="px-8 py-4 bg-white flex flex-col gap-8 md:items-center">
       <Image priority alt="email base logo" src={logo} />
-      <div className="flex gap-16 mb-16">
+
+      <div className="flex flex-col items-left gap-8 md:flex-row">
         <Link className="hover:underline" href="/terms">
           {t("terms")}
         </Link>

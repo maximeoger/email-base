@@ -13,16 +13,17 @@ interface IProps {
 function MailInspectorContainer({ mailDetails }: IProps) {
   const { data: session } = useSession();
   const { subject, sender, body_html, id } = mailDetails;
+
   const t = useTranslations("components.mail_inspector");
 
   return (
-    <div className="flex h-[80vh]">
+    <div className="flex flex-col md:flex-row h-[100vh] md:h-[80vh]">
       <div
         className="flex-1 h-full overflow-y-auto rounded-l-md"
         dangerouslySetInnerHTML={{ __html: body_html }}
       />
-      <div className="w-[400px]">
-        <ModalHeader className="flex flex-col p-4 text-md border-b">
+      <div className="w-full md:w-[300px] xl:w-[360px]">
+        <ModalHeader className="flex flex-col p-4 text-md border-t md:border-none">
           <span className="text-ellipsis  text-wrap">{subject}</span>
           <div className="flex gap-4 font-medium">
             <span>{t("from")}</span>
@@ -31,18 +32,18 @@ function MailInspectorContainer({ mailDetails }: IProps) {
             </Link>
           </div>
         </ModalHeader>
-        <div className="bg-grey-200 m-4 mt-8 rounded-md">
+        <div className="bg-grey-200 p-4 border-t">
           {session?.user ? (
-            <div className="p-4 flex flex-col">
+            <div className="flex flex-col">
               <span className="text-sm font-semibold">
                 {t('add_to_collection_button')}
               </span>
-              <div className="mt-4">
+              <div className="mt-4 max-h-[128px] md:max-h-full overflow-scroll">
                 <CollectionSelector mailId={id} />
               </div>
             </div>
           ) : (
-            <FlexContainer className="flex-col p-4 gap-4">
+            <FlexContainer className="flex-col gap-4">
               <FlexContainer className="flex-col gap-2">
                 <span className="text-md font-semibold">
                 {t('not_logged_in.title')}
