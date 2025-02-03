@@ -28,7 +28,7 @@ export class CollectionAPIRepository extends API {
 
   public async createCollection(collectionCreate: CollectionFormValues) {
     try {
-      await this.post<CollectionFormValues, void>(
+      return await this.post<CollectionFormValues, void>(
         `/api/collection`,
         collectionCreate,
       );

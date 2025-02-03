@@ -4,6 +4,8 @@ import React, { PropsWithChildren } from "react";
 import { SessionProvider } from "next-auth/react";
 import Header from "src/components/header";
 import Footer from "src/components/footer";
+import { CSPostHogProvider } from "src/providers/posthog-provider";
+
 import "../index.css";
 
 export const metadata = {
@@ -22,17 +24,19 @@ export default async function RootLayout({ children }: PropsWithChildren) {
 
   return (
     <html lang={locale}>
-      <body className="min-h-screen flex flex-col">
-        <NextIntlClientProvider messages={messages}>
-          <SessionProvider>
-            <div className="fixed z-[40] left-0 right-0">
-              <Header />
-            </div>
-            <main className="bg-gray-100 pt-[66px] flex flex-1">{children}</main>
-            <Footer />
-          </SessionProvider>
-        </NextIntlClientProvider>
-      </body>
+      <CSPostHogProvider>
+        <body className="min-h-screen flex flex-col">
+          <NextIntlClientProvider messages={messages}>
+            <SessionProvider>
+              <div className="fixed z-[40] left-0 right-0">
+                <Header />
+              </div>
+              <main className="bg-gray-100 pt-[66px] flex flex-1">{children}</main>
+              <Footer />
+            </SessionProvider>
+          </NextIntlClientProvider>
+        </body>
+      </CSPostHogProvider>
     </html>
   );
 }
