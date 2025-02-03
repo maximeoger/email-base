@@ -5,6 +5,7 @@ import {
   ICollectionAPIRepository,
 } from "src/models/api/collections";
 import { CreateCollectionDto } from "shared/types/collection";
+import posthog from "posthog-js";
 
 export function useCreateCollection() {
   const router = useInjection<ICollectionAPIRepository>(
@@ -25,8 +26,7 @@ export function useCreateCollection() {
   });
 
   return {
-    onCreateCollection: (collectionCreate: CreateCollectionDto) =>
-      mutateAsync(collectionCreate),
+    onCreateCollection: (collectionCreate: CreateCollectionDto) => mutateAsync(collectionCreate).then(() => posthog.capture('create collection', collectionCreate)),
     isCreatingCollection: isPending,
     isError: error,
     isSuccess,

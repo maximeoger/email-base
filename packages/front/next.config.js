@@ -11,5 +11,22 @@ export default withNextIntl({
       },
     ],
   },
+  async rewrites() {
+    return [
+      {
+        source: "/ingest/:path*",
+        destination: "https://eu.posthog.com/:path*",
+      },
+      {
+        source: "/ingest/decide",
+        destination: "https://eu.posthog.com/decide",
+      },
+      {
+        source: "/ingest/array/:path*",
+        destination: "https://eu.posthog.com/array/:path*"
+      }
+    ]
+  },
+  skipTrailingSlashRedirect: true,
 });
 
