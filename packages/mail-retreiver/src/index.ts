@@ -1,114 +1,88 @@
-import { simpleParser } from "mailparser";
-import { ImapFlow } from "imapflow";
-import ImapReader from "./services/imap-reader";
-import { format } from "date-fns";
-import ScreenshotMaker from "./services/screenshot-maker";
-import puppeteer from "puppeteer";
-import sharp from "sharp";
-import {
-  getEmailsHTMLBody,
-  getSenders,
-  updateEmail,
-  upsertEmail,
-  upsertEmailScreenshot,
-  upsertSender,
-} from "./utils/queries";
 import "dotenv/config";
 import yargs from "yargs";
+import path from "path"
+import puppeteer from "puppeteer";
+import fs from 'fs/promises';
+import { PrismaClient } from '@prisma/client';
+import { formatISO } from "date-fns";
 
-const { IMAP_USER, IMAP_APP_PWD, IMAP_HOST } = process.env;
-
-async function fetchMails(from: number, to: number) {
-  const client = new ImapFlow({
-    host: IMAP_HOST as string,
-    port: 993,
-    secure: true,
-    auth: {
-      user: IMAP_USER as string,
-      pass: IMAP_APP_PWD,
-    },
-  });
-
-  const fetchRange = `${from}:${to}`;
-
-  const imapReader = ImapReader.init(client, fetchRange);
-
-  await imapReader.getMails();
-
-  const results = imapReader.getResults();
-
-  for await (let mail of results) {
-    let parsed = await simpleParser(mail.source);
-    let created_at = format(new Date(), "yyyy-dd-MM hh:mm:ss");
-
-    await upsertSender({
-      name: mail.envelope.sender[0].name,
-      address: mail.envelope.sender[0].address,
-      created_at,
-    });
-
-    const senders = await getSenders(mail.envelope.sender[0].address);
-
-    await upsertEmail({
-      uid: mail.uid,
-      subject: mail.envelope.subject,
-      sender_id: senders[0].id,
-      recipients: mail.envelope.to.map(
-        ({ address }: { address: string }) => address,
-      ),
-      date: mail.envelope.date,
-      received_date: mail.envelope.date,
-      size: mail.size,
-      body: parsed.text,
-      body_html: parsed.html,
-      created_at,
-    });
-  }
-}
-
-async function generateScreenshots() {
-  const browser = await puppeteer.launch();
-  const screenShotmaker = ScreenshotMaker.init(browser);
-
-  /**
-   * Fournir une plage d'IDs correspondant aux emails qui ont été insérés
-   * et generer les screenshots en fonction de cette plage
-   * afin d'éviter de boucler à travers tous les emails de la base
-   */
-  const data = await getEmailsHTMLBody();
-
-  for await (let { id, body_html } of data) {
-    const screenshot = await screenShotmaker.takeScreenshot(
-      body_html as string,
-    );
-    let created_at = format(new Date(), "yyyy-dd-MM hh:mm:ss");
-
-    const webpBuffer = await sharp(screenshot).webp({ quality: 80 }).toBuffer();
-
-    const [dbScreenshot] = await upsertEmailScreenshot({
-      created_at,
-      base_64: `data:image/webp;base64,${webpBuffer.toString("base64")}`,
-      email_id: id,
-    });
-
-    await updateEmail({ screenshot_id: dbScreenshot.id }, id);
-
-    console.log("Successfully added screnshot for email", id);
-  }
-}
+import GmailClient from "./services/gmail-client";
+import OAuthClient, { readCredentials } from "./services/oAuth-client";
+import parseEmails, { parseFromHeader } from "./utils/mail-parser";
+import ScreenshotMaker from "./services/screenshot-maker";
+import SenderRepository from "./repositories/sender";
+import EmailRepository from "./repositories/email";
+import ScreenshotRepository from "./repositories/screenshot";
 
 async function main() {
   try {
-    const { dryRun, from, to } = yargs(process.argv.slice(2))
+    const { dryRun } = yargs(process.argv.slice(2))
       .options({
         dryRun: { type: "boolean", default: true },
-        from: { type: "number", default: 0 },
-        to: { type: "number", default: 3 },
       })
       .parseSync();
 
-    await fetchMails(from, to);
-    await generateScreenshots();
+    const prisma = new PrismaClient()
+
+    const senderRepository = new SenderRepository(prisma, dryRun)
+    const emailRepository = new EmailRepository(prisma, dryRun)
+    const screenshotRepository = new ScreenshotRepository(prisma, dryRun)
+    
+    const credentials = await readCredentials()
+    const oAuthClient = new OAuthClient(credentials)
+
+    await oAuthClient.authorize()
+
+    const gmailClient = new GmailClient(oAuthClient.client)
+    let mails = await gmailClient.getEmails("ready")
+
+    const parsedEmails = parseEmails(mails);
+
+    console.info(`Nombre d'emails trouvés: ${parsedEmails.length}`);
+
+    const browser = await puppeteer.launch({ headless: true });
+    const screenshotMaker = ScreenshotMaker.init(browser);
+
+    const screenshotsDir = path.join(process.cwd(), "../../mails-screenshots");
+    await fs.mkdir(screenshotsDir, { recursive: true });
+
+    for (const email of parsedEmails) {
+      if (!email.htmlBody) {
+        console.info(`Email ${email.id} : No html content`);
+        continue;
+      }
+
+      const parsedFrom = parseFromHeader(email.from!)
+      const date = formatISO(new Date());
+
+      const dbSender = await senderRepository.upsert(parsedFrom, date)
+
+      const dbEmail = await emailRepository.upsert({
+        uid: email.id,
+        subject: email.subject!,
+        sender_id: Number(dbSender.id),
+        body_html: email.htmlBody
+      }, date)
+
+      const screenshotBuffer = await screenshotMaker.takeScreenshot(email.htmlBody);
+
+      const outputFileName = path.join(screenshotsDir, `${dbEmail.uid}.jpg`);
+
+      if (!dryRun) {
+        await fs.writeFile(outputFileName, screenshotBuffer as NodeJS.ArrayBufferView);
+      } else {
+        console.log(`[DRY RUN] skipping screenshot of : ${dbEmail.uid}.jpg`);
+      }
+
+      await screenshotRepository.upsert({
+        filename: `${dbEmail.uid}.jpg`,
+        path: outputFileName,
+        email_id: Number(dbEmail.id)
+      }, date)
+      
+    }
+
+    await browser.close();
 
     console.log("Done.");
     process.exit(0);
@@ -118,4 +92,5 @@ async function main() {
   }
 }
 
-main();
+
+main()

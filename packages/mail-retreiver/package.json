@@ -4,27 +4,27 @@
   "scripts": {
     "dev": "bun src/index.ts",
     "build": "tsc",
-    "start": "NODE_OPTIONS='--inspect' node dist/index.js"
+    "start": "NODE_OPTIONS='--inspect' node dist/index.js",
+    "generate.client": "npx prisma generate client --schema='prisma/schema.prisma'",
+    "generate.schema": "npx prisma generate --schema='prisma/schema.prisma'"
   },
   "devDependencies": {
-    "shared": "file:../shared",
     "@types/bun": "latest",
-    "@types/imapflow": "^1.0.19"
+    "@types/imapflow": "^1.0.19",
+    "shared": "file:../shared"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.45.3",
+    "@google-cloud/local-auth": "2.1.0",
     "date-fns": "^3.6.0",
     "dotenv": "^16.4.5",
-    "imap": "^0.8.19",
-    "imapflow": "^1.0.164",
+    "googleapis": "105",
     "mailparser": "^3.7.1",
     "puppeteer": "^23.3.0",
     "puppeteer-core": "^23.3.0",
     "sharp": "^0.33.5",
-    "shart": "^0.0.4",
     "yargs": "^17.7.2"
   }
 }

@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from 'src/core/prisma/prisma.service';
-import { Prisma } from '@prisma/client';
+import { Prisma, email } from '@prisma/client';
 import convertBigIntToString from '../../helpers/convertBigIntToString';
 import { AddMailToCollectionDto } from 'shared/types/mail';
 
@@ -25,7 +25,8 @@ export class MailService {
         id: true,
         email_screenshot_email_screenshot_idToemail_screenshot: {
           select: {
-            base_64: true,
+            path: true,
+            filename: true
           },
         },
       },
