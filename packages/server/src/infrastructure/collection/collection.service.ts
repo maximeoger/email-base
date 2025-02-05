@@ -34,8 +34,7 @@ export class CollectionService {
       const screenshots = collection.collection_email
         .map((ce) => {
           const email = ce.email;
-          const screenshot =
-            email.email_screenshot_email_screenshot_email_idToemail?.base_64;
+          const screenshot = email.email_screenshot_email_screenshot_email_idToemail?.path;
           return { email, screenshot };
         })
         .sort(

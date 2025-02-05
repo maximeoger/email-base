@@ -1,7 +1,7 @@
 import { Browser } from "puppeteer";
-import { ScreenshotMakerMethods } from "../models/screenshot-maker";
+import sharp from "sharp";
 
-export default class ScreenshotMaker implements ScreenshotMakerMethods {
+export default class ScreenshotMaker {
   private browser: Browser;
 
   constructor(browser: Browser) {
@@ -14,31 +14,30 @@ export default class ScreenshotMaker implements ScreenshotMakerMethods {
 
   private async openNewPage(html: string) {
     const page = await this.browser.newPage();
-    await page.setContent(html, { waitUntil: "domcontentloaded" });
+    await page.setContent(html, { waitUntil: "networkidle2" });
 
     return page;
   }
 
-  public async takeScreenshot(html: string) {
+  public async takeScreenshot(html: string): Promise<Buffer> {
     const page = await this.openNewPage(html);
 
-    const height = await page.evaluate(() => {
-      return document.body.scrollHeight;
-    });
+    const height = await (await page).evaluate(() => document.body.scrollHeight);
+    const width = await (await page).evaluate(() => document.body.scrollWidth);
 
-    const width = await page.evaluate(() => {
-      return document.body.scrollWidth;
-    });
+    await (await page).setViewport({ width, height });
 
-    await page.setViewport({ width, height });
-
-    const screenshot = await page.screenshot({
+    const screenshot = await (await page).screenshot({
       encoding: "binary",
       fullPage: true,
     });
 
-    await page.close();
+    await (await page).close();
 
-    return screenshot;
+    const compressedBuffer = await sharp(screenshot)
+    .webp({ quality: 80 })
+    .toBuffer();
+
+    return compressedBuffer;
   }
 }
