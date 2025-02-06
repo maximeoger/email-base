@@ -7,67 +7,65 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model collection {
-  id               BigInt             @id @default(autoincrement())
-  created_at       DateTime           @default(now()) @db.Timestamptz(6)
-  updated_at       DateTime           @default(now()) @db.Timestamptz(6)
-  name             String
-  description      String?
-  user_id          BigInt?   
-  user             user?              @relation(fields: [user_id], references: [id], onDelete: Cascade)             
-  collection_email collection_email[]
+model Collection {
+  id              BigInt            @id @default(autoincrement())
+  createdAt       DateTime          @default(now()) @db.Timestamptz(6)
+  updatedAt       DateTime          @default(now()) @db.Timestamptz(6)
+  name            String
+  description     String?
+  userId          BigInt?   
+  user            User?             @relation(fields: [userId], references: [id], onDelete: Cascade)             
+  collectionEmail CollectionEmail[]
 }
 
-model user {
-  id               BigInt             @id @default(autoincrement())
-  created_at       DateTime           @default(now()) @db.Timestamptz(6)
-  updated_at       DateTime           @default(now()) @db.Timestamptz(6)
-  sub              String             @unique
-  name             String
-  email            String             @unique
-  collections      collection[]            
+model User {
+  id          BigInt       @id @default(autoincrement())
+  createdAt   DateTime     @default(now()) @db.Timestamptz(6)
+  updatedAt   DateTime     @default(now()) @db.Timestamptz(6)
+  sub         String?      @unique
+  name        String
+  email       String       @unique
+  collections Collection[]            
 }
 
-model collection_email {
+model CollectionEmail {
   id            BigInt     @id @default(autoincrement())
-  created_at    DateTime   @default(now()) @db.Timestamptz(6)
-  updated_at    DateTime   @default(now()) @db.Timestamptz(6)
-  collection_id BigInt
-  email_id      BigInt
-  collection    collection @relation(fields: [collection_id], references: [id], onDelete: Cascade)
-  email         email      @relation(fields: [email_id], references: [id], onDelete: Cascade)
+  createdAt     DateTime   @default(now()) @db.Timestamptz(6)
+  updatedAt     DateTime   @default(now()) @db.Timestamptz(6)
+  collectionId  BigInt
+  emailId       BigInt
+  collection    Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  email         Email      @relation(fields: [emailId], references: [id], onDelete: Cascade)
 }
 
-model email {
+model Email {
   id                BigInt              @id(map: "Email_pkey") @unique @default(autoincrement())
   uid               String              @unique
   subject           String?
-  body_html         String?
-  created_at        DateTime?           @default(now()) @db.Timestamp(6)
-  sender_id         BigInt
-  screenshot_id     BigInt?             @unique
-
-  collection_email  collection_email[]
-  sender            sender              @relation(fields: [sender_id], references: [id], onDelete: Cascade)
-
-  screenshot        email_screenshot    @relation(name: "EmailScreenshotRelation", fields: [screenshot_id], references: [id], onDelete: Cascade)
+  bodyHtml          String?
+  createdAt         DateTime?           @default(now()) @db.Timestamp(6)
+  senderId          BigInt
+  screenshotId      BigInt?             @unique
+  collectionEmail   CollectionEmail[]
+  sender            Sender              @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  screenshot        EmailScreenshot?    @relation(name: "EmailScreenshotRelation", fields: [screenshotId], references: [id], onDelete: Cascade)
 }
 
-model email_screenshot {
-  id BigInt @id @default(autoincrement())
-  created_at DateTime @default(now()) @db.Timestamptz(6)
-  updated_at DateTime @default(now()) @db.Timestamptz(6)
-  filename String
-  path String
-  email email @relation("EmailScreenshotRelation")
+model EmailScreenshot {
+  id          BigInt         @id @default(autoincrement())
+  createdAt   DateTime       @default(now()) @db.Timestamptz(6)
+  updatedAt   DateTime       @default(now()) @db.Timestamptz(6)
+  filename    String
+  path        String
+  email       Email?         @relation("EmailScreenshotRelation")
 }
 
-model sender {
-  id BigInt @id @default(autoincrement())
-  created_at DateTime @default(now()) @db.Timestamptz(6)
-  updated_at DateTime @default(now()) @db.Timestamptz(6)
-  name String @db.VarChar
-  address String @unique @db.VarChar
-  logo String?
-  email email[]
+model Sender {
+  id          BigInt         @id @default(autoincrement())
+  createdAt   DateTime       @default(now()) @db.Timestamptz(6)
+  updatedAt   DateTime       @default(now()) @db.Timestamptz(6)
+  name        String         @db.VarChar
+  address     String         @unique @db.VarChar
+  logo        String?
+  email       Email[]
 }

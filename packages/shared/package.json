@@ -9,6 +9,7 @@
     "url": "git+https://github.com/maximeoger/email-base.git"
   },
   "scripts": {
+    "migrate.dev": "prisma migrate dev",
     "generate.client": "prisma generate",
     "push.db": "npx prisma db push",
     "pull.db": "npx prisma db pull"
