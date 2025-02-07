@@ -63,3 +63,6 @@ deploy:
 
 	@make _install.frontend
 	@make _build.frontend
+
+fetchEmails:
+	yarn --cwd packages/mail-retreiver run start --dryRun false
