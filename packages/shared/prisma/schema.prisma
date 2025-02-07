@@ -3,65 +3,67 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
 model Collection {
-  id              BigInt            @id @default(autoincrement())
-  createdAt       DateTime          @default(now()) @db.Timestamptz(6)
-  updatedAt       DateTime          @default(now()) @db.Timestamptz(6)
+  id              Int            @id @default(autoincrement()) @db.Integer
+  createdAt       DateTime       @default(now()) @db.Timestamptz(6)
+  updatedAt       DateTime       @default(now()) @db.Timestamptz(6)
   name            String
   description     String?
-  userId          BigInt?   
-  user            User?             @relation(fields: [userId], references: [id], onDelete: Cascade)             
+  userId          Int?           @db.Integer
+  user            User?          @relation(fields: [userId], references: [id], onDelete: Cascade)             
   collectionEmail CollectionEmail[]
 }
 
 model User {
-  id          BigInt       @id @default(autoincrement())
-  createdAt   DateTime     @default(now()) @db.Timestamptz(6)
-  updatedAt   DateTime     @default(now()) @db.Timestamptz(6)
-  sub         String?      @unique
+  id          Int            @id @default(autoincrement()) @db.Integer
+  createdAt   DateTime       @default(now()) @db.Timestamptz(6)
+  updatedAt   DateTime       @default(now()) @db.Timestamptz(6)
+  sub         String?        @unique
   name        String
-  email       String       @unique
+  email       String         @unique
   collections Collection[]            
 }
 
 model CollectionEmail {
-  id            BigInt     @id @default(autoincrement())
-  createdAt     DateTime   @default(now()) @db.Timestamptz(6)
-  updatedAt     DateTime   @default(now()) @db.Timestamptz(6)
-  collectionId  BigInt
-  emailId       BigInt
-  collection    Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
-  email         Email      @relation(fields: [emailId], references: [id], onDelete: Cascade)
+  id            Int           @id @default(autoincrement()) @db.Integer
+  createdAt     DateTime      @default(now()) @db.Timestamptz(6)
+  updatedAt     DateTime      @default(now()) @db.Timestamptz(6)
+  collectionId  Int           @db.Integer
+  emailId       Int           @db.Integer
+  collection    Collection    @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  email         Email         @relation(fields: [emailId], references: [id], onDelete: Cascade)
 }
 
 model Email {
-  id                BigInt              @id(map: "Email_pkey") @unique @default(autoincrement())
-  uid               String              @unique
+  id                Int              @id(map: "Email_pkey") @unique @default(autoincrement())
+  uid               String           @unique
   subject           String?
   bodyHtml          String?
-  createdAt         DateTime?           @default(now()) @db.Timestamp(6)
-  senderId          BigInt
-  screenshotId      BigInt?             @unique
+  createdAt         DateTime?        @default(now()) @db.Timestamp(6)
+  senderId          Int              @db.Integer
+  screenshotId      Int?             @unique
   collectionEmail   CollectionEmail[]
-  sender            Sender              @relation(fields: [senderId], references: [id], onDelete: Cascade)
-  screenshot        EmailScreenshot?    @relation(name: "EmailScreenshotRelation", fields: [screenshotId], references: [id], onDelete: Cascade)
+  sender            Sender           @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  screenshot        EmailScreenshot?
 }
 
 model EmailScreenshot {
-  id          BigInt         @id @default(autoincrement())
+  id          Int            @id @default(autoincrement()) @db.Integer
   createdAt   DateTime       @default(now()) @db.Timestamptz(6)
   updatedAt   DateTime       @default(now()) @db.Timestamptz(6)
   filename    String
   path        String
-  email       Email?         @relation("EmailScreenshotRelation")
+  emailId     Int            @unique @db.Integer
+  email       Email          @relation(fields: [emailId], references: [id])
 }
 
 model Sender {
-  id          BigInt         @id @default(autoincrement())
+  id          Int            @id @default(autoincrement()) @db.Integer
   createdAt   DateTime       @default(now()) @db.Timestamptz(6)
   updatedAt   DateTime       @default(now()) @db.Timestamptz(6)
   name        String         @db.VarChar
