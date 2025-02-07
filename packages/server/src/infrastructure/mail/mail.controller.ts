@@ -20,7 +20,7 @@ export class MailController {
   constructor(private readonly mailService: MailService) {}
 
   @Get()
-  getEmails(@Query() query: any): Promise<MailsResponse> {
+  getEmails(@Query() query: any): Promise<any> {
     return this.mailService.getEmails(query);
   }
 

@@ -1,10 +1,10 @@
-function convertBigIntToString(obj: Record<string, any>): Record<string, any> {
+function convertBigIntToString<T>(obj: T | T[]): T | T[] {
   if (typeof obj !== 'object' || obj === null) {
     return obj;
   }
 
   if (Array.isArray(obj)) {
-    return obj.map(convertBigIntToString);
+    return obj.map(item => convertBigIntToString(item)) as T[];
   }
 
   const newObj: Record<string, any> = {};
@@ -19,7 +19,7 @@ function convertBigIntToString(obj: Record<string, any>): Record<string, any> {
     }
   }
 
-  return newObj;
+  return newObj as T;
 }
 
 export default convertBigIntToString;

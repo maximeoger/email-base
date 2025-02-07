@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from 'src/core/prisma/prisma.service';
-import { Prisma, email } from '@prisma/client';
+import { Prisma, Email } from '@prisma/client';
 import convertBigIntToString from '../../helpers/convertBigIntToString';
 import { AddMailToCollectionDto } from 'shared/types/mail';
 
@@ -9,8 +9,11 @@ export class MailService {
   constructor(private prisma: PrismaService) {}
 
   async getEmails(params: {
-    cursor?: Prisma.emailWhereUniqueInput;
-  }): Promise<any> {
+    cursor?: number;
+  }): Promise<{
+    results: Email[];
+    nextCusor: number;
+  }> {
     const { cursor } = params;
 
     const skip = Number(cursor);
@@ -23,7 +26,7 @@ export class MailService {
       skip,
       select: {
         id: true,
-        email_screenshot_email_screenshot_idToemail_screenshot: {
+        screenshot: {
           select: {
             path: true,
             filename: true
@@ -33,7 +36,8 @@ export class MailService {
     });
 
     return {
-      results: results.map((result) => convertBigIntToString(result)),
+      // @ts-ignore
+      results: results.map((result) => convertBigIntToString<Email>(result)),
       ...(count > skip + take ? { nextCursor: skip + take } : {}),
     };
   }
@@ -56,7 +60,7 @@ export class MailService {
   async addMailToCollection(body: AddMailToCollectionDto) {
     const { collectionId, mailId } = body;
 
-    const createdRelationship = await this.prisma.collection_email.create({
+    const createdRelationship = await this.prisma.collectionEmail.create({
       data: {
         collection: {
           connect: {
