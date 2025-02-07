@@ -1,4 +1,4 @@
-import { PrismaClient, sender } from '@prisma/client';
+import { PrismaClient, Sender } from '@prisma/client';
 import { CreateSenderDTO } from "shared/types";
 
 export default class SenderRepository {
@@ -7,13 +7,18 @@ export default class SenderRepository {
     private dryRun: boolean
   ) {}
 
-  async upsert (sender: CreateSenderDTO, date: string) : Promise<sender> {
+  async upsert (sender: CreateSenderDTO, date: string) : Promise<Sender> {
+
+    const now = new Date();
 
     if (this.dryRun) {
       console.log(`[DRY RUN] Skipping upsert of sender : ${JSON.stringify(sender)}`);
       return {
         //@ts-ignore
         id: 1,
+        logo: "",
+        createdAt: now,
+        updatedAt: now,
         ...sender
       }
     }
@@ -24,11 +29,11 @@ export default class SenderRepository {
       },
       create: {
         ...sender,
-        created_at: date
+        createdAt: date
       },
       update: {
         ...sender,
-        updated_at: date
+        updatedAt: date
       }
     })
   }

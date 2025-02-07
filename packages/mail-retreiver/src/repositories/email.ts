@@ -1,4 +1,4 @@
-import { PrismaClient, email } from '@prisma/client';
+import { PrismaClient, Email } from '@prisma/client';
 import { CreateEmailDTO } from 'shared/types';
 
 export default class EmailRepository {
@@ -7,13 +7,15 @@ export default class EmailRepository {
     private dryRun: boolean
   ) {}
 
-  async upsert (email: CreateEmailDTO, date: string) : Promise<email> {
+  async upsert (email: CreateEmailDTO, date: string) : Promise<Email> {
 
     if(this.dryRun) {
       console.log(`[DRY RUN] Skipping upsert of email : ${email.uid}`);
       return {
         //@ts-ignore
         id: 1,
+        createdAt: new Date(),
+        screenshotId: 1,
         ...email
       }
     }
@@ -24,7 +26,7 @@ export default class EmailRepository {
       },
       create: {
         ...email,
-        created_at: date
+        createdAt: date
       },
       update: {
         ...email,
