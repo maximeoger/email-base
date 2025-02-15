@@ -59,8 +59,8 @@ export class MailService {
 
   async addMailToCollection(body: AddMailToCollectionDto) {
     const { collectionId, mailId } = body;
-
-    const createdRelationship = await this.prisma.collectionEmail.create({
+    
+    return await this.prisma.collectionEmail.create({
       data: {
         collection: {
           connect: {
@@ -74,6 +74,5 @@ export class MailService {
         },
       },
     });
-    return convertBigIntToString(createdRelationship);
   }
 }

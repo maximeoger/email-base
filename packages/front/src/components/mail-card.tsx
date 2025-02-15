@@ -6,7 +6,7 @@ import { Breakpoints } from "src/models/breakpoints";
 
 interface IProps {
   subject: string;
-  screenshot: string;
+  filename: string;
   id: string;
 }
 
@@ -44,7 +44,7 @@ function MailCard(props: IProps, ref: ForwardedRef<HTMLDivElement>) {
         "border-1 rounded-sm hover:border-grey hover:cursor-pointer hover:border-black"
       }
     >
-      <img src={props.screenshot} />
+      <img src={`${process.env.NEXT_PUBLIC_SCREENSHOTS_BASE_URL}/${props.filename}`} alt={props.subject}/>
     </div>
   );
 }

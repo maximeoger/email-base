@@ -14,6 +14,7 @@ import { MailService } from './mail.service';
 import { Mail, MailsResponse } from './mail.interface';
 //import { AddMailToCollectionDto } from 'shared/types/mail';
 import AuthGuard from '../auth/auth.guard';
+import { AddMailToCollectionDto } from 'shared/types';
 
 @Controller('api/mails')
 export class MailController {
@@ -36,7 +37,7 @@ export class MailController {
   @Post('add-mail-to-collection')
   @HttpCode(201)
   @UseGuards(AuthGuard)
-  addMailToCollection(@Body() body: any) {
+  addMailToCollection(@Body() body: AddMailToCollectionDto) {
     return this.mailService.addMailToCollection(body);
   }
 }

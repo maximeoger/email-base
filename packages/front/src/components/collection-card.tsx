@@ -41,12 +41,14 @@ export default function CollectionCard({ data }: IProps) {
       <div className="flex flex-col bg-grey-200 w-full h-[150px] justify-end">
         <FlexContainer className="gap-2 items-end justify-center px-4">
           {screenshots.map((screenshot, index) => (
-            <img
-              className="h-[110px] w-[100px] bg-grey-400"
-              key={index}
-              src={screenshot}
-            />
-          ))}
+            <div className="h-[130px] overflow-hidden">
+              <img
+                className="w-[100px] bg-grey-400"
+                key={index}
+                src={`${process.env.NEXT_PUBLIC_SCREENSHOTS_BASE_URL}/${screenshot.filename}`}
+              />
+            </div>
+          )).splice(0, 3)}
         </FlexContainer>
       </div>
       <CardFooter className="border-top-1 border-grey-300 flex justify-between">

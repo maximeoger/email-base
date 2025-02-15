@@ -19,9 +19,7 @@ function MailsContainer({ mails }: IProps, ref: ForwardedRef<HTMLDivElement>) {
           ref={ref}
           key={idx}
           subject={item.subject}
-          screenshot={
-            item.email_screenshot_email_screenshot_idToemail_screenshot.base_64
-          }
+          filename={item.screenshot.filename}
           id={item.id}
         />
       )}

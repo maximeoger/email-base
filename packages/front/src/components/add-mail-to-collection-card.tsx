@@ -12,8 +12,7 @@ interface IProps {
 }
 
 export default function AddMailToCollectionCard({ data, mailId }: IProps) {
-  const { onAddMailToCollection, isAddingMailToCollection } =
-    useAddMailToCollection();
+  const { onAddMailToCollection, isAddingMailToCollection } = useAddMailToCollection();
 
   const t = useTranslations("components.add-mail-to-collection-card");
    

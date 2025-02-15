@@ -7,7 +7,15 @@ datasource db {
   url               = env("DATABASE_URL")
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
-
+model User {
+  id          Int            @id @default(autoincrement()) @db.Integer
+  createdAt   DateTime       @default(now()) @db.Timestamptz(6)
+  updatedAt   DateTime       @default(now()) @db.Timestamptz(6)
+  sub         String?        @unique
+  name        String
+  email       String         @unique
+  collections Collection[]            
+}
 model Collection {
   id              Int            @id @default(autoincrement()) @db.Integer
   createdAt       DateTime       @default(now()) @db.Timestamptz(6)
@@ -17,16 +25,6 @@ model Collection {
   userId          Int?           @db.Integer
   user            User?          @relation(fields: [userId], references: [id], onDelete: Cascade)             
   collectionEmail CollectionEmail[]
-}
-
-model User {
-  id          Int            @id @default(autoincrement()) @db.Integer
-  createdAt   DateTime       @default(now()) @db.Timestamptz(6)
-  updatedAt   DateTime       @default(now()) @db.Timestamptz(6)
-  sub         String?        @unique
-  name        String
-  email       String         @unique
-  collections Collection[]            
 }
 
 model CollectionEmail {
