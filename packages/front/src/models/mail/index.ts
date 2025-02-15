@@ -8,7 +8,7 @@ export interface Mail {
   date: string;
   received_date: string;
   size: number;
-  body_html: string;
+  bodyHtml: string;
   sender: Sender;
 }
 

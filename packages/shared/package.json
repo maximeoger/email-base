@@ -1,26 +1,23 @@
 {
   "name": "shared",
   "version": "1.0.0",
-  "description": "Now I’m the model of a modern major general / The venerated Virginian veteran whose men are all / Lining up, to put me up on a pedestal / Writin’ letters to relatives / Embellishin’ my elegance and eloquence / But the elephant is in the room / The truth is in ya face when ya hear the British cannons go / BOOM",
   "keywords": [],
   "author": "maximeoger <maximeoger93@proton.me>",
   "license": "ISC",
-  "directories": {
-    "lib": "lib",
-    "test": "__tests__"
-  },
-  "files": [
-    "lib"
-  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/maximeoger/email-base.git"
   },
   "scripts": {
-    "generate-types": "npx supabase gen types typescript --project-id loyelmdgeliwzptwljmv > types/database/index.ts"
+    "migrate": "prisma migrate",
+    "migrate.dev": "prisma migrate dev",
+    "migrate.resolve": "prisma migrate resolve",
+    "generate.client": "prisma generate",
+    "push.db": "npx prisma db push",
+    "pull.db": "npx prisma db pull"
   },
-  "bugs": {
-    "url": "https://github.com/maximeoger/email-base/issues"
-  },
-  "homepage": "https://github.com/maximeoger/email-base#readme"
+  "homepage": "https://github.com/maximeoger/email-base#readme",
+  "dependencies": {
+    "prisma": "6.3.0"
+  }
 }

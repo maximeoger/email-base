@@ -11,6 +11,7 @@ import {
   Query,
   HttpCode,
   Param,
+  Logger,
 } from '@nestjs/common';
 import { CollectionService } from './collection.service';
 import {
@@ -26,22 +27,28 @@ import AuthInterceptor from '../auth/auth.interceptor';
 @UseGuards(AuthGuard)
 @UseInterceptors(AuthInterceptor)
 export class CollectionController {
+
+  private readonly logger = new Logger(CollectionService.name)
+  
   constructor(private readonly collectionService: CollectionService) {}
 
   @Get()
   async getCollections(@Req() request: Request): Promise<CollectionDto[]> {
-    const collections = await this.collectionService.getCollections(
+    const collections = await this.collectionService.getCollectionsWithEmailScreenshots(
       request.user.id,
     );
-    return collections.map((collection: any) => {
+    return collections.map((collection: typeof collections[number]) => {
       const dto = new CollectionDto();
       dto.id = Number(collection.id);
-      dto.createdAt = collection.created_at || '';
-      dto.updatedAt = collection.updated_at || '';
+      dto.createdAt = collection.createdAt;
+      dto.updatedAt = collection.updatedAt;
       dto.description = collection.description;
       dto.name = collection.name;
-      dto.emailIds = collection.emailIds;
-      dto.screenshots = collection.screenshots;
+      dto.emailIds = collection.collectionEmail.map(ce => ce.emailId);
+      dto.screenshots = collection.collectionEmail.map(ce => ({
+        path: ce.email.screenshot.path,
+        filename: ce.email.screenshot.filename
+      }));
       return dto;
     });
   }

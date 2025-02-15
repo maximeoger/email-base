@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+model User {
+  id          Int            @id @default(autoincrement()) @db.Integer
+  createdAt   DateTime       @default(now()) @db.Timestamptz(6)
+  updatedAt   DateTime       @default(now()) @db.Timestamptz(6)
+  sub         String?        @unique
+  name        String
+  email       String         @unique
+  collections Collection[]            
+}
+model Collection {
+  id              Int            @id @default(autoincrement()) @db.Integer
+  createdAt       DateTime       @default(now()) @db.Timestamptz(6)
+  updatedAt       DateTime       @default(now()) @db.Timestamptz(6)
+  name            String
+  description     String?
+  userId          Int?           @db.Integer
+  user            User?          @relation(fields: [userId], references: [id], onDelete: Cascade)             
+  collectionEmail CollectionEmail[]
+}
+
+model CollectionEmail {
+  id            Int           @id @default(autoincrement()) @db.Integer
+  createdAt     DateTime      @default(now()) @db.Timestamptz(6)
+  updatedAt     DateTime      @default(now()) @db.Timestamptz(6)
+  collectionId  Int           @db.Integer
+  emailId       Int           @db.Integer
+  collection    Collection    @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  email         Email         @relation(fields: [emailId], references: [id], onDelete: Cascade)
+}
+
+model Email {
+  id                Int              @id(map: "Email_pkey") @unique @default(autoincrement())
+  uid               String           @unique
+  subject           String?
+  bodyHtml          String?
+  createdAt         DateTime?        @default(now()) @db.Timestamp(6)
+  senderId          Int              @db.Integer
+  screenshotId      Int?             @unique
+  collectionEmail   CollectionEmail[]
+  sender            Sender           @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  screenshot        EmailScreenshot?
+}
+
+model EmailScreenshot {
+  id          Int            @id @default(autoincrement()) @db.Integer
+  createdAt   DateTime       @default(now()) @db.Timestamptz(6)
+  updatedAt   DateTime       @default(now()) @db.Timestamptz(6)
+  filename    String
+  path        String
+  emailId     Int            @unique @db.Integer
+  email       Email          @relation(fields: [emailId], references: [id])
+}
+
+model Sender {
+  id          Int            @id @default(autoincrement()) @db.Integer
+  createdAt   DateTime       @default(now()) @db.Timestamptz(6)
+  updatedAt   DateTime       @default(now()) @db.Timestamptz(6)
+  name        String         @db.VarChar
+  address     String         @unique @db.VarChar
+  logo        String?
+  email       Email[]
+}
