@@ -1,8 +1,6 @@
 import { google, Auth } from "googleapis";
-import readline from 'readline';
 import fs from "node:fs/promises";
-import path, { resolve } from "node:path";
-import { rejects } from "node:assert";
+import path from "node:path";
 import { createServer } from "node:http";
 
 type OAuthCredentails = {

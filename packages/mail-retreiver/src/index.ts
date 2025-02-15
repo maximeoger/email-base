@@ -60,24 +60,27 @@ async function main() {
       const dbEmail = await emailRepository.upsert({
         uid: email.id,
         subject: email.subject!,
-        sender_id: Number(dbSender.id),
-        body_html: email.htmlBody
+        senderId: Number(dbSender.id),
+        bodyHtml: email.htmlBody
       }, date)
 
       const screenshotBuffer = await screenshotMaker.takeScreenshot(email.htmlBody);
 
-      const outputFileName = path.join(screenshotsDir, `${dbEmail.uid}.jpg`);
+      const screenshotFilename = `${dbEmail.uid}.jpg`;
+
+      const outputFileName = path.join(screenshotsDir, screenshotFilename);
 
       if (!dryRun) {
+        //@ts-ignore
         await fs.writeFile(outputFileName, screenshotBuffer as NodeJS.ArrayBufferView);
       } else {
-        console.log(`[DRY RUN] skipping screenshot of : ${dbEmail.uid}.jpg`);
+        console.log(`[DRY RUN] skipping screenshot of : ${screenshotFilename}`);
       }
 
       await screenshotRepository.upsert({
-        filename: `${dbEmail.uid}.jpg`,
-        path: outputFileName,
-        email_id: Number(dbEmail.id)
+        filename: screenshotFilename,
+        path: "email-screenshots/",
+        emailId: Number(dbEmail.id)
       }, date)
       
     }

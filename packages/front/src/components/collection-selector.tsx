@@ -8,8 +8,7 @@ interface IProps {
 
 export default function CollectionSelector(props: IProps) {
   const { mailId } = props;
-  const { collections, loadingGetCollections, errorGetCollections } =
-    useGetCollections();
+  const { collections, loadingGetCollections, errorGetCollections } = useGetCollections();
   return (
     <DataContainer loading={loadingGetCollections} error={errorGetCollections}>
       <CollectionsSelectorContainer data={collections} mailId={mailId} />

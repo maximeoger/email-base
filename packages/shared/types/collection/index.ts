@@ -7,10 +7,10 @@ export class CollectionDto {
   id!: number;
   name!: string;
   description!: string | null;
-  createdAt!: string;
-  updatedAt!: string;
+  createdAt!: Date;
+  updatedAt!: Date;
   emailIds!: Array<number>;
-  screenshots!: Array<string>;
+  screenshots!: Array<{ path: string; filename: string; }>;
 }
 
 export class UpdateCollectionDto {

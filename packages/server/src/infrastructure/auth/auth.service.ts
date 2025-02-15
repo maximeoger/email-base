@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from 'src/core/prisma/prisma.service';
 import jwt from 'jsonwebtoken';
 import { DecodedAuthenticationToken } from 'shared/types/auth';
-import { user } from "@prisma/client"
+import { User } from "@prisma/client"
 
 interface DecodedToken {
   data: DecodedAuthenticationToken;
@@ -32,7 +32,7 @@ class AuthService {
     }
   }
 
-  async getUser(email: string): Promise<user | null> {
+  async getUser(email: string): Promise<User | null> {
     return await this.prisma.user.findUnique({
       where: {
         email,
@@ -40,7 +40,7 @@ class AuthService {
     });
   }
 
-  async createUser(name: string, email: string, sub: string): Promise<user> {
+  async createUser(name: string, email: string, sub: string): Promise<User> {
     return await this.prisma.user.create({
       data: { name, email, sub }
     })

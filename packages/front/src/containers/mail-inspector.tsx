@@ -12,7 +12,7 @@ interface IProps {
 
 function MailInspectorContainer({ mailDetails }: IProps) {
   const { data: session } = useSession();
-  const { subject, sender, body_html, id } = mailDetails;
+  const { subject, id, sender, bodyHtml } = mailDetails;
 
   const t = useTranslations("components.mail_inspector");
 
@@ -20,7 +20,7 @@ function MailInspectorContainer({ mailDetails }: IProps) {
     <div className="flex flex-col md:flex-row h-[100vh] md:h-[80vh]">
       <div
         className="flex-1 h-full overflow-y-auto rounded-l-md"
-        dangerouslySetInnerHTML={{ __html: body_html }}
+        dangerouslySetInnerHTML={{ __html: bodyHtml }}
       />
       <div className="w-full md:w-[300px] xl:w-[360px]">
         <ModalHeader className="flex flex-col p-4 text-md border-t md:border-none">

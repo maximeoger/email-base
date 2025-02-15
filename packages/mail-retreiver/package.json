@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "bun src/index.ts",
     "build": "tsc",
-    "start": "NODE_OPTIONS='--inspect' node dist/index.js",
+    "start": "node dist/index.js",
     "generate.client": "npx prisma generate client --schema='prisma/schema.prisma'",
     "generate.schema": "npx prisma generate --schema='prisma/schema.prisma'"
   },
