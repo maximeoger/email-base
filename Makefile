@@ -66,3 +66,11 @@ deploy:
 
 fetchEmails:
 	yarn --cwd packages/mail-retreiver run start --dryRun false
+
+restart.development:
+	@make delete.all
+	@make start.development
+
+restart.production:
+	@make delete.all
+	@make start.production
