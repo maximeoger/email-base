@@ -1,5 +1,6 @@
 {
   "name": "mail-retreiver",
+  "version": "1.0.0",
   "module": "src/index.ts",
   "scripts": {
     "dev": "bun src/index.ts",

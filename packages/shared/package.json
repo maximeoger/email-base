@@ -12,7 +12,8 @@
     "migrate": "prisma migrate",
     "migrate.dev": "prisma migrate dev",
     "migrate.resolve": "prisma migrate resolve",
-    "generate.client": "prisma generate",
+    "generate.client": "npx prisma generate client",
+    "generate.schema": "npx prisma generate",
     "push.db": "npx prisma db push",
     "pull.db": "npx prisma db pull"
   },
