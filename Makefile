@@ -39,8 +39,11 @@ logs.server:
 _install.workspace:
 	yarn install
 
+_install.shared:
+	yarn --cwd packages/shared install
+
 _generate.prisma:
-	yarn --cwd packages/server run generate.schema
+	yarn --cwd packages/shared run generate.schema
 
 _install.frontend:
 	yarn --cwd packages/front install
@@ -54,12 +57,23 @@ _build.frontend:
 _build.server:
 	yarn --cwd packages/server run build
 
+_install.mail-retreiver:
+	yarn --cwd packages/mail-retreiver install
+
+_build.mail-retreiver:
+	yarn --cwd packages/mail-retreiver run build
+
 deploy:
 	@make _install.workspace
 
-	@make _install.server
+	@make _install.shared
 	@make _generate.prisma
+
+	@make _install.server
 	@make _build.server
+
+	@make _install.mail-retreiver
+	@make _build.mail-retreiver
 
 	@make _install.frontend
 	@make _build.frontend
