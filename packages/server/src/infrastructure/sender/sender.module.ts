@@ -5,7 +5,7 @@ import { SenderService } from "./sender.service";
 import { PrismaService } from "src/core/prisma/prisma.service";
 
 @Module({
-  imports: [],
+  imports: [AuthModule],
   controllers: [SenderController],
   providers: [SenderService, PrismaService]
 })
