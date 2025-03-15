@@ -10,11 +10,12 @@ export class MailService {
 
   async getEmails(params: {
     cursor?: number;
+    senderId?: number;
   }): Promise<{
     results: Email[];
     nextCusor: number;
   }> {
-    const { cursor } = params;
+    const { cursor, senderId } = params;
 
     const skip = Number(cursor);
     const take = 10;
@@ -33,6 +34,13 @@ export class MailService {
           },
         },
       },
+      ...( senderId && {
+        where: {
+          senderId: {
+            equals: Number(senderId)
+          }
+        } 
+      })
     });
 
     return {
