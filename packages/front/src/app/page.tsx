@@ -1,26 +1,25 @@
-"use client"
-import { useTranslations } from "next-intl";
-import Link from "next/link";
 import PageServiceContainer from "../components/page-service-container";
 import MailResults from "../components/mail-results";
 import ModalManager from "../components/modal-manager";
-import { Button } from "@nextui-org/react";
+import Jumbotron from "src/components/jumbotron";
+import { SenderApiRepository } from "src/core/api/repositories/sender";
+import SendersResults from "src/components/senders-results";
+
 
 export default async function Home() {
-  const t = useTranslations("pages.index")
   
+  const api = new SenderApiRepository()
+
+  const senders = await api.getSenders()
+
   return (
     <PageServiceContainer>
       <div className="w-full">
         <section className="h-[333px] w-full bg-mint-100 px-16 flex flex-col justify-around">
-          <div className="flex flex-col gap-4">
-            <h1 className="text-3xl font-black text-grey-900">
-              { t('jumbotron.text', { count: "15K" }) }
-            </h1>
-            <Link href={"/login"}>
-              <Button className="bg-mint-500 text-grey-100">{t('jumbotron.button')}</Button>
-            </Link>
-          </div>
+          <Jumbotron/>
+        </section>
+        <section className="p-4 bg-white sticky top-0 z-50">
+          <SendersResults senders={senders}/>
         </section>
         <section className="mt-16">
           <MailResults />
