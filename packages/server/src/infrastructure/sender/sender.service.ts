@@ -22,4 +22,8 @@ export class SenderService {
       } 
     })
   }
+
+  async getSenders () {
+    return this.prisma.sender.findMany()
+  }
 }
