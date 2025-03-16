@@ -9,4 +9,9 @@ export class SenderController {
   getSender(@Param('id') id: number) {
     return this.senderService.getSenderDetails({ id: Number(id) })
   }
+
+  @Get()
+  getSenders() {
+    return this.senderService.getSenders()
+  }
 }
